@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <experimental/filesystem>
+#include <string>
 
 #include "include/assetregisters.hpp"
 #include "include/Scene.hpp"
@@ -10,6 +12,7 @@
 
 using std::cout;
 using std::cin;
+namespace fs = std::experimental::filesystem;
 
 map<std::string, sf::Font> font_register {
     {"regular", makeFont(ASSETS_ROOT + "gravity/Gravity-Regular.otf")},
@@ -30,7 +33,6 @@ void swapscene(unsigned short int);
 
 int main() {
     swapscene(0);
-
     sf::Clock deltaclock;
     while (window.isOpen()) {
         sf::Time delta = deltaclock.restart();
