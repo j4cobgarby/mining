@@ -1,4 +1,4 @@
-#include "include/MainMenu.hpp"
+#include "scenes/MainMenu.hpp"
 
 MainMenu::MainMenu(sf::RenderWindow *window) : window(window) {}
 

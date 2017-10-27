@@ -6,7 +6,7 @@
 
 #include "include/assetregisters.hpp"
 #include "include/Scene.hpp"
-#include "include/MainMenu.hpp"
+#include "scenes/MainMenu.hpp"
 
 #define ASSETS_ROOT std::string("../assets/")
 

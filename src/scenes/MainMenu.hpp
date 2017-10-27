@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "Scene.hpp"
-#include "assetregisters.hpp"
+#include "../include/Scene.hpp"
+#include "../include/assetregisters.hpp"
 
 class MainMenu : public Scene {
 private:
