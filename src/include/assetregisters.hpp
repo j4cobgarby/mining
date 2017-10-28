@@ -1,5 +1,5 @@
-#ifndef ASSET_REGISTERS_HPP
-#define ASSET_REGISTERS_HPP
+#ifndef INCLUDE_ASSET_REGISTERS_HPP
+#define INCLUDE_ASSET_REGISTERS_HPP
 
 #include <map>
 #include <string>

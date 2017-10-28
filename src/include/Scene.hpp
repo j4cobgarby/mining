@@ -2,10 +2,11 @@
  * An abstract class 
  */
 
-#ifndef SCENE_HPP
-#define SCENE_HPP
+#ifndef INCLUDE_SCENE_HPP
+#define INCLUDE_SCENE_HPP
 
 #include <SFML/Graphics.hpp>
+#include "CBInterface.hpp"
 
 class Scene {
 public:
