@@ -5,3 +5,7 @@
 void TestCB::cb() {
     std::cout << "Callback!\n";
 }
+
+void ptrTestCB::cb() {
+    text->setString("Clicked.");
+}

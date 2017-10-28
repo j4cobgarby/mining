@@ -12,7 +12,7 @@ class MainMenu : public Scene {
 private:
     sf::RenderWindow *window;
     sf::Text title, text;
-    TestCB testcb;
+    ptrTestCB testcb;
     Button testBtn;
 public:
     MainMenu(sf::RenderWindow*);

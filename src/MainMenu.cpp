@@ -13,6 +13,7 @@ MainMenu::MainMenu(sf::RenderWindow *window) : window(window) {
     text.setCharacterSize(30);
     text.setPosition(sf::Vector2f(30, 80));
 
+    testcb = ptrTestCB(&text);
     testBtn = Button(&testcb, sf::Text("Hello, world!", font_register.at("regular")),
         sf::Vector2f(30, 170), sf::Vector2f(300, 40));
 }

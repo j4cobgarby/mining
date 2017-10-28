@@ -17,8 +17,12 @@ public:
 };
 
 class ptrTestCB : public CBInterface {
+private:
+    sf::Text *text;
 public:
+    ptrTestCB() {};
+    ptrTestCB(sf::Text *text) : text(text) {};
     void cb();
-}
+};
 
 #endif
