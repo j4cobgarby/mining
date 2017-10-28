@@ -14,3 +14,4 @@ if (SFML_FOUND)
 endif()
 
 target_link_libraries(miner stdc++fs)
+target_link_libraries(miner tgui)
