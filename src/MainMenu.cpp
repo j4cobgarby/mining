@@ -1,51 +1,65 @@
 #include "scenes/MainMenu.hpp"
 
 MainMenu::MainMenu(sf::RenderWindow *window) : window(window) {
-    title = sf::Text("MAIN MENU",
-        font_register.at("bold"));
-    title.setCharacterSize(30);
-    title.setPosition(sf::Vector2f(30, 30));
-    title.setFillColor(sf::Color::Yellow);
+    view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+    view.setCenter(sf::Vector2f(window->getSize().x/2, window->getSize().y/2));
 
-    text = sf::Text(
-        "Press 'G' to generate a new world\nPress 'L' to load an already made world", 
-        font_register.at("regular"));
-    text.setCharacterSize(30);
-    text.setPosition(sf::Vector2f(30, 80));
+    gui.setWindow(*window);
+    gui.setView(sf::View{});
+    gui.setView(view);
 
-    testcb = ptrTestCB(&text);
-    testBtn = Button(&testcb, sf::Text("Hello, world!", font_register.at("regular")),
-        sf::Vector2f(30, 170), sf::Vector2f(300, 40));
+    tgui::Button::Ptr playbtn = tgui::Button::create();
+    playbtn->setText("Play");
+    playbtn->setPosition(0.2 * bindWidth(gui), 0.25 * bindWidth(gui) + 80);
+    playbtn->setSize(bindWidth(gui) * 0.6, 40);
+    playbtn->setFont(font_register.at("bold"));
+
+    tgui::Button::Ptr settingsbtn = tgui::Button::create();
+    settingsbtn->setText("Settings");
+    settingsbtn->setPosition(0.2 * bindWidth(gui), 0.25 * bindWidth(gui) + 80 + 40 + 20);
+    settingsbtn->setSize(bindWidth(gui) * 0.6, 40);
+    settingsbtn->setFont(font_register.at("bold"));
+
+    gui.add(playbtn, "playbtn");
+    gui.add(settingsbtn, "settingsbtn");
 }
 
 void MainMenu::show() {
     std::cout << "Showing main menu\n";
+    window->setSize(sf::Vector2u(1000, 1000));
+    gui.setView(view);
+    window->setView(view);
 }
 
 void MainMenu::hide() {
     std::cout << "Hiding main menu\n";
+    window->setView(window->getDefaultView());
 }
 
 int MainMenu::render(sf::Time delta) {
     sf::Event ev;
     while (window->pollEvent(ev)) {
+        gui.handleEvent(ev);
+
         if (ev.type == sf::Event::Closed) window->close();
         if (ev.type == sf::Event::KeyPressed) {
             if (ev.key.code == sf::Keyboard::Escape) window->close();
         }
-        if (ev.type == sf::Event::MouseButtonPressed) {
-            if (ev.mouseButton.button == sf::Mouse::Left) {
-                testBtn.test(ev.mouseButton.x, ev.mouseButton.y);
-            }
-        }
     }
 
-    window->clear();
+    view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+    view.setCenter(sf::Vector2f(window->getSize().x/2, window->getSize().y/2));
+    gui.setView(view);
+    window->setView(view);
+
+    sf::Sprite title(texture_register.at("titlebig"));
+    title.setPosition(sf::Vector2f(0, 40));
+    title.setScale((float)window->getSize().x / (float)texture_register.at("titlebig").getSize().x,
+        (float)window->getSize().x / (float)texture_register.at("titlebig").getSize().x);
+
+    window->clear(sf::Color(0x9ed1e5ff));
+    gui.draw();
     window->draw(title);
-    window->draw(text);
-
-    testBtn.draw(window);
-
     window->display();
 
     return -1;

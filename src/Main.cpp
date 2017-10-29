@@ -20,7 +20,11 @@ map<std::string, sf::Font> font_register {
     {"ultralight", makeFont(ASSETS_ROOT + "gravity/Gravity-UltraLight.otf")},
 };
 
-sf::RenderWindow window(sf::VideoMode(1000, 1000), "mining");
+map<std::string, sf::Texture> texture_register {
+    {"titlebig", makeTexture(ASSETS_ROOT + "images/titlebig.png")},
+};
+
+sf::RenderWindow window(sf::VideoMode(1001, 1001), "miner");
 Scene *active_scene = 0;
 
 std::vector<Scene*> scenes {

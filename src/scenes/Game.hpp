@@ -7,4 +7,15 @@
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
 
+class Game : public Scene {
+private:
+    sf::RenderWindow *window;
+public:
+    Game(sf::RenderWindow*);
+
+    void show();
+    void hide();
+    int render(sf::Time);
+};
+
 #endif

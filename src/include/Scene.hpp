@@ -6,7 +6,6 @@
 #define INCLUDE_SCENE_HPP
 
 #include <SFML/Graphics.hpp>
-#include "CBInterface.hpp"
 
 class Scene {
 public:

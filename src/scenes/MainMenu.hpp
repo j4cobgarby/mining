@@ -3,17 +3,25 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <TGUI/TGUI.hpp>
+#include <string>
 
-#include "../include/Button.hpp"
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
 
+/**
+ * Import all the TGUI bind functions
+ */
+TGUI_IMPORT_LAYOUT_BIND_FUNCTIONS
+
 class MainMenu : public Scene {
 private:
+    int l = 0;
     sf::RenderWindow *window;
-    sf::Text title, text;
-    ptrTestCB testcb;
-    Button testBtn;
+    sf::View view;
+
+    /** Master widget */
+    tgui::Gui gui;
 public:
     MainMenu(sf::RenderWindow*);
 
