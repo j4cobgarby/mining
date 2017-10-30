@@ -57,7 +57,7 @@ int MainMenu::render(sf::Time delta) {
     title.setScale((float)window->getSize().x / (float)texture_register.at("titlebig").getSize().x,
         (float)window->getSize().x / (float)texture_register.at("titlebig").getSize().x);
 
-    window->clear(sf::Color(0x9ed1e5ff));
+    window->clear(sf::Color(0x201923ff));
     gui.draw();
     window->draw(title);
     window->display();
