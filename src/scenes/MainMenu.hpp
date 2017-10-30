@@ -16,7 +16,6 @@ TGUI_IMPORT_LAYOUT_BIND_FUNCTIONS
 
 class MainMenu : public Scene {
 private:
-    int l = 0;
     sf::RenderWindow *window;
     sf::View view;
 
