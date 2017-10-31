@@ -2,10 +2,12 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <TGUI/TGUI.hpp>
 
 #include "include/assetregisters.hpp"
 #include "include/Scene.hpp"
 #include "scenes/MainMenu.hpp"
+#include "scenes/LevelSelect.hpp"
 
 #define ASSETS_ROOT std::string("../assets/")
 
@@ -24,27 +26,31 @@ map<std::string, sf::Texture> texture_register {
     {"titlebig", makeTexture(ASSETS_ROOT + "images/titlebig.png")},
 };
 
+tgui::Theme::Ptr tgui_theme = tgui::Theme::create(ASSETS_ROOT + "gui/TransparentGrey.txt");
+
 sf::RenderWindow window(sf::VideoMode(1001, 1001), "miner");
 Scene *active_scene = 0;
+int scene_feedback = -1;
 
 std::vector<Scene*> scenes {
-    new MainMenu(&window),
+    new MainMenu(&window, &scene_feedback),
+    new LevelSelect(&window, &scene_feedback),
 };
 
-void swapscene(unsigned short int);
+void swapscene(int);
 
 int main() {
+    cout << &scene_feedback << endl;
     swapscene(0);
     sf::Clock deltaclock;
     while (window.isOpen()) {
-        sf::Time delta = deltaclock.restart();
-
-        int feedback = active_scene->render(delta);
-        if (feedback >= 0) swapscene(feedback);
+        active_scene->render(deltaclock.restart());
+        if (scene_feedback >= 0) swapscene(scene_feedback);
+        scene_feedback = -1;
     }
 }
 
-void swapscene(unsigned short int scene_index) {
+void swapscene(int scene_index) {
     if (scene_index >= scenes.size()) return; // out of range
 
     if (active_scene != 0) active_scene->hide();

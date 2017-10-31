@@ -5,6 +5,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <TGUI/TGUI.hpp>
 
 using namespace std;
 using namespace sf;
@@ -63,5 +64,6 @@ extern map<int, Texture>            tilemap_register;
 extern map<string, Texture>         texture_register;
 extern map<string, Font>            font_register;
 extern map<string, vector<Texture>> animation_register;
+extern tgui::Theme::Ptr tgui_theme;
 
 #endif

@@ -1,30 +1,24 @@
-#ifndef SCENES_MAINMENU_HPP
-#define SCENES_MAINMENU_HPP
+#ifndef SCENES_LEVELSELECT_HPP
+#define SCENES_LEVELSELECT_HPP
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <TGUI/TGUI.hpp>
-#include <string>
+#include <experimental/filesystem>
 
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
 
-/**
- * Import all the TGUI bind functions
- */
 TGUI_IMPORT_LAYOUT_BIND_FUNCTIONS
 
-class MainMenu : public Scene {
+class LevelSelect : public Scene {
 private:
     sf::RenderWindow *window;
     sf::View view;
-
-    /** Master widget */
     tgui::Gui gui;
-
     int *feedback;
 public:
-    MainMenu(sf::RenderWindow*, int*);
+    LevelSelect(sf::RenderWindow*, int *feedback);
 
     void show();
     void hide();

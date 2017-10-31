@@ -11,6 +11,6 @@ void Game::hide() {
 
 }
 
-int Game::render(sf::Time delta) {
+void Game::render(sf::Time delta) {
 
 }

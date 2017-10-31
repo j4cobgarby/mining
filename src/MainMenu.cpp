@@ -1,6 +1,6 @@
 #include "scenes/MainMenu.hpp"
 
-MainMenu::MainMenu(sf::RenderWindow *window) : window(window) {
+MainMenu::MainMenu(sf::RenderWindow *window, int *feedback) : window(window), feedback(feedback) {
     view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
     view.setCenter(sf::Vector2f(window->getSize().x/2, window->getSize().y/2));
 
@@ -8,16 +8,18 @@ MainMenu::MainMenu(sf::RenderWindow *window) : window(window) {
     gui.setView(sf::View{});
     gui.setView(view);
 
-    tgui::Button::Ptr playbtn = tgui::Button::create();
+    tgui::Button::Ptr playbtn = tgui_theme->load("Button");
     playbtn->setText("Play");
     playbtn->setPosition(0.2 * bindWidth(gui), 0.25 * bindWidth(gui) + 80);
     playbtn->setSize(bindWidth(gui) * 0.6, 40);
     playbtn->setFont(font_register.at("bold"));
+    // On press, change active scene
+    playbtn->connect("pressed", [this](){*this->feedback = 1;});
 
-    tgui::Button::Ptr settingsbtn = tgui::Button::create();
+    tgui::Button::Ptr settingsbtn = tgui_theme->load("Button");
     settingsbtn->setText("Settings");
-    settingsbtn->setPosition(0.2 * bindWidth(gui), 0.25 * bindWidth(gui) + 80 + 40 + 20);
-    settingsbtn->setSize(bindWidth(gui) * 0.6, 40);
+    settingsbtn->setPosition(bindLeft(playbtn), bindBottom(playbtn) + 40 + 20);
+    settingsbtn->setSize(bindSize(playbtn));
     settingsbtn->setFont(font_register.at("bold"));
 
     gui.add(playbtn, "playbtn");
@@ -36,7 +38,7 @@ void MainMenu::hide() {
     window->setView(window->getDefaultView());
 }
 
-int MainMenu::render(sf::Time delta) {
+void MainMenu::render(sf::Time delta) {
     sf::Event ev;
     while (window->pollEvent(ev)) {
         gui.handleEvent(ev);
@@ -57,10 +59,8 @@ int MainMenu::render(sf::Time delta) {
     title.setScale((float)window->getSize().x / (float)texture_register.at("titlebig").getSize().x,
         (float)window->getSize().x / (float)texture_register.at("titlebig").getSize().x);
 
-    window->clear(sf::Color(0x37294fff));
+        window->clear(sf::Color(0xedeff3ff));
     gui.draw();
     window->draw(title);
     window->display();
-
-    return -1;
 }

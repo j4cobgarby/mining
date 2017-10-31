@@ -15,7 +15,7 @@ public:
 
     void show();
     void hide();
-    int render(sf::Time);
+    void render(sf::Time);
 };
 
 #endif
