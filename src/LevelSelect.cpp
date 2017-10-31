@@ -20,6 +20,7 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     button->setSize(bindWidth(levellist), 40);
     button->setText("Load level");
     button->setFont(font_register.at("bold"));
+    button->setTextSize(20);
     button->connect("pressed", [this](){*this->feedback = 0;});
 
     fs::path worlds_path("../worlds");

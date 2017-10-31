@@ -13,6 +13,7 @@ MainMenu::MainMenu(sf::RenderWindow *window, int *feedback) : window(window), fe
     playbtn->setPosition(0.2 * bindWidth(gui), 0.25 * bindWidth(gui) + 80);
     playbtn->setSize(bindWidth(gui) * 0.6, 40);
     playbtn->setFont(font_register.at("bold"));
+    playbtn->setTextSize(20);
     // On press, change active scene
     playbtn->connect("pressed", [this](){*this->feedback = 1;});
 
@@ -21,6 +22,7 @@ MainMenu::MainMenu(sf::RenderWindow *window, int *feedback) : window(window), fe
     settingsbtn->setPosition(bindLeft(playbtn), bindBottom(playbtn) + 40 + 20);
     settingsbtn->setSize(bindSize(playbtn));
     settingsbtn->setFont(font_register.at("bold"));
+    settingsbtn->setTextSize(20);
 
     gui.add(playbtn, "playbtn");
     gui.add(settingsbtn, "settingsbtn");

@@ -26,7 +26,7 @@ map<std::string, sf::Texture> texture_register {
     {"titlebig", makeTexture(ASSETS_ROOT + "images/titlebig.png")},
 };
 
-tgui::Theme::Ptr tgui_theme = tgui::Theme::create(ASSETS_ROOT + "gui/TransparentGrey.txt");
+tgui::Theme::Ptr tgui_theme = tgui::Theme::create(ASSETS_ROOT + "gui/Custom.txt");
 
 sf::RenderWindow window(sf::VideoMode(1001, 1001), "miner");
 Scene *active_scene = 0;
