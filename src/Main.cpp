@@ -44,7 +44,9 @@ int main() {
     swapscene(0);
     sf::Clock deltaclock;
     while (window.isOpen()) {
-        active_scene->render(deltaclock.restart());
+        sf::Time delta = deltaclock.restart();
+
+        active_scene->render(delta);
         if (scene_feedback >= 0) swapscene(scene_feedback);
         scene_feedback = -1;
     }

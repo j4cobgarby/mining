@@ -11,17 +11,16 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     gui.setView(view);
 
     tgui::ListBox::Ptr levellist = tgui_theme->load("ListBox");
-    levellist->setPosition(0.2 * bindWidth(gui), 50);
-    levellist->setSize(bindWidth(gui) * 0.6, 150);
+    levellist->setPosition(0.2 * bindWidth(gui), 30);
+    levellist->setSize(bindWidth(gui) * 0.6, "max(parent.height - 130, 40)");
     levellist->setFont(font_register.at("regular"));
 
     tgui::Button::Ptr button = tgui_theme->load("Button");
-    button->setPosition(bindLeft(levellist), bindBottom(levellist) + 40);
-    button->setSize(bindWidth(levellist), 40);
+    button->setPosition(0.3 * bindWidth(gui), bindBottom(levellist) + 30);
+    button->setSize(bindWidth(gui) * 0.4, 40);
     button->setText("Load level");
     button->setFont(font_register.at("bold"));
     button->setTextSize(20);
-    button->connect("pressed", [this](){*this->feedback = 0;});
 
     fs::path worlds_path("../worlds");
     for (fs::directory_entry d : fs::directory_iterator(worlds_path))

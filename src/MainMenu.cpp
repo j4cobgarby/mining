@@ -10,8 +10,8 @@ MainMenu::MainMenu(sf::RenderWindow *window, int *feedback) : window(window), fe
 
     tgui::Button::Ptr playbtn = tgui_theme->load("Button");
     playbtn->setText("Play");
-    playbtn->setPosition(0.2 * bindWidth(gui), 0.25 * bindWidth(gui) + 80);
-    playbtn->setSize(bindWidth(gui) * 0.6, 40);
+    playbtn->setPosition(0.3 * bindWidth(gui), 0.25 * bindWidth(gui) + 80);
+    playbtn->setSize(bindWidth(gui) * 0.4, 40);
     playbtn->setFont(font_register.at("bold"));
     playbtn->setTextSize(20);
     // On press, change active scene
