@@ -62,8 +62,17 @@ EditBox {
     Borders : (1, 1, 1, 1);
 }
 
-Label {
+TextBox {
     TextColor : rgba(255, 255, 255, 255);
+    SelectedTextColor : rgba(255, 255, 255, 245);
+    SelectedTextBackgroundColor : rgba(0, 110, 200, 130);
+    CaretColor : rgba(255, 255, 255, 255);
+    BorderColor : rgba(240, 240, 240, 255);
+    Borders : (1, 1, 1, 1);
+}
+
+Label {
+    TextColor : rgba(32, 25, 35, 255);
 }
 
 ListBox {

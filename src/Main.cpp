@@ -8,6 +8,7 @@
 #include "include/Scene.hpp"
 #include "scenes/MainMenu.hpp"
 #include "scenes/LevelSelect.hpp"
+#include "scenes/LevelCreate.hpp"
 
 #define ASSETS_ROOT std::string("../assets/")
 
@@ -35,6 +36,7 @@ int scene_feedback = -1;
 std::vector<Scene*> scenes {
     new MainMenu(&window, &scene_feedback),
     new LevelSelect(&window, &scene_feedback),
+    new LevelCreate(&window, &scene_feedback),
 };
 
 void swapscene(int);
