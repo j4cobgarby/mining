@@ -6,12 +6,16 @@
 
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
+#include "../include/LevelData.hpp"
 
 class Game : public Scene {
 private:
     sf::RenderWindow *window;
+    sf::View view;
+    LevelData lvl_dat;
+    int *feedback;
 public:
-    Game(sf::RenderWindow*);
+    Game(sf::RenderWindow*, int*);
 
     void show();
     void hide();

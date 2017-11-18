@@ -37,6 +37,7 @@ std::vector<Scene*> scenes {
     new MainMenu(&window, &scene_feedback),
     new LevelSelect(&window, &scene_feedback),
     new LevelCreate(&window, &scene_feedback),
+    new Game(&window, &scene_feedback),
 };
 
 void swapscene(int);

@@ -5,6 +5,7 @@ namespace fs = experimental::filesystem;
 /////////////////////////////////////////
 // Level generation
 /////////////////////////////////////////
+// index = 
 
 void make_world(tgui::Gui *gui, int *feedback) {
     tgui::EditBox::Ptr eptr = gui->get<tgui::EditBox>("levelname_txtbox");
@@ -18,9 +19,18 @@ void make_world(tgui::Gui *gui, int *feedback) {
     fs::create_directories("../worlds/" + dirname + "/players");
     fs::create_directories("../worlds/" + dirname + "/data");
 
-    //
-    // change feedback to some other scene once the world is made
-    //
+    // Write the world to a file
+    ofstream fout;
+    fout.open("../worlds/" + dirname + "/data/blocks", ios::binary | ios::out);
+    
+    for (int i = 0; i < LEVEL_HEIGHT * LEVEL_WIDTH; i++)
+        fout.put(0); // zero-fill the level
+
+    // now the level is stored in the file
+    // every LEVEL_WIDTH characters is a different row, starting from the top-most
+    fout.close();
+
+    *feedback = 3;
 }
 
 /////////////////////////////////////////

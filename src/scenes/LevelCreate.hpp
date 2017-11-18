@@ -4,11 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <TGUI/TGUI.hpp>
 #include <experimental/filesystem>
 
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
+#include "Game.hpp"
 
 TGUI_IMPORT_LAYOUT_BIND_FUNCTIONS
 
