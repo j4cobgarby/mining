@@ -21,6 +21,14 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     loadbtn->setText("Load level");
     loadbtn->setFont(font_register.at("bold"));
     loadbtn->setTextSize(20);
+    loadbtn->connect("pressed", [this, levellist](){
+        if (levellist->getSelectedItem() != "") {
+            level_filename = levellist->getSelectedItem();
+            *this->feedback = 3;
+        } else {
+            std::cout << "Can't load a level until you click one!\n";
+        }
+    });
 
     tgui::Button::Ptr makebtn = tgui_theme->load("Button");
     makebtn->setPosition(0.5 * bindWidth(gui), bindBottom(levellist) + 30);

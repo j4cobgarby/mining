@@ -6,6 +6,7 @@ Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(f
 
 void Game::show() {
     std::cout << "Showing game\n";
+    std::cout << "LEVEL:\t" << level_filename << std::endl; 
     // load the world from a file
 }
 

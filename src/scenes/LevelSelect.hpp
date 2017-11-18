@@ -8,6 +8,7 @@
 
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
+#include "../include/SessionConfig.hpp"
 
 TGUI_IMPORT_LAYOUT_BIND_FUNCTIONS
 

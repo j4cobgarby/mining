@@ -10,6 +10,7 @@
 
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
+#include "../include/SessionConfig.hpp"
 #include "Game.hpp"
 
 TGUI_IMPORT_LAYOUT_BIND_FUNCTIONS

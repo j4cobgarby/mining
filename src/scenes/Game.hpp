@@ -7,6 +7,7 @@
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
 #include "../include/LevelData.hpp"
+#include "../include/SessionConfig.hpp"
 
 class Game : public Scene {
 private:

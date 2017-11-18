@@ -37,6 +37,7 @@ void make_world(tgui::Gui *gui, int *feedback) {
     // every LEVEL_WIDTH characters is a different row, starting from the top-most
     fout.close();
 
+    level_filename = dirname;
     *feedback = 3;
 }
 
