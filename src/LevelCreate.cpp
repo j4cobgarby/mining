@@ -5,23 +5,30 @@ namespace fs = experimental::filesystem;
 /////////////////////////////////////////
 // Level generation
 /////////////////////////////////////////
-// index = 
+// index = r * cols + c
 
 void make_world(tgui::Gui *gui, int *feedback) {
     tgui::EditBox::Ptr eptr = gui->get<tgui::EditBox>("levelname_txtbox");
     std::string dirname = eptr->getText();
 
-    if (dirname == "") {
-        std::cout << "No dirname given\n";
+    
+    if (!fs::create_directories("../worlds/" + dirname + "/players")) {
+        std::cout << "Invalid world name\n";
+        return;
+    }
+    if (!fs::create_directories("../worlds/" + dirname + "/data")) {
+        std::cout << "Invalid world name\n";
         return;
     }
 
-    fs::create_directories("../worlds/" + dirname + "/players");
-    fs::create_directories("../worlds/" + dirname + "/data");
-
     // Write the world to a file
     ofstream fout;
-    fout.open("../worlds/" + dirname + "/data/blocks", ios::binary | ios::out);
+    fout.open("../worlds/" + dirname + "/data/blocks.dat", ios::binary | ios::out);
+    if (!fout.is_open()) {
+        std::cout << "Couldn't open block data file\n";
+        fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
+        return;
+    }
     
     for (int i = 0; i < LEVEL_HEIGHT * LEVEL_WIDTH; i++)
         fout.put(0); // zero-fill the level

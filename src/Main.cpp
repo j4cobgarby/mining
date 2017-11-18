@@ -9,6 +9,7 @@
 #include "scenes/MainMenu.hpp"
 #include "scenes/LevelSelect.hpp"
 #include "scenes/LevelCreate.hpp"
+#include "include/SessionConfig.hpp"
 
 #define ASSETS_ROOT std::string("../assets/")
 
@@ -32,6 +33,8 @@ tgui::Theme::Ptr tgui_theme = tgui::Theme::create(ASSETS_ROOT + "gui/Custom.txt"
 sf::RenderWindow window(sf::VideoMode(1001, 1001), "miner");
 Scene *active_scene = 0;
 int scene_feedback = -1;
+
+std::string level_filename = "";
 
 std::vector<Scene*> scenes {
     new MainMenu(&window, &scene_feedback),
