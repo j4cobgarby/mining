@@ -7,14 +7,19 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     view.setCenter(sf::Vector2f(window->getSize().x/2, window->getSize().y/2));
 
     gui.setWindow(*window);
-    gui.setView(sf::View{});
     gui.setView(view);
 
+    /**
+     * This lists all the available levels
+     */
     tgui::ListBox::Ptr levellist = tgui_theme->load("ListBox");
     levellist->setPosition(0.2 * bindWidth(gui), 30);
     levellist->setSize(bindWidth(gui) * 0.6, "max(parent.height - 130, 40)");
     levellist->setFont(font_register.at("regular"));
 
+    /**
+     * This button loads the currently selected level
+     */
     tgui::Button::Ptr loadbtn = tgui_theme->load("Button");
     loadbtn->setPosition(0.3 * bindWidth(gui), bindBottom(levellist) + 30);
     loadbtn->setSize(bindWidth(gui) * 0.2, 40);
@@ -30,6 +35,9 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
         }
     });
 
+    /**
+     * This button goes to the level creation screen
+     */
     tgui::Button::Ptr makebtn = tgui_theme->load("Button");
     makebtn->setPosition(0.5 * bindWidth(gui), bindBottom(levellist) + 30);
     makebtn->setSize(bindWidth(gui) * 0.2, 40);
