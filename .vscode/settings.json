@@ -39,6 +39,14 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "istream": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "fstream": "cpp",
+        "functional": "cpp",
+        "new": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp"
     }
 }

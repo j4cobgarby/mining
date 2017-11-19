@@ -3,11 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cmath>
+#include <fstream>
 
 #include "../include/Scene.hpp"
 #include "../include/assetregisters.hpp"
 #include "../include/LevelData.hpp"
 #include "../include/SessionConfig.hpp"
+
+#include "../thirdparty/FastNoise.h"
 
 class Game : public Scene {
 private:

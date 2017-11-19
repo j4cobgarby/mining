@@ -12,6 +12,6 @@ struct config {
     int window_height;
 };
 
-extern std::string level_filename;
+extern std::string level_dirname;
 
 #endif

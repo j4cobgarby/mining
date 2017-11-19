@@ -52,7 +52,7 @@ int scene_feedback = -1;
 /**
  * Unset value of the levelname. Changed by the menu, by the user
  */
-std::string level_filename = "";
+std::string level_dirname = "";
 
 /**
  * Initialise the scenes

@@ -28,7 +28,7 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     loadbtn->setTextSize(20);
     loadbtn->connect("pressed", [this, levellist](){
         if (levellist->getSelectedItem() != "") {
-            level_filename = levellist->getSelectedItem();
+            level_dirname = levellist->getSelectedItem();
             *this->feedback = 3;
         } else {
             std::cout << "Can't load a level until you click one!\n";

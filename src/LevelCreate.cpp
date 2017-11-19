@@ -15,10 +15,10 @@ void make_world(tgui::Gui *gui, int *feedback) {
     tgui::EditBox::Ptr eptr = gui->get<tgui::EditBox>("levelname_txtbox");
     std::string dirname = eptr->getText();
 
-    uint32_t seed;
+    int seed;
     try {
         tgui::EditBox::Ptr seed_ptr = gui->get<tgui::EditBox>("seed_txtbox");
-        seed = std::stoul((std::string)seed_ptr->getText(), nullptr, 10);
+        seed = std::stoi((std::string)seed_ptr->getText(), nullptr, 10);
     } catch (std::invalid_argument e) {
         std::cout << "Seed doesn't appear to be a valid number\n";
         return;
@@ -45,14 +45,24 @@ void make_world(tgui::Gui *gui, int *feedback) {
     ///////////////////////////
     // Generate the level
     ///////////////////////////
+    std::cout << std::string(10, '=') << " GENERATING LEVEL " << std::string(10, '=') << std::endl;
+
     ofstream fout;
-    fout.open("../worlds/" + dirname + "/data/seed", ios::out);
+    fout.open("../worlds/" + dirname + "/data/seed", ios::out); // the seed
     if (!fout.is_open()) {
         std::cout << "Couldn't create seed file\n";
         fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
         return;
     }
     fout << to_string(seed);
+    fout.close();
+    fout.open("../worlds/" + dirname + "/data/dims"); // Dimensions of the world
+    if (!fout.is_open()) {
+        std::cout << "Couldn't open block data file\n";
+        fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
+        return;
+    }
+    fout << to_string(LEVEL_HEIGHT) << '\n' << to_string(LEVEL_WIDTH);
     fout.close();
     fout.open("../worlds/" + dirname + "/data/blocks.dat", ios::binary | ios::out);
     if (!fout.is_open()) {
@@ -64,9 +74,22 @@ void make_world(tgui::Gui *gui, int *feedback) {
     for (int i = 0; i < LEVEL_HEIGHT * LEVEL_WIDTH; i++)
         fout.put(0); // zero-fill the level
 
-    for (int r = 0; r < LEVEL_HEIGHT; r++) {
-        for (int c = 0; c < LEVEL_WIDTH; c++) {
+    FastNoise noise;
+    noise.SetNoiseType(FastNoise::PerlinFractal);
+    noise.SetFrequency(0.03);
+    noise.SetInterp(FastNoise::Hermite);
+    noise.SetFractalType(FastNoise::RigidMulti);
+    noise.SetFractalLacunarity(0.2);
+    noise.SetFractalLacunarity(1.1);
+    noise.SetSeed(seed);
 
+    // Basic floor of stone
+    for (int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
+        for (int c = 0; c < LEVEL_WIDTH; c++, ++i) {
+            if (floor(-noise.GetNoise(c, 0) * 70) <= c) {
+                fout.seekp(i);
+                fout.put(1);
+            }
         }
     }
 
@@ -74,8 +97,10 @@ void make_world(tgui::Gui *gui, int *feedback) {
     // every LEVEL_WIDTH characters is a different row, starting from the top-most
     fout.close();
 
-    level_filename = dirname;
+    level_dirname = dirname;
     *feedback = 3;
+
+    std::cout << std::string(10, '=') << " GENERATING DONE " << std::string(10, '=') << std::endl;
 }
 
 /////////////////////////////////////////
