@@ -64,6 +64,12 @@ void make_world(tgui::Gui *gui, int *feedback) {
     for (int i = 0; i < LEVEL_HEIGHT * LEVEL_WIDTH; i++)
         fout.put(0); // zero-fill the level
 
+    for (int r = 0; r < LEVEL_HEIGHT; r++) {
+        for (int c = 0; c < LEVEL_WIDTH; c++) {
+
+        }
+    }
+
     // now the level is stored in the file
     // every LEVEL_WIDTH characters is a different row, starting from the top-most
     fout.close();
