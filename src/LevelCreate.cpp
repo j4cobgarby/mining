@@ -8,10 +8,31 @@ namespace fs = experimental::filesystem;
 // index = r * cols + c
 
 void make_world(tgui::Gui *gui, int *feedback) {
+    ////////////////////////////
+    // Validate fields
+    ////////////////////////////
+
     tgui::EditBox::Ptr eptr = gui->get<tgui::EditBox>("levelname_txtbox");
     std::string dirname = eptr->getText();
 
+    uint32_t seed;
+    try {
+        tgui::EditBox::Ptr seed_ptr = gui->get<tgui::EditBox>("seed_txtbox");
+        seed = std::stoul((std::string)seed_ptr->getText(), nullptr, 10);
+    } catch (std::invalid_argument e) {
+        std::cout << "Seed doesn't appear to be a valid number\n";
+        return;
+    } catch (std::out_of_range e) {
+        std::cout << "Seed out of range\n";
+        return;
+    }
+    std::cout << "SEED:\t" << seed << std::endl;
     
+    if (dirname == "") {
+        std::cout << "Empty level name\n";
+        return;
+    }
+
     if (!fs::create_directories("../worlds/" + dirname + "/players")) {
         std::cout << "Invalid world name\n";
         return;
@@ -21,8 +42,18 @@ void make_world(tgui::Gui *gui, int *feedback) {
         return;
     }
 
-    // Write the world to a file
+    ///////////////////////////
+    // Generate the level
+    ///////////////////////////
     ofstream fout;
+    fout.open("../worlds/" + dirname + "/data/seed", ios::out);
+    if (!fout.is_open()) {
+        std::cout << "Couldn't create seed file\n";
+        fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
+        return;
+    }
+    fout << to_string(seed);
+    fout.close();
     fout.open("../worlds/" + dirname + "/data/blocks.dat", ios::binary | ios::out);
     if (!fout.is_open()) {
         std::cout << "Couldn't open block data file\n";
@@ -63,8 +94,18 @@ LevelCreate::LevelCreate(sf::RenderWindow *window, int *feedback) : window(windo
     levelname_txtbox->setSize("0.6 * &.w", 30);
     levelname_txtbox->setFont(font_register.at("regular"));
 
+    tgui::Label::Ptr seed_label = tgui_theme->load("Label");
+    seed_label->setText("Seed");
+    seed_label->setPosition("0.2 * &.w", bindBottom(levelname_txtbox) + 20);
+    seed_label->setFont(font_register.at("regular"));
+
+    tgui::EditBox::Ptr seed_txtbox = tgui_theme->load("EditBox");
+    seed_txtbox->setPosition("0.2 * &.w", bindBottom(seed_label) + 10);
+    seed_txtbox->setSize("0.6 * &.w", 30);
+    seed_txtbox->setFont(font_register.at("regular"));
+
     tgui::Button::Ptr backbtn = tgui_theme->load("Button");
-    backbtn->setPosition(0.3 * bindWidth(gui), bindBottom(levelname_txtbox) + 30);
+    backbtn->setPosition(0.3 * bindWidth(gui), bindBottom(seed_txtbox) + 30);
     backbtn->setSize(bindWidth(gui) * 0.2, 40);
     backbtn->setText("Back");
     backbtn->setFont(font_register.at("bold"));
@@ -72,7 +113,7 @@ LevelCreate::LevelCreate(sf::RenderWindow *window, int *feedback) : window(windo
     backbtn->connect("pressed", [this](){*this->feedback = 1;});
 
     tgui::Button::Ptr makebtn = tgui_theme->load("Button");
-    makebtn->setPosition(0.5 * bindWidth(gui), bindBottom(levelname_txtbox) + 30);
+    makebtn->setPosition(0.5 * bindWidth(gui), bindBottom(seed_txtbox) + 30);
     makebtn->setSize(bindWidth(gui) * 0.2, 40);
     makebtn->setText("Generate!");
     makebtn->setFont(font_register.at("bold"));
@@ -81,6 +122,8 @@ LevelCreate::LevelCreate(sf::RenderWindow *window, int *feedback) : window(windo
 
     gui.add(levelname_label, "levelname_label");
     gui.add(levelname_txtbox, "levelname_txtbox");
+    gui.add(seed_label, "seed_label");
+    gui.add(seed_txtbox, "seed_txtbox");
     gui.add(backbtn, "backbtn");
     gui.add(makebtn, "makebtn");
 }

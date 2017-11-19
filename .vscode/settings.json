@@ -37,6 +37,8 @@
         "thread": "cpp",
         "tuple": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "istream": "cpp",
+        "bitset": "cpp"
     }
 }
