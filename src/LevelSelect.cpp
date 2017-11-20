@@ -47,9 +47,10 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     makebtn->connect("pressed", [this](){*this->feedback = 2;});
 
     fs::path worlds_path("../worlds");
+    bool default_set = false;
     for (fs::directory_entry d : fs::directory_iterator(worlds_path))
         levellist->addItem(d.path().filename().string(), d.path().string());
-
+    
     gui.add(levellist, "levellist");
     gui.add(loadbtn, "loadbtn");
     gui.add(makebtn, "makebtn");

@@ -1,7 +1,8 @@
 #include "scenes/Game.hpp"
 
 Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(feedback) {
-    view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+    view.setSize(sf::Vector2f(window->getSize().x/12, window->getSize().y/12));
+    view.setCenter(sf::Vector2f(0, 0));
 }
 
 void Game::show() {
@@ -73,8 +74,10 @@ void Game::render(sf::Time delta) {
     floor_lns[1].position = sf::Vector2f(256 * 5, 0);
     floor_lns[1].color = sf::Color::Red;
 
-    for (int i = 0; i < LEVEL_HEIGHT * LEVEL_WIDTH; i++) {
-        window->draw(blocks[i]);
+    for (int i = 0, r = 0; r < LEVEL_HEIGHT; r++) {
+        for (int c = 0; c < LEVEL_WIDTH; c++, i++) {
+            window->draw(blocks[i]);
+        }
     }
 
     window->draw(floor_lns);

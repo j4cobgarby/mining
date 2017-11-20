@@ -64,7 +64,7 @@ std::vector<Scene*> scenes {
     new Game(&window, &scene_feedback),
 };
 
-void swapscene(int);
+void swapscene(size_t);
 
 int main() {
     /** Set starting scene to main menu */
@@ -86,7 +86,7 @@ int main() {
 /**
  * Handles swapping the scene, calling appropriate methods
  */
-void swapscene(int scene_index) {
+void swapscene(size_t scene_index) {
     if (scene_index >= scenes.size()) return; // out of range
 
     /** This is NOT checking if the scene INDEX is 0, it's checking

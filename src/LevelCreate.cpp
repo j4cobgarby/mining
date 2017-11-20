@@ -76,18 +76,27 @@ void make_world(tgui::Gui *gui, int *feedback) {
 
     FastNoise noise;
     noise.SetNoiseType(FastNoise::PerlinFractal);
-    noise.SetFrequency(0.03);
-    noise.SetInterp(FastNoise::Hermite);
+    noise.SetFrequency(0.04);
+    noise.SetInterp(FastNoise::Quintic);
     noise.SetFractalType(FastNoise::FBM);
-    noise.SetFractalLacunarity(0.2);
-    noise.SetFractalLacunarity(1.1);
+    noise.SetFractalLacunarity(1.3);
+    noise.SetSeed(seed);
+
+    FastNoise secondary_noise;
+    secondary_noise.SetNoiseType(FastNoise::SimplexFractal);
+    noise.SetFrequency(0.02);
+    noise.SetInterp(FastNoise::Quintic);
     noise.SetSeed(seed);
 
     // Basic floor of stone
     int blocks_put = 0;
     for (int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
         for (int c = 0; c < LEVEL_WIDTH; c++, ++i) {
-            if (floor(noise.GetNoise(c, 0) * 20) + ((float)LEVEL_HEIGHT * 0.6) >= LEVEL_HEIGHT - r) {
+            if (
+                /* Noise function */ 
+                floor(noise.GetNoise(c, 0) * 160 * secondary_noise.GetNoise(c, 0)) + ((float)LEVEL_HEIGHT * 0.6)
+                /* End noise function */
+                >= LEVEL_HEIGHT - r) {
                 fout.seekp(i);
                 fout.put(1);
                 blocks_put++;
