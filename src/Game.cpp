@@ -53,6 +53,8 @@ void Game::render(sf::Time delta) {
         }
     }
 
+    window->setTitle(to_string(1.0/delta.asSeconds()));
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y - 600 * delta.asSeconds()));
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
@@ -76,6 +78,12 @@ void Game::render(sf::Time delta) {
 
     for (int i = 0, r = 0; r < LEVEL_HEIGHT; r++) {
         for (int c = 0; c < LEVEL_WIDTH; c++, i++) {
+            if (!(
+                c*2 + (view.getSize().x/2)+2 < view.getCenter().x ||
+                c*2 - (view.getSize().x/2)-2 > view.getCenter().x ||
+                r*2 + (view.getSize().y/2)+2 < view.getCenter().y ||
+                r*2 - (view.getSize().y/2)-2 > view.getCenter().y
+                ))
             window->draw(blocks[i]);
         }
     }
