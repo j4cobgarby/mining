@@ -71,8 +71,10 @@ void make_world(tgui::Gui *gui, int *feedback) {
         return;
     }
     
+    uint8_t world[LEVEL_HEIGHT*LEVEL_WIDTH];
+
     for (int i = 0; i < LEVEL_HEIGHT * LEVEL_WIDTH; i++)
-        fout.put(0); // zero-fill the level
+        world[i] = 0;
 
     FastNoise noise;
     noise.SetNoiseType(FastNoise::PerlinFractal);
@@ -88,23 +90,30 @@ void make_world(tgui::Gui *gui, int *feedback) {
     noise.SetInterp(FastNoise::Quintic);
     noise.SetSeed(seed);
 
-    // Basic floor of stone
-    int blocks_put = 0;
+    // Basic ground
     for (int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
         for (int c = 0; c < LEVEL_WIDTH; c++, ++i) {
-            if (
-                /* Noise function */ 
-                floor(noise.GetNoise(c, 0) * 160 * secondary_noise.GetNoise(c, 0)) + ((float)LEVEL_HEIGHT * 0.6)
-                /* End noise function */
-                >= LEVEL_HEIGHT - r) {
-                fout.seekp(i);
-                fout.put(1);
-                blocks_put++;
+            float noise_tmp = floor(noise.GetNoise(c, 0) * 160 * secondary_noise.GetNoise(c, 0));
+            if (noise_tmp + ((float)LEVEL_HEIGHT * 0.6) >= LEVEL_HEIGHT - r) {
+                world[i] = 3;
+            }
+            if (noise_tmp + ((float)LEVEL_HEIGHT * 0.55) >= LEVEL_HEIGHT - r) {
+                world[i] = 1;
             }
         }
     }
-    std::cout << "Made " << blocks_put << " blocks." << std::endl;
-    std::cout << "This is equivalent to " << ((float)blocks_put / (float)(LEVEL_HEIGHT * LEVEL_WIDTH)) * 100 << "% of the total world." << std::endl;
+
+    for (int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
+        for (int c = 0; c < LEVEL_WIDTH; c++, ++i) {
+            if (i - LEVEL_WIDTH >= 0) {
+                if (world[i] == 3 && world[i-LEVEL_WIDTH] == 0) world[i] = 4;
+            }
+        }
+    }
+
+    for (size_t i = 0; i < LEVEL_HEIGHT*LEVEL_WIDTH; i++) {
+        fout.put(world[i]);
+    }
 
     // now the level is stored in the file
     // every LEVEL_WIDTH characters is a different row, starting from the top-most

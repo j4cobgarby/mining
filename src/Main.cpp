@@ -28,6 +28,9 @@ map<std::string, sf::Texture> texture_register {
     {"titlebig", makeTexture(ASSETS_ROOT + "images/titlebig.png")},
 };
 
+map<int, sf::Texture> tilemap_register = init_tilemap_register(ASSETS_ROOT + "images/tilemap.png",
+    16, 16, 16, 16);
+
 /**
  * Load custom gui theme
  */

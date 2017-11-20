@@ -1,11 +1,12 @@
 #include "scenes/Game.hpp"
 
 Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(feedback) {
-    view.setSize(sf::Vector2f(window->getSize().x/12, window->getSize().y/12));
+    view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
     view.setCenter(sf::Vector2f(0, 0));
 }
 
 void Game::show() {
+    srand(time(NULL));
     std::cout << "Showing game\n";
     std::cout << "LEVEL:\t" << level_dirname << std::endl; 
     // load the world from a file
@@ -33,6 +34,9 @@ void Game::show() {
                 lvl_dat.blocks[r][c] = id;
                 blocks[i] = sf::RectangleShape(sf::Vector2f(2, 2));
                 blocks[i].setPosition(sf::Vector2f(c * 2, r * 2));
+                blocks[i].setTexture(&tilemap_register.at(id));
+                blocks[i].setOrigin(sf::Vector2f(1, 1));
+                if (id == 1 || id == 3) blocks[i].setRotation((rand()%4) * 90);
             }  
         }
     }
@@ -56,17 +60,20 @@ void Game::render(sf::Time delta) {
     window->setTitle(to_string(1.0/delta.asSeconds()));
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y - 600 * delta.asSeconds()));
+        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds()));
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y + 600 * delta.asSeconds()));
+        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds()));
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        view.setCenter(sf::Vector2f(view.getCenter().x - 600 * delta.asSeconds(), view.getCenter().y));
+        view.setCenter(sf::Vector2f(view.getCenter().x - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds(), view.getCenter().y));
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        view.setCenter(sf::Vector2f(view.getCenter().x + 600 * delta.asSeconds(), view.getCenter().y));
+        view.setCenter(sf::Vector2f(view.getCenter().x + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds(), view.getCenter().y));
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         view.zoom(1-delta.asSeconds());
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         view.zoom(1+delta.asSeconds());
+
+    //view.setSize(sf::Vector2f(window->getSize().x/12, window->getSize().y/12));
 
     window->setView(view);
     window->clear();
