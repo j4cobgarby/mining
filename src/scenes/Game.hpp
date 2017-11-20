@@ -19,6 +19,8 @@ private:
     sf::View view;
     LevelData lvl_dat;
     int *feedback;
+
+    sf::RectangleShape blocks[LEVEL_HEIGHT * LEVEL_WIDTH];
 public:
     Game(sf::RenderWindow*, int*);
 

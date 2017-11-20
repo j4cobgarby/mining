@@ -2,8 +2,8 @@
 #ifndef INCLUDE_LEVELDATA_HPP
 #define INCLUDE_LEVELDATA_HPP
 
-#define LEVEL_WIDTH 1000
-#define LEVEL_HEIGHT 500
+#define LEVEL_WIDTH 1024
+#define LEVEL_HEIGHT 512
 
 #include <cstdint>
 

@@ -78,20 +78,24 @@ void make_world(tgui::Gui *gui, int *feedback) {
     noise.SetNoiseType(FastNoise::PerlinFractal);
     noise.SetFrequency(0.03);
     noise.SetInterp(FastNoise::Hermite);
-    noise.SetFractalType(FastNoise::RigidMulti);
+    noise.SetFractalType(FastNoise::FBM);
     noise.SetFractalLacunarity(0.2);
     noise.SetFractalLacunarity(1.1);
     noise.SetSeed(seed);
 
     // Basic floor of stone
+    int blocks_put = 0;
     for (int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
         for (int c = 0; c < LEVEL_WIDTH; c++, ++i) {
-            if (floor(-noise.GetNoise(c, 0) * 70) <= c) {
+            if (floor(noise.GetNoise(c, 0) * 20) + ((float)LEVEL_HEIGHT * 0.6) >= LEVEL_HEIGHT - r) {
                 fout.seekp(i);
                 fout.put(1);
+                blocks_put++;
             }
         }
     }
+    std::cout << "Made " << blocks_put << " blocks." << std::endl;
+    std::cout << "This is equivalent to " << ((float)blocks_put / (float)(LEVEL_HEIGHT * LEVEL_WIDTH)) * 100 << "% of the total world." << std::endl;
 
     // now the level is stored in the file
     // every LEVEL_WIDTH characters is a different row, starting from the top-most
