@@ -2,6 +2,11 @@
 
 namespace fs = experimental::filesystem;
 
+void delete_world(std::string dirname) {
+    //fs::remove_all(dirname);
+    std::cout << dirname << std::endl;
+}
+
 LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(window), feedback(feedback) {
     view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
     view.setCenter(sf::Vector2f(window->getSize().x/2, window->getSize().y/2));
@@ -21,7 +26,7 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
      * This button loads the currently selected level
      */
     tgui::Button::Ptr loadbtn = tgui_theme->load("Button");
-    loadbtn->setPosition(0.3 * bindWidth(gui), bindBottom(levellist) + 30);
+    loadbtn->setPosition(0.1 * bindWidth(gui), bindBottom(levellist) + 30);
     loadbtn->setSize(bindWidth(gui) * 0.2, 40);
     loadbtn->setText("Load level");
     loadbtn->setFont(font_register.at("bold"));
@@ -39,12 +44,34 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
      * This button goes to the level creation screen
      */
     tgui::Button::Ptr makebtn = tgui_theme->load("Button");
-    makebtn->setPosition(0.5 * bindWidth(gui), bindBottom(levellist) + 30);
+    makebtn->setPosition(0.3 * bindWidth(gui), bindBottom(levellist) + 30);
     makebtn->setSize(bindWidth(gui) * 0.2, 40);
     makebtn->setText("New level");
     makebtn->setFont(font_register.at("bold"));
     makebtn->setTextSize(20);
     makebtn->connect("pressed", [this](){*this->feedback = 2;});
+
+    tgui::Button::Ptr delbtn = tgui_theme->load("Button");
+    delbtn->setPosition(0.5 * bindWidth(gui), bindBottom(levellist) + 30);
+    delbtn->setSize(bindWidth(gui) * 0.2, 40);
+    delbtn->setText("Delete");
+    delbtn->setFont(font_register.at("bold"));
+    delbtn->setTextSize(20);
+    delbtn->connect("pressed", [this, levellist](){
+        std::string lvl = levellist->getSelectedItem();
+        if (lvl != "") {
+            fs::remove_all("../worlds/" + lvl);
+            levellist->removeItem(lvl);
+        }
+    });
+
+    tgui::Button::Ptr backbtn = tgui_theme->load("Button");
+    backbtn->setPosition(0.7 * bindWidth(gui), bindBottom(levellist) + 30);
+    backbtn->setSize(bindWidth(gui) * 0.2, 40);
+    backbtn->setText("Back");
+    backbtn->setFont(font_register.at("bold"));
+    backbtn->setTextSize(20);
+    backbtn->connect("pressed", [this](){*this->feedback = 0;});
 
     fs::path worlds_path("../worlds");
     bool default_set = false;
@@ -54,6 +81,8 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     gui.add(levellist, "levellist");
     gui.add(loadbtn, "loadbtn");
     gui.add(makebtn, "makebtn");
+    gui.add(delbtn, "delbtn");
+    gui.add(backbtn, "backbtn");
 }
 
 void LevelSelect::show() {
