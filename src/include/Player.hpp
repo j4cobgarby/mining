@@ -1,5 +1,5 @@
-#ifndef SCENES_GAME_HPP
-#define SCENES_GAME_HPP
+#ifndef INCLUDE_PLAYER_HPP
+#define INCLUDE_PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
 #include "LevelData.hpp"
@@ -13,7 +13,7 @@ private:
     sf::RectangleShape rect;
     float ax, ay, vx, vy;
 
-    void overlaps(int, int, float, float);
+    bool overlaps(int, int, float, float);
     void trymove(LevelData);
 public:
     Player();

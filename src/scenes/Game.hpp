@@ -10,7 +10,7 @@
 #include "../include/assetregisters.hpp"
 #include "../include/LevelData.hpp"
 #include "../include/SessionConfig.hpp"
-
+#include "../include/Player.hpp"
 #include "../thirdparty/FastNoise.h"
 
 class Game : public Scene {
@@ -19,7 +19,7 @@ private:
     sf::View view;
     LevelData lvl_dat;
     int *feedback;
-
+    Player p;
     sf::RectangleShape blocks[LEVEL_HEIGHT * LEVEL_WIDTH];
 public:
     Game(sf::RenderWindow*, int*);

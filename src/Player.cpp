@@ -7,7 +7,7 @@ Player::Player() {
 Player::Player(float x, float y) {
     rect = sf::RectangleShape(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT));
     rect.setPosition(sf::Vector2f(x, y));
-    rect.setColor(sf::Color::Red);
+    rect.setFillColor(sf::Color::Red);
 
     ax = 0; ay = 0;
     vx = 0; vy = 0;
@@ -16,9 +16,9 @@ Player::Player(float x, float y) {
 /** 
  * Does the player collide with this block? 
  */
-void overlaps(int block_index_x, int block_index_y, float dvx, float dvy) {
-    float newx = x + dvx;
-    float newy = y + dvy;
+bool Player::overlaps(int block_index_x, int block_index_y, float dvx, float dvy) {
+    float newx = rect.getPosition().x + dvx;
+    float newy = rect.getPosition().y + dvy;
     return !(newx + PLAYER_WIDTH < block_index_x*BLOCK_SIZE 
         || newx > block_index_x*BLOCK_SIZE+BLOCK_SIZE
         || newy + PLAYER_HEIGHT < block_index_y*BLOCK_SIZE
@@ -33,14 +33,14 @@ void Player::trymove(LevelData lvl_dat) {
     bool will_hit_y = false;
     for (size_t r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
         for (size_t c = 0; c < LEVEL_WIDTH; c++, i++) {
-            if (lvl_dat[r][c] != 0) {
+            if (lvl_dat.blocks[r][c] != 0) {
                 if (overlaps(c, r, vx, 0)) will_hit_x = true;
                 if (overlaps(c, r, 0, vy)) will_hit_y = true;
             }
         }
     }
-    if (!will_hit_x) x += vx;
-    if (!will_hit_y) y += vy;
+    if (!will_hit_x) rect.setPosition(rect.getPosition().x + vx, rect.getPosition().y);
+    if (!will_hit_y) rect.setPosition(rect.getPosition().x, rect.getPosition().y + vy);
 }
 
 void Player::move(LevelData lvl_dat) {
