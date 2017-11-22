@@ -7,6 +7,8 @@
 #include <iostream>
 #include <TGUI/TGUI.hpp>
 
+#define ASSETS_ROOT std::string("../assets/")
+
 using namespace std;
 using namespace sf;
 

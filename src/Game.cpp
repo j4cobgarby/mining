@@ -37,6 +37,7 @@ void Game::show() {
                 blocks[i].setTexture(&tilemap_register.at(id));
                 blocks[i].setOrigin(sf::Vector2f(1, 1));
                 if (id == 1 || id == 3) blocks[i].setRotation((rand()%4) * 90);
+                if (id == 0) blocks[i].setFillColor(sf::Color::Transparent);
             }  
         }
     }
@@ -59,39 +60,37 @@ void Game::render(sf::Time delta) {
 
     window->setTitle(to_string(1.0/delta.asSeconds()));
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
         view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds()));
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
         view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds()));
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
         view.setCenter(sf::Vector2f(view.getCenter().x - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds(), view.getCenter().y));
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
         view.setCenter(sf::Vector2f(view.getCenter().x + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds(), view.getCenter().y));
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        view.zoom(1-delta.asSeconds());
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        view.zoom(1+delta.asSeconds());
-
-    //view.setSize(sf::Vector2f(window->getSize().x/12, window->getSize().y/12));
+    view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
 
     window->setView(view);
-    window->clear();
+    window->clear(sf::Color(0x77bdffff));
     sf::VertexArray floor_lns(sf::LinesStrip, 2);
     floor_lns[0].position = sf::Vector2f(0, 0);
     floor_lns[0].color = sf::Color::Red;
     floor_lns[1].position = sf::Vector2f(256 * 5, 0);
     floor_lns[1].color = sf::Color::Red;
 
-    for (int i = 0, r = 0; r < LEVEL_HEIGHT; r++) {
-        for (int c = 0; c < LEVEL_WIDTH; c++, i++) {
-            if (!(
-                c*2 + (view.getSize().x/2)+2 < view.getCenter().x ||
-                c*2 - (view.getSize().x/2)-2 > view.getCenter().x ||
-                r*2 + (view.getSize().y/2)+2 < view.getCenter().y ||
-                r*2 - (view.getSize().y/2)-2 > view.getCenter().y
-                ))
-            window->draw(blocks[i]);
+    int tiles_x = view.getSize().x/BLOCK_SIZE;
+    int tiles_y = view.getSize().y/BLOCK_SIZE;
+
+    int start_x = (view.getCenter().x-view.getSize().x/2)/BLOCK_SIZE;
+    start_x = max(0, min(start_x, LEVEL_WIDTH-tiles_x-1));
+
+    int start_y = (view.getCenter().y-view.getSize().y/2)/BLOCK_SIZE;
+    start_y = max(0, min(start_y, LEVEL_HEIGHT-tiles_y-1));
+
+    for (int i = 0, r = start_y; r < start_y + tiles_y + 2; r++) {
+        for (int c = start_x; c < start_x + tiles_x + 2; c++, i++) {
+            window->draw(blocks[r*LEVEL_WIDTH+c]);
         }
     }
 

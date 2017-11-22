@@ -5,6 +5,8 @@
 #define LEVEL_WIDTH 1024
 #define LEVEL_HEIGHT 256
 
+#define BLOCK_SIZE 2
+
 #include <cstdint>
 
 class LevelData {

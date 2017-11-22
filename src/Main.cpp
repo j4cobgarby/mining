@@ -11,8 +11,6 @@
 #include "scenes/LevelCreate.hpp"
 #include "include/SessionConfig.hpp"
 
-#define ASSETS_ROOT std::string("../assets/")
-
 using std::cout;
 using std::cin;
 

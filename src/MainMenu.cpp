@@ -19,7 +19,7 @@ MainMenu::MainMenu(sf::RenderWindow *window, int *feedback) : window(window), fe
 
     tgui::Button::Ptr settingsbtn = tgui_theme->load("Button");
     settingsbtn->setText("Settings");
-    settingsbtn->setPosition(bindLeft(playbtn), bindBottom(playbtn) + 40 + 20);
+    settingsbtn->setPosition(bindLeft(playbtn), bindBottom(playbtn));
     settingsbtn->setSize(bindSize(playbtn));
     settingsbtn->setFont(font_register.at("bold"));
     settingsbtn->setTextSize(20);
