@@ -14,3 +14,9 @@
             └── <playername>.dat ........ a binary file containing player info, like their name, inventory, position, etc.
             └── <anotherplayer>.dat
 ```
+
+### Requirements for building:
+ - CMake (>= 3.4)
+ - g++
+ - SFML (>= 2)
+ - TGUI (>= 0.7) [[link](https://tgui.eu)]

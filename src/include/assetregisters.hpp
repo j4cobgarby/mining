@@ -1,10 +1,13 @@
-#ifndef ASSET_REGISTERS_HPP
-#define ASSET_REGISTERS_HPP
+#ifndef INCLUDE_ASSET_REGISTERS_HPP
+#define INCLUDE_ASSET_REGISTERS_HPP
 
 #include <map>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <TGUI/TGUI.hpp>
+
+#define ASSETS_ROOT std::string("../assets/")
 
 using namespace std;
 using namespace sf;
@@ -63,5 +66,6 @@ extern map<int, Texture>            tilemap_register;
 extern map<string, Texture>         texture_register;
 extern map<string, Font>            font_register;
 extern map<string, vector<Texture>> animation_register;
+extern tgui::Theme::Ptr tgui_theme;
 
 #endif
