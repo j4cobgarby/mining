@@ -3,6 +3,9 @@
 Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(feedback) {
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
     view.setCenter(sf::Vector2f(0, 0));
+    
+    player.rect.setSize(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT));
+    player.ax = player.ay = player.vx = player.vy = 0;
 }
 
 void Game::show() {
@@ -36,7 +39,6 @@ void Game::show() {
                 blocks[i].setPosition(sf::Vector2f(c * 2, r * 2));
                 blocks[i].setTexture(&tilemap_register.at(id));
                 blocks[i].setOrigin(sf::Vector2f(1, 1));
-                if (id == 1 || id == 3) blocks[i].setRotation((rand()%4) * 90);
                 if (id == 0) blocks[i].setFillColor(sf::Color::Transparent);
             }  
         }
