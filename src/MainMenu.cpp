@@ -18,7 +18,7 @@ MainMenu::MainMenu(sf::RenderWindow *window, int *feedback) : window(window), fe
     playbtn->connect("pressed", [this](){*this->feedback = 1;});
 
     tgui::Button::Ptr settingsbtn = tgui_theme->load("Button");
-    settingsbtn->setText("Settings");
+    settingsbtn->setText("Settings (not implemented)");
     settingsbtn->setPosition(bindLeft(playbtn), bindBottom(playbtn));
     settingsbtn->setSize(bindSize(playbtn));
     settingsbtn->setFont(font_register.at("bold"));

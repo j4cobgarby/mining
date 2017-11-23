@@ -4,8 +4,7 @@ Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(f
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
     view.setCenter(sf::Vector2f(0, 0));
     
-    player.rect.setSize(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT));
-    player.ax = player.ay = player.vx = player.vy = 0;
+    player = Player(0, 0);
 }
 
 void Game::show() {
@@ -60,21 +59,24 @@ void Game::render(sf::Time delta) {
         }
     }
 
+    player.move(lvl_dat);
+
     window->setTitle(to_string(1.0/delta.asSeconds()));
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
-        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds()));
+        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 300 : 50) * delta.asSeconds()));
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
-        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds()));
+        view.setCenter(sf::Vector2f(view.getCenter().x, view.getCenter().y + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 300 : 50) * delta.asSeconds()));
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-        view.setCenter(sf::Vector2f(view.getCenter().x - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds(), view.getCenter().y));
+        view.setCenter(sf::Vector2f(view.getCenter().x - (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 300 : 50) * delta.asSeconds(), view.getCenter().y));
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-        view.setCenter(sf::Vector2f(view.getCenter().x + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 50 : 300) * delta.asSeconds(), view.getCenter().y));
+        view.setCenter(sf::Vector2f(view.getCenter().x + (sf::Keyboard::isKeyPressed(sf::Keyboard::X) ? 300 : 50) * delta.asSeconds(), view.getCenter().y));
 
+    view.setCenter(player.rect.getPosition());
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
 
     window->setView(view);
-    window->clear(sf::Color(0x77bdffff));
+    window->clear(sf::Color(0x0095e9ff));
     sf::VertexArray floor_lns(sf::LinesStrip, 2);
     floor_lns[0].position = sf::Vector2f(0, 0);
     floor_lns[0].color = sf::Color::Red;
@@ -85,10 +87,10 @@ void Game::render(sf::Time delta) {
     int tiles_y = view.getSize().y/BLOCK_SIZE;
 
     int start_x = (view.getCenter().x-view.getSize().x/2)/BLOCK_SIZE;
-    start_x = max(0, min(start_x, LEVEL_WIDTH-tiles_x-1));
+    start_x = max(0, min(start_x, LEVEL_WIDTH-tiles_x-2));
 
     int start_y = (view.getCenter().y-view.getSize().y/2)/BLOCK_SIZE;
-    start_y = max(0, min(start_y, LEVEL_HEIGHT-tiles_y-1));
+    start_y = max(0, min(start_y, LEVEL_HEIGHT-tiles_y-2));
 
     for (int i = 0, r = start_y; r < start_y + tiles_y + 2; r++) {
         for (int c = start_x; c < start_x + tiles_x + 2; c++, i++) {
@@ -97,5 +99,6 @@ void Game::render(sf::Time delta) {
     }
 
     window->draw(floor_lns);
+    player.draw(window);
     window->display();
 }
