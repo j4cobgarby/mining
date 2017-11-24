@@ -11,8 +11,8 @@
 
 class LevelData {
 public:
-    uint8_t blocks[LEVEL_HEIGHT][LEVEL_WIDTH];
     int seed;
+    uint8_t blocks[LEVEL_HEIGHT][LEVEL_WIDTH];
 };
 
 #endif

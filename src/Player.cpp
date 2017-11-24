@@ -19,10 +19,10 @@ Player::Player(float x, float y) {
 bool Player::overlaps(int block_index_x, int block_index_y, float dvx, float dvy) {
     float newx = rect.getPosition().x + dvx;
     float newy = rect.getPosition().y + dvy;
-    return !(newx + PLAYER_WIDTH < block_index_x*BLOCK_SIZE-BLOCK_SIZE/2
-        || newx > block_index_x*BLOCK_SIZE+BLOCK_SIZE-BLOCK_SIZE/2
-        || newy + PLAYER_HEIGHT < block_index_y*BLOCK_SIZE-BLOCK_SIZE/2
-        || newy > block_index_y*BLOCK_SIZE+BLOCK_SIZE-BLOCK_SIZE/2);
+    return !(newx + PLAYER_WIDTH < block_index_x*BLOCK_SIZE
+        || newx > block_index_x*BLOCK_SIZE+BLOCK_SIZE
+        || newy + PLAYER_HEIGHT < block_index_y*BLOCK_SIZE
+        || newy > block_index_y*BLOCK_SIZE+BLOCK_SIZE);
 }
 
 /**
@@ -44,8 +44,14 @@ void Player::trymove(LevelData lvl_dat) {
     for (int r = start_y, i = 0; r < start_y + tiles_y; r++) {
         for (int c = start_x; c < start_x + tiles_x; c++, i++) {
             if (lvl_dat.blocks[r][c] != 0) {
-                if (overlaps(c, r, vx, 0)) will_hit_x = true;
-                if (overlaps(c, r, 0, vy)) will_hit_y = true;
+                if (overlaps(c, r, vx, 0)) {
+                    will_hit_x = true;
+                    ax = 0;
+                }
+                if (overlaps(c, r, 0, vy)) {
+                    will_hit_y = true;
+                    ay = 0;
+                }
             }
         }
     }
@@ -54,17 +60,22 @@ void Player::trymove(LevelData lvl_dat) {
 }
 
 void Player::move(LevelData lvl_dat) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ax -= 0.0004;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) ax += 0.0004;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ax -= MOVEMENT_ACCELERATION;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) ax += MOVEMENT_ACCELERATION;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && grounded) {
+        grounded = false;
+        ay -= JUMP_FORCE;
+    }
+    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) grounded = true;
 
-    ay += 3e-4;
+    ay += 0.000012;
 
-    ax *= 0.99;
-    ay *= 0.99;
+    ax *= 0.998;
+    ay *= 0.999;
     vx = ax;
     vy = ay;
     vx *= 0.999;
-    vy *= 0.999;
+    vy *= 0.992;
 
     trymove(lvl_dat);
 }
