@@ -9,7 +9,6 @@ Player::Player(float x, float y) {
     rect.setPosition(sf::Vector2f(x, y));
     rect.setFillColor(sf::Color::Red);
 
-    ax = 0; ay = 0;
     vx = 0; vy = 0;
 }
 
@@ -46,11 +45,11 @@ void Player::trymove(LevelData lvl_dat) {
             if (lvl_dat.blocks[r][c] != 0) {
                 if (overlaps(c, r, vx, 0)) {
                     will_hit_x = true;
-                    ax = 0;
+                    vx = 0;
                 }
                 if (overlaps(c, r, 0, vy)) {
                     will_hit_y = true;
-                    ay = 0;
+                    vy = 0;
                 }
             }
         }
@@ -59,24 +58,21 @@ void Player::trymove(LevelData lvl_dat) {
     if (!will_hit_y) rect.setPosition(rect.getPosition().x, rect.getPosition().y + vy);
 }
 
-void Player::move(LevelData lvl_dat) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ax -= MOVEMENT_ACCELERATION;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) ax += MOVEMENT_ACCELERATION;
+void Player::move(LevelData lvl_dat, sf::Time delta) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= (MOVEMENT_ACCELERATION/0.00025);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += (MOVEMENT_ACCELERATION/0.00025);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && grounded) {
+        vy -= (JUMP_FORCE/0.00025);
         grounded = false;
-        ay -= JUMP_FORCE;
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) grounded = true;
 
-    ay += 0.000012;
+    vy += (0.00005/0.00025);
 
-    ax *= 0.998;
-    ay *= 0.999;
-    vx = ax;
-    vy = ay;
-    vx *= 0.999;
-    vy *= 0.992;
-
+    vx *= 0.995;
+    vy *= 0.995;
+    vx *= delta.asSeconds() * 100;
+    vy *= delta.asSeconds() * 100;
     trymove(lvl_dat);
 }
 

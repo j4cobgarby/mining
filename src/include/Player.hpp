@@ -12,12 +12,12 @@ using std::max;
 #define PLAYER_HEIGHT 3.3
 #define PLAYER_WIDTH 1.6
 
-#define MOVEMENT_ACCELERATION 0.00001
-#define JUMP_FORCE 0.015
+#define MOVEMENT_ACCELERATION 0.00004
+#define JUMP_FORCE 0.04
 
 class Player {
 private:
-    float ax, ay, vx, vy;
+    float vx, vy;
     bool overlaps(int, int, float, float);
     void trymove(LevelData);
 
@@ -28,7 +28,7 @@ public:
 
     sf::RectangleShape rect;
 
-    void move(LevelData);
+    void move(LevelData, sf::Time);
     void draw(sf::RenderWindow*);
 };
 
