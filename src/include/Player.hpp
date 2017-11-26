@@ -12,15 +12,18 @@ using std::max;
 #define PLAYER_HEIGHT 3.3
 #define PLAYER_WIDTH 1.6
 
-#define MOVEMENT_ACCELERATION 0.00004
-#define JUMP_FORCE 0.04
+#define MOVEMENT_ACCELERATION 0.16
+#define JUMP_FORCE 160
+#define JUMP_INCR 0.19
+#define GRAVITY 0.2
 
 class Player {
 private:
-    float vx, vy;
+    float ax, ay, vx, vy;
     bool overlaps(int, int, float, float);
     void trymove(LevelData);
 
+    bool jumping = false;
     bool grounded = true;
 public:
     Player();

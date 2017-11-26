@@ -12,8 +12,8 @@ Player::Player(float x, float y) {
     vx = 0; vy = 0;
 }
 
-/** 
- * Does the player collide with this block? 
+/**
+ * Does the player collide with this block?
  */
 bool Player::overlaps(int block_index_x, int block_index_y, float dvx, float dvy) {
     float newx = rect.getPosition().x + dvx;
@@ -59,15 +59,19 @@ void Player::trymove(LevelData lvl_dat) {
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= (MOVEMENT_ACCELERATION/0.00025);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += (MOVEMENT_ACCELERATION/0.00025);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && grounded) {
-        vy -= (JUMP_FORCE/0.00025);
-        grounded = false;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_ACCELERATION;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_ACCELERATION;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        jumping = true;
     }
-    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) grounded = true;
+    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        jumping = false;
+    }
 
-    vy += (0.00005/0.00025);
+    if (jumping)
+        vy -= JUMP_INCR;
+    else
+        vy += GRAVITY;
 
     vx *= 0.995;
     vy *= 0.995;
