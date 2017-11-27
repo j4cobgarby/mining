@@ -46,6 +46,18 @@ void Game::show() {
 }
 
 void Game::hide() {
+    // Write the possibly modified level to file
+    ofstream fout;
+
+    fout.open("../worlds/" + level_dirname + "/data/blocks.dat", ios::in | ios::binary);
+    fout.clear();
+    for (size_t y = 0; y < LEVEL_HEIGHT; y++) {
+        for (size_t x = 0; x < LEVEL_WIDTH; x++) {
+            fout.put(lvl_dat.blocks[y][x]);
+        }
+    }
+
+    fout.close();
     std::cout << "Bye bye!\n";
 }
 
