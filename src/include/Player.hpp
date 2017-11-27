@@ -2,8 +2,11 @@
 #define INCLUDE_PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <cmath>
 
 #include "LevelData.hpp"
+#include "assetregisters.hpp"
 
 using std::min;
 using std::max;
@@ -14,7 +17,7 @@ using std::max;
 
 #define MOVEMENT_ACCELERATION 0.16
 #define JUMP_FORCE 160
-#define JUMP_INCR 0.19
+#define JUMP_INCR 0.3
 #define GRAVITY 0.2
 
 class Player {
@@ -31,6 +34,7 @@ public:
 
     sf::RectangleShape rect;
 
+    void click(sf::Event, sf::RenderWindow*, LevelData*, sf::RectangleShape*);
     void move(LevelData, sf::Time);
     void draw(sf::RenderWindow*);
 };
