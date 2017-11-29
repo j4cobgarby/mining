@@ -68,6 +68,8 @@ std::vector<Scene*> scenes {
 void swapscene(size_t);
 
 int main() {
+    window.setVerticalSyncEnabled(false);
+
     /** Set starting scene to main menu */
     swapscene(0);
     sf::Clock deltaclock;

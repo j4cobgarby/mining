@@ -27,7 +27,7 @@ bool Player::overlaps(int block_index_x, int block_index_y, float dvx, float dvy
 /**
  * Moves the player as far as he can go with the current velocity
  */
-void Player::trymove(LevelData lvl_dat) {
+void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     bool will_hit_x = false;
     bool will_hit_y = false;
 
@@ -43,19 +43,27 @@ void Player::trymove(LevelData lvl_dat) {
     for (int r = start_y, i = 0; r < start_y + tiles_y; r++) {
         for (int c = start_x; c < start_x + tiles_x; c++, i++) {
             if (lvl_dat.blocks[r][c] != 0) {
-                if (overlaps(c, r, vx, 0)) {
+                if (overlaps(c, r, vx*delta.asSeconds(), 0)) {
                     will_hit_x = true;
                     vx = 0;
                 }
-                if (overlaps(c, r, 0, vy)) {
+                if (overlaps(c, r, 0, vy*delta.asSeconds())) {
                     will_hit_y = true;
                     vy = 0;
                 }
             }
         }
     }
-    if (!will_hit_x) rect.setPosition(rect.getPosition().x + vx, rect.getPosition().y);
-    if (!will_hit_y) rect.setPosition(rect.getPosition().x, rect.getPosition().y + vy);
+    if (will_hit_x);
+    else {
+        rect.setPosition(rect.getPosition().x + vx*delta.asSeconds(), rect.getPosition().y);
+    }
+
+    if (will_hit_y);
+    else {
+        grounded = false;
+        rect.setPosition(rect.getPosition().x, rect.getPosition().y + vy*delta.asSeconds());
+    }
 }
 
 void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, sf::RectangleShape *rects) {
@@ -89,25 +97,32 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_ACCELERATION;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_ACCELERATION;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    ax = ay = 0;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ax = -MOVEMENT_ACCELERATION;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) ax = +MOVEMENT_ACCELERATION;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping) {
         jumping = true;
+        ay = -JUMP_FORCE;
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         jumping = false;
     }
+    if (jumping) {
+        if (abs(vy) < 1) {
+            jumping = false;
+        }
+    }
 
-    if (jumping)
-        vy -= JUMP_INCR;
-    else
-        vy += GRAVITY;
+    if (!jumping) ay += GRAVITY;
 
-    vx *= 0.995;
-    vy *= 0.995;
-    vx *= delta.asSeconds() * 100;
-    vy *= delta.asSeconds() * 100;
-    trymove(lvl_dat);
+    vx += ax * delta.asSeconds();
+    vy += ay * delta.asSeconds();
+
+    float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
+    vx *= scaled_damping;
+    vy *= scaled_damping;
+
+    trymove(lvl_dat, delta);
 }
 
 void Player::draw(sf::RenderWindow *window) {
