@@ -59,7 +59,7 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
         rect.setPosition(rect.getPosition().x + vx*delta.asSeconds(), rect.getPosition().y);
     }
 
-    if (will_hit_y);
+    if (will_hit_y) jumping = false;
     else {
         grounded = false;
         rect.setPosition(rect.getPosition().x, rect.getPosition().y + vy*delta.asSeconds());
@@ -109,7 +109,7 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
     }
     if (jumping) {
         if (abs(vy) < 1) {
-            jumping = false;
+            //jumping = false;
         }
     }
 

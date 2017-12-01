@@ -16,7 +16,7 @@ using std::max;
 #define PLAYER_WIDTH 1.6
 
 #define MOVEMENT_ACCELERATION 80
-#define JUMP_FORCE 9e4
+#define JUMP_FORCE 3e5
 #define GRAVITY 200
 
 class Player {
