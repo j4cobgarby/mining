@@ -15,9 +15,9 @@ using std::max;
 #define PLAYER_HEIGHT 3.3
 #define PLAYER_WIDTH 1.6
 
-#define MOVEMENT_ACCELERATION 80
-#define JUMP_FORCE 3e5
-#define GRAVITY 200
+#define MOVEMENT_ACCELERATION 2.5e2
+#define JUMP_FORCE 0.6e2
+#define GRAVITY 3e2
 
 class Player {
 private:
@@ -26,7 +26,7 @@ private:
     void trymove(LevelData, sf::Time);
 
     bool jumping = false;
-    bool grounded = true;
+    bool grounded = false;
 public:
     Player();
     Player(float, float);

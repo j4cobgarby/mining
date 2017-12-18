@@ -30,6 +30,7 @@ bool Player::overlaps(int block_index_x, int block_index_y, float dvx, float dvy
 void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     bool will_hit_x = false;
     bool will_hit_y = false;
+    bool movingdown = vy > 0;
 
     int tiles_x = 6;
     int tiles_y = 6;
@@ -59,7 +60,12 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
         rect.setPosition(rect.getPosition().x + vx*delta.asSeconds(), rect.getPosition().y);
     }
 
-    if (will_hit_y) jumping = false;
+    if (will_hit_y) {
+        jumping = false;
+        if (movingdown) {
+            grounded = true;
+        }
+    }
     else {
         grounded = false;
         rect.setPosition(rect.getPosition().x, rect.getPosition().y + vy*delta.asSeconds());
@@ -98,25 +104,25 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
     ax = ay = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ax = -MOVEMENT_ACCELERATION;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) ax = +MOVEMENT_ACCELERATION;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_ACCELERATION * delta.asSeconds();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_ACCELERATION * delta.asSeconds();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded) {
         jumping = true;
-        ay = -JUMP_FORCE;
+        vy -= JUMP_FORCE;
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         jumping = false;
     }
     if (jumping) {
-        if (abs(vy) < 1) {
-            //jumping = false;
+        if (abs(vy) < 10) {
+            jumping = false;
         }
     }
 
-    if (!jumping) ay += GRAVITY;
+    if (!jumping) vy += GRAVITY * delta.asSeconds();
 
-    vx += ax * delta.asSeconds();
-    vy += ay * delta.asSeconds();
+    //vx += ax * delta.asSeconds();
+    //vy += ay * delta.asSeconds();
 
     float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
     vx *= scaled_damping;
