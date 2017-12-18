@@ -60,7 +60,7 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
         rect.setPosition(rect.getPosition().x + vx*delta.asSeconds(), rect.getPosition().y);
     }
 
-    if (will_hit_y) {
+    if (will_hit_y) { // This does fire WHILE you're on the floor, not only as you hit it
         jumping = false;
         if (movingdown) {
             grounded = true;
@@ -89,7 +89,6 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
             break;
         case sf::Mouse::Right:
             if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && block_x >= 0 && block_y >= 0) {
-                std::cout << block_x << '\t' << block_y << std::endl;
                 lvl_dat->blocks[block_y][block_x] = 2;
                 rects[block_y*LEVEL_WIDTH+block_x] = sf::RectangleShape(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
                 rects[block_y*LEVEL_WIDTH+block_x].setPosition(sf::Vector2f(block_x*BLOCK_SIZE, block_y*BLOCK_SIZE));
@@ -102,12 +101,13 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
-    ax = ay = 0;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_ACCELERATION * delta.asSeconds();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_ACCELERATION * delta.asSeconds();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded
+        && jumpclock.getElapsedTime().asSeconds() >= JUMP_COOLDOWN) {
         jumping = true;
         vy -= JUMP_FORCE;
+        jumpclock.restart();
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         jumping = false;

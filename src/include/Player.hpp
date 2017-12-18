@@ -14,6 +14,7 @@ using std::max;
 /** Bounding box of player **/
 #define PLAYER_HEIGHT 3.3
 #define PLAYER_WIDTH 1.6
+#define JUMP_COOLDOWN 0.2 // cooldown between hitting the floor an being able to jump
 
 #define MOVEMENT_ACCELERATION 1.5e2
 #define JUMP_FORCE 0.6e2
@@ -21,12 +22,13 @@ using std::max;
 
 class Player {
 private:
-    float ax, ay, vx, vy;
+    float vx, vy;
     bool overlaps(int, int, float, float);
     void trymove(LevelData, sf::Time);
 
     bool jumping = false;
     bool grounded = false;
+    sf::Clock jumpclock;
 public:
     Player();
     Player(float, float);
@@ -38,4 +40,4 @@ public:
     void draw(sf::RenderWindow*);
 };
 
-#endif
+#endif  

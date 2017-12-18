@@ -150,6 +150,8 @@ void make_world(tgui::Gui *gui, int *feedback) {
 /////////////////////////////////////////
 
 LevelCreate::LevelCreate(sf::RenderWindow *window, int *feedback) : window(window), feedback(feedback) {
+    srand(time(NULL));
+    
     view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
     view.setCenter(sf::Vector2f(window->getSize().x/2, window->getSize().y/2));
 
@@ -166,6 +168,8 @@ LevelCreate::LevelCreate(sf::RenderWindow *window, int *feedback) : window(windo
     levelname_txtbox->setPosition("0.2 * &.w", bindBottom(levelname_label) + 10);
     levelname_txtbox->setSize("0.6 * &.w", 30);
     levelname_txtbox->setFont(font_register.at("regular"));
+    levelname_txtbox->setText("New World");
+    levelname_txtbox->setDefaultText("Any string which is a valid folder name");
 
     tgui::Label::Ptr seed_label = tgui_theme->load("Label");
     seed_label->setText("Seed");
@@ -176,6 +180,8 @@ LevelCreate::LevelCreate(sf::RenderWindow *window, int *feedback) : window(windo
     seed_txtbox->setPosition("0.2 * &.w", bindBottom(seed_label) + 10);
     seed_txtbox->setSize("0.6 * &.w", 30);
     seed_txtbox->setFont(font_register.at("regular"));
+    seed_txtbox->setText(std::to_string((rand()%4294967296)-2147483648));
+    seed_txtbox->setDefaultText("Any valid 32-bit signed integer");
 
     tgui::Button::Ptr backbtn = tgui_theme->load("Button");
     backbtn->setPosition(0.3 * bindWidth(gui), bindBottom(seed_txtbox) + 30);
