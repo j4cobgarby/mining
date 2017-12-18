@@ -86,11 +86,6 @@ void Game::render(sf::Time delta) {
 
     window->setView(view);
     window->clear(sf::Color(0x0095e9ff));
-    sf::VertexArray floor_lns(sf::LinesStrip, 2);
-    floor_lns[0].position = sf::Vector2f(0, 0);
-    floor_lns[0].color = sf::Color::Red;
-    floor_lns[1].position = sf::Vector2f(256 * 5, 0);
-    floor_lns[1].color = sf::Color::Red;
 
     int tiles_x = view.getSize().x/BLOCK_SIZE;
     int tiles_y = view.getSize().y/BLOCK_SIZE;
@@ -107,7 +102,6 @@ void Game::render(sf::Time delta) {
         }
     }
 
-    window->draw(floor_lns);
     player.draw(window);
     window->display();
 }

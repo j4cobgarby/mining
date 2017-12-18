@@ -83,7 +83,6 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
     switch (ev.mouseButton.button) {
         case sf::Mouse::Left:
             if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && block_x >= 0 && block_y >= 0) {
-                std::cout << block_x << '\t' << block_y << std::endl;
                 lvl_dat->blocks[block_y][block_x] = 0;
                 rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::Transparent);
             }
