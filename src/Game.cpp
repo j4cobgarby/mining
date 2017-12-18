@@ -24,6 +24,18 @@ void Game::show() {
     std::cout << "SEED\t" << lvl_dat.seed << std::endl;
     fin.close();
 
+    fin.open("../worlds/" + level_dirname + "/data/spawn_position", ios::in | ios::binary);
+    if (!fin.is_open()) {
+        std::cout << "Failed to open spawn position file to read\n";
+        window->close();
+    }
+    float spawnpos_x, spawnpos_y;
+    fin >> spawnpos_x >> spawnpos_y;
+    std::cout << "SPAWNPOS\t" << spawnpos_x << '\t' << spawnpos_y << std::endl;
+    fin.close();
+
+    player.rect.setPosition(sf::Vector2f(spawnpos_x, spawnpos_y));
+
     fin.open("../worlds/" + level_dirname + "/data/blocks.dat", ios::in | ios::binary);
     if (!fin.is_open()) {
         std::cout << "Failed to open block file to read\n";
@@ -57,6 +69,10 @@ void Game::hide() {
         }
     }
 
+    fout.close();
+    fout.open("../worlds/" + level_dirname + "/data/spawn_position");
+    fout.clear();
+    fout << player.rect.getPosition().x << '\t' << player.rect.getPosition().y;
     fout.close();
     std::cout << "Bye bye!\n";
 }

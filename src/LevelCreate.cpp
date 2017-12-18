@@ -8,6 +8,8 @@ namespace fs = experimental::filesystem;
 // index = r * cols + c
 
 void make_world(tgui::Gui *gui, int *feedback) {
+    srand(time(NULL));
+
     ////////////////////////////
     // Validate fields
     ////////////////////////////
@@ -54,7 +56,7 @@ void make_world(tgui::Gui *gui, int *feedback) {
         fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
         return;
     }
-    fout << to_string(seed);
+    fout << seed;
     fout.close();
     fout.open("../worlds/" + dirname + "/data/dims"); // Dimensions of the world
     if (!fout.is_open()) {
@@ -62,7 +64,7 @@ void make_world(tgui::Gui *gui, int *feedback) {
         fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
         return;
     }
-    fout << to_string(LEVEL_HEIGHT) << '\n' << to_string(LEVEL_WIDTH);
+    fout << LEVEL_HEIGHT << '\t' << LEVEL_WIDTH;
     fout.close();
     fout.open("../worlds/" + dirname + "/data/blocks.dat", ios::binary | ios::out);
     if (!fout.is_open()) {
@@ -72,6 +74,9 @@ void make_world(tgui::Gui *gui, int *feedback) {
     }
     
     uint8_t world[LEVEL_HEIGHT*LEVEL_WIDTH];
+
+    unsigned int spawn_x_block = (rand() % (LEVEL_WIDTH-31)) + 15;
+    unsigned int spawn_y_block = 0;
 
     for (int i = 0; i < LEVEL_HEIGHT * LEVEL_WIDTH; i++)
         world[i] = 0;
@@ -91,11 +96,14 @@ void make_world(tgui::Gui *gui, int *feedback) {
     noise.SetSeed(seed);
 
     // Basic ground
-    for (int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
-        for (int c = 0; c < LEVEL_WIDTH; c++, ++i) {
+    for (unsigned int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
+        for (unsigned int c = 0; c < LEVEL_WIDTH; c++, ++i) {
             float noise_tmp = floor(noise.GetNoise(c, 0) * 160 * secondary_noise.GetNoise(c, 0));
             if (noise_tmp + ((float)LEVEL_HEIGHT * 0.6) >= LEVEL_HEIGHT - r) {
                 world[i] = 3;
+                if (c == spawn_x_block && spawn_y_block == 0) {
+                    spawn_y_block = r - 5;
+                }
             }
             if (noise_tmp + ((float)LEVEL_HEIGHT * 0.55) >= LEVEL_HEIGHT - r) {
                 world[i] = 1;
@@ -115,8 +123,20 @@ void make_world(tgui::Gui *gui, int *feedback) {
         fout.put(world[i]);
     }
 
+    std::cout << "Spawnx " << spawn_x_block << std::endl;
+    std::cout << "Spawny " << spawn_y_block << std::endl;
+
     // now the level is stored in the file
     // every LEVEL_WIDTH characters is a different row, starting from the top-most
+    fout.close();
+
+    fout.open("../worlds/" + dirname + "/data/spawn_position"); // Dimensions of the world
+    if (!fout.is_open()) {
+        std::cout << "Couldn't open spawn position file\n";
+        fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
+        return;
+    }
+    fout << spawn_x_block*BLOCK_SIZE << "\t" << spawn_y_block*BLOCK_SIZE;
     fout.close();
 
     level_dirname = dirname;

@@ -39,3 +39,12 @@ public:
 };
 
 #endif
+
+/*
+
+index = col * width + row
+index - row = col * width
+-row = col * width - index
+row = -(col * width - index)
+
+*/
