@@ -41,14 +41,23 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     int start_y = (rect.getPosition().y-3)/BLOCK_SIZE;
     start_y = max(0, min(start_y, LEVEL_HEIGHT-tiles_y));
 
+    float pos_x = rect.getPosition().x, pos_y = rect.getPosition().y;
+
+    float vxd = vx * delta.asSeconds();
+    float vyd = vy * delta.asSeconds();
+
     for (int r = start_y, i = 0; r < start_y + tiles_y; r++) {
         for (int c = start_x; c < start_x + tiles_x; c++, i++) {
             if (lvl_dat.blocks[r][c] != 0) {
-                if (overlaps(c, r, vx*delta.asSeconds(), 0)) {
+                /** Try x-movement */
+                if (overlaps(c, r,vxd, 0)
+                        || pos_x + vxd < 0 || pos_x + vxd + PLAYER_WIDTH > LEVEL_WIDTH * BLOCK_SIZE) {
                     will_hit_x = true;
                     vx = 0;
                 }
-                if (overlaps(c, r, 0, vy*delta.asSeconds())) {
+                /** Try y-movement */
+                if (overlaps(c, r, 0, vy*delta.asSeconds())
+                        || pos_y + vyd < 0 || pos_y + vyd + PLAYER_HEIGHT > LEVEL_HEIGHT * BLOCK_SIZE) {
                     will_hit_y = true;
                     vy = 0;
                 }
