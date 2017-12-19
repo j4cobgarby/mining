@@ -89,7 +89,7 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
     block_x /= 2;
     block_y /= 2;
 
-    uint8_t clicked_id = lvl_dat->blocks[block_y][block_x]; 
+    const uint8_t clicked_id = lvl_dat->blocks[block_y][block_x]; 
 
     switch (ev.mouseButton.button) {
         case sf::Mouse::Left:

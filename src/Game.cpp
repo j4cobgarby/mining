@@ -1,5 +1,9 @@
 #include "scenes/Game.hpp"
 
+float lerp(float from, float to, const float progress) {
+    return from + (to - from) * progress;
+}
+
 Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(feedback) {
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
     view.setCenter(sf::Vector2f(0, 0));
@@ -93,11 +97,17 @@ void Game::render(sf::Time delta) {
 
     window->setTitle(to_string(1.0/delta.asSeconds()));
 
-    view.setCenter(player.rect.getPosition());
-    if (view.getCenter().x < view.getSize().x/2) view.setCenter(view.getSize().x/2, view.getCenter().y);
-    if (view.getCenter().y < view.getSize().y/2) view.setCenter(view.getCenter().x, view.getSize().y/2);
-    if (view.getCenter().x > (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2) view.setCenter((LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2, view.getCenter().y);
-    if (view.getCenter().y > (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2) view.setCenter(view.getCenter().x, (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2);
+    sf::Vector2f new_view_center = player.rect.getPosition();
+    if (new_view_center.x < view.getSize().x/2) new_view_center.x = view.getSize().x/2;
+    if (new_view_center.y < view.getSize().y/2) new_view_center.y = view.getSize().y/2;
+    if (new_view_center.x > (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2) new_view_center.x = (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2;
+    if (new_view_center.y > (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2) new_view_center.y = (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2;
+
+    view.setCenter(sf::Vector2f(
+        lerp(view.getCenter().x, new_view_center.x, 0.001), 
+        lerp(view.getCenter().y, new_view_center.y, 0.001)
+    ));
+
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
 
     window->setView(view);
