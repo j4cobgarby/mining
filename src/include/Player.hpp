@@ -23,7 +23,8 @@ using std::max;
 class Player {
 private:
     float vx, vy;
-    bool overlaps(int, int, float, float);
+    bool overlaps(const unsigned int, const unsigned int, 
+        const float, const float);
     void trymove(LevelData, sf::Time);
 
     bool jumping = false;

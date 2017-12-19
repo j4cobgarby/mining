@@ -15,7 +15,7 @@ Player::Player(float x, float y) {
 /**
  * Does the player collide with this block?
  */
-bool Player::overlaps(int block_index_x, int block_index_y, float dvx, float dvy) {
+bool Player::overlaps(const unsigned int block_index_x, const unsigned int block_index_y, const float dvx, const float dvy) {
     float newx = rect.getPosition().x + dvx;
     float newy = rect.getPosition().y + dvy;
     return !(newx + PLAYER_WIDTH < block_index_x*BLOCK_SIZE
@@ -89,15 +89,17 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
     block_x /= 2;
     block_y /= 2;
 
+    uint8_t clicked_id = lvl_dat->blocks[block_y][block_x]; 
+
     switch (ev.mouseButton.button) {
         case sf::Mouse::Left:
-            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && block_x >= 0 && block_y >= 0) {
+            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && block_x >= 0 && block_y >= 0 && clicked_id == 0) {
                 lvl_dat->blocks[block_y][block_x] = 0;
                 rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::Transparent);
             }
             break;
         case sf::Mouse::Right:
-            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && block_x >= 0 && block_y >= 0) {
+            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && block_x >= 0 && block_y >= 0 && clicked_id == 0 && !overlaps(block_x, block_y, 0, 0)) {
                 lvl_dat->blocks[block_y][block_x] = 2;
                 rects[block_y*LEVEL_WIDTH+block_x] = sf::RectangleShape(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
                 rects[block_y*LEVEL_WIDTH+block_x].setPosition(sf::Vector2f(block_x*BLOCK_SIZE, block_y*BLOCK_SIZE));
@@ -128,9 +130,6 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
     }
 
     if (!jumping) vy += GRAVITY * delta.asSeconds();
-
-    //vx += ax * delta.asSeconds();
-    //vy += ay * delta.asSeconds();
 
     float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
     vx *= scaled_damping;
