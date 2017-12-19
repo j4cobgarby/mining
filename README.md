@@ -20,3 +20,5 @@
  - g++
  - SFML (>= 2)
  - TGUI (>= 0.7) [[link](https://tgui.eu)]
+ - Any block must be adjacent to at least one other block.
+ - You can't place too far away from youself.

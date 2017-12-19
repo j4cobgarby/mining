@@ -39,6 +39,7 @@ void Game::show() {
     fin.close();
 
     player.rect.setPosition(sf::Vector2f(spawnpos_x, spawnpos_y));
+    view.setCenter(sf::Vector2f(player.rect.getPosition().x, player.rect.getPosition().y + 40));
 
     fin.open("../worlds/" + level_dirname + "/data/blocks.dat", ios::in | ios::binary);
     if (!fin.is_open()) {
@@ -104,8 +105,8 @@ void Game::render(sf::Time delta) {
     if (new_view_center.y > (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2) new_view_center.y = (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2;
 
     view.setCenter(sf::Vector2f(
-        lerp(view.getCenter().x, new_view_center.x, 0.001), 
-        lerp(view.getCenter().y, new_view_center.y, 0.001)
+        lerp(view.getCenter().x, new_view_center.x, 0.0007), 
+        lerp(view.getCenter().y, new_view_center.y, 0.0007)
     ));
 
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));

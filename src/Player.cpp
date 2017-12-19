@@ -107,6 +107,8 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
                 rects[block_y*LEVEL_WIDTH+block_x].setTexture(&tilemap_register.at(2));
             }
             break;
+        case sf::Mouse::Middle:
+            
         default: break;
     }
 }
