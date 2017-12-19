@@ -101,7 +101,7 @@ void Game::render(sf::Time delta) {
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));
 
     window->setView(view);
-    window->clear(sf::Color(0x0095e9ff));
+    window->clear(sf::Color(0x679effff));
 
     int tiles_x = view.getSize().x/BLOCK_SIZE;
     int tiles_y = view.getSize().y/BLOCK_SIZE;
