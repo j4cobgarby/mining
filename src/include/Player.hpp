@@ -16,7 +16,7 @@ using std::max;
 #define PLAYER_WIDTH 1.6
 #define JUMP_COOLDOWN 0.4 // cooldown between hitting the floor an being able to jump
 
-#define MOVEMENT_ACCELERATION 1.5e2
+#define MOVEMENT_SPEED 1.5e2
 #define JUMP_FORCE 0.6e2
 #define GRAVITY 3e2
 

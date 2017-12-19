@@ -110,10 +110,10 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_ACCELERATION * delta.asSeconds();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_ACCELERATION * delta.asSeconds();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_SPEED * delta.asSeconds();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_SPEED * delta.asSeconds();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded
-        && jumpclock.getElapsedTime().asSeconds() >= JUMP_COOLDOWN) {
+            && jumpclock.getElapsedTime().asSeconds() >= JUMP_COOLDOWN) {
         jumping = true;
         vy -= JUMP_FORCE;
         jumpclock.restart();
