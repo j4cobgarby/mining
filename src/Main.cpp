@@ -27,7 +27,8 @@ map<std::string, sf::Texture> texture_register {
 };
 
 map<int, sf::Texture> tilemap_register = init_tilemap_register(ASSETS_ROOT + "images/tilemap8.png",
-    16, 16, 8, 8);
+    16, 16, // amount of tiles
+    8, 8); // size of each tile (x, y)
 
 /**
  * Load custom gui theme
