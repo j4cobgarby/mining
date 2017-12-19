@@ -93,7 +93,7 @@ void make_world(tgui::Gui *gui, int *feedback) {
     secondary_noise.SetNoiseType(FastNoise::SimplexFractal);
     noise.SetFrequency(0.02);
     noise.SetInterp(FastNoise::Quintic);
-    noise.SetSeed(seed);
+    noise.SetSeed(seed+1);
 
     // Basic ground
     for (unsigned int r = 0, i = 0; r < LEVEL_HEIGHT; r++) {
