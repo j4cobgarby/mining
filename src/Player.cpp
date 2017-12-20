@@ -50,14 +50,12 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
         for (int c = start_x; c < start_x + tiles_x; c++, i++) {
             if (lvl_dat.blocks[r][c] != 0) {
                 /** Try x-movement */
-                if (overlaps(c, r,vxd, 0)
-                        || pos_x + vxd < 0 || pos_x + vxd + PLAYER_WIDTH > LEVEL_WIDTH * BLOCK_SIZE) {
+                if (overlaps(c, r, vxd, 0)) {
                     will_hit_x = true;
                     vx = 0;
                 }
                 /** Try y-movement */
-                if (overlaps(c, r, 0, vy*delta.asSeconds())
-                        || pos_y + vyd < 0 || pos_y + vyd + PLAYER_HEIGHT > LEVEL_HEIGHT * BLOCK_SIZE) {
+                if (overlaps(c, r, 0, vyd)) {
                     will_hit_y = true;
                     vy = 0;
                 }
@@ -67,6 +65,8 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     if (will_hit_x);
     else {
         rect.setPosition(rect.getPosition().x + vx*delta.asSeconds(), rect.getPosition().y);
+        if (rect.getPosition().x <= 0) rect.setPosition(sf::Vector2f(0.001, rect.getPosition().y));
+        if (rect.getPosition().x >= LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH) rect.setPosition(sf::Vector2f(LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH-0.001, rect.getPosition().y));
     }
 
     if (will_hit_y) { // This does fire WHILE you're on the floor, not only as you hit it
@@ -91,14 +91,23 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 
     const uint8_t clicked_id = lvl_dat->blocks[block_y][block_x]; 
 
+    const sf::Vector2f player_center = rect.getPosition();
     switch (ev.mouseButton.button) {
         case sf::Mouse::Left:
-            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && block_x >= 0 && block_y >= 0 && clicked_id != 0) {
+            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
+                    block_x >= 0 && block_y >= 0 && 
+                    clicked_id != 0 &&
+                    (
+                        pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
+                        pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
+                        <= 49 * BLOCK_SIZE
+                    )) {
                 lvl_dat->blocks[block_y][block_x] = 0;
                 rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::Transparent);
             }
             break;
         case sf::Mouse::Right:
+            {
             if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
                     block_x >= 0 && block_y >= 0 && 
                     clicked_id == 0 && 
@@ -116,12 +125,19 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
                         lvl_dat->blocks[block_y+1][block_x] + // bottom mid
                         lvl_dat->blocks[block_y+1][block_x+1] // bottom right
                         > 0
+                    ) &&
+                    (
+                        // Check if the block is close enough to the center of the player
+                        pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
+                        pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
+                        <= 49 * BLOCK_SIZE
                     )) {
                 lvl_dat->blocks[block_y][block_x] = 2;
                 rects[block_y*LEVEL_WIDTH+block_x] = sf::RectangleShape(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
                 rects[block_y*LEVEL_WIDTH+block_x].setPosition(sf::Vector2f(block_x*BLOCK_SIZE, block_y*BLOCK_SIZE));
                 rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::White);
                 rects[block_y*LEVEL_WIDTH+block_x].setTexture(&tilemap_register.at(2));
+            }
             }
             break;
         default: break;
