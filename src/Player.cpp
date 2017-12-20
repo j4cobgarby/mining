@@ -7,7 +7,6 @@ Player::Player() {
 Player::Player(float x, float y) {
     rect = sf::RectangleShape(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT));
     rect.setPosition(sf::Vector2f(x, y));
-    rect.setFillColor(sf::Color::Red);
 
     vx = 0; vy = 0;
 }
@@ -145,30 +144,42 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_SPEED * delta.asSeconds();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_SPEED * delta.asSeconds();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded
-            && jumpclock.getElapsedTime().asSeconds() >= JUMP_COOLDOWN) {
-        jumping = true;
-        vy -= JUMP_FORCE;
-        jumpclock.restart();
-    }
-    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        jumping = false;
-    }
-    if (jumping) {
-        if (abs(vy) < 10) {
+    if (!debugflight) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_SPEED * delta.asSeconds();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_SPEED * delta.asSeconds();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded
+                && jumpclock.getElapsedTime().asSeconds() >= JUMP_COOLDOWN) {
+            jumping = true;
+            vy -= JUMP_FORCE;
+            jumpclock.restart();
+        }
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             jumping = false;
         }
+        if (jumping) {
+            if (abs(vy) < 10) {
+                jumping = false;
+            }
+        }
+
+        if (!jumping) vy += GRAVITY * delta.asSeconds();
+
+        float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
+        vx *= scaled_damping;
+        vy *= scaled_damping;
+
+        trymove(lvl_dat, delta);
+    } else {
+        // this means flying using ijkl keys, through blocks
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
+            rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y-GODFLY_SPEED));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+            rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y+GODFLY_SPEED));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+            rect.setPosition(sf::Vector2f(rect.getPosition().x-GODFLY_SPEED, rect.getPosition().y));
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+            rect.setPosition(sf::Vector2f(rect.getPosition().x+GODFLY_SPEED, rect.getPosition().y));
     }
-
-    if (!jumping) vy += GRAVITY * delta.asSeconds();
-
-    float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
-    vx *= scaled_damping;
-    vy *= scaled_damping;
-
-    trymove(lvl_dat, delta);
 }
 
 void Player::draw(sf::RenderWindow *window) {

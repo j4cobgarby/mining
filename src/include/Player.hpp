@@ -20,7 +20,21 @@ using std::max;
 #define JUMP_FORCE 0.6e2
 #define GRAVITY 3e2
 
-class Player {
+#define GODFLY_SPEED 0.005
+
+enum PLAYER_ANIMATION_STATE {
+    // normal
+    normal_idle_1, normal_idle_2, // idle
+    normal_wrt_1, normal_wrt_2, // walk right
+    normal_wlt_1, normal_wlt_2, // walk left
+
+    // hit flashing
+    hit_idle_1, hit_idle_2,
+    hit_wrt_1, hit_wrt_2,
+    hit_wlt_1, hit_wlt_2,
+};
+
+class Player { 
 private:
     float vx, vy;
     bool overlaps(const unsigned int, const unsigned int, 
@@ -35,6 +49,8 @@ public:
     Player(float, float);
 
     sf::RectangleShape rect;
+
+    bool debugflight = true;
 
     void click(sf::Event, sf::RenderWindow*, LevelData*, sf::RectangleShape*);
     void move(LevelData, sf::Time);

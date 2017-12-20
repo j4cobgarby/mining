@@ -92,6 +92,11 @@ void Game::render(sf::Time delta) {
         if (ev.type == sf::Event::MouseButtonPressed) {
             player.click(ev, window, &lvl_dat, blocks);
         }
+        if (ev.type == sf::Event::KeyPressed) {
+            if (ev.key.code == sf::Keyboard::P && ev.key.control) {
+                player.debugflight = !player.debugflight;
+            }
+        }
     }
 
     player.move(lvl_dat, delta);
