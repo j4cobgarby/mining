@@ -164,7 +164,7 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
 
         if (!jumping) vy += GRAVITY * delta.asSeconds();
 
-        float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
+        float scaled_damping = pow(0.998, delta.asSeconds() * 3500);
         vx *= scaled_damping;
         vy *= scaled_damping;
 
@@ -184,4 +184,9 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
 
 void Player::draw(sf::RenderWindow *window) {
     window->draw(rect);
+}
+
+void Player::apply_impulse(const float x, const float y) {
+    vx += x;
+    vy += y;
 }

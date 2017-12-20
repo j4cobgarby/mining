@@ -55,6 +55,7 @@ public:
     void click(sf::Event, sf::RenderWindow*, LevelData*, sf::RectangleShape*);
     void move(LevelData, sf::Time);
     void draw(sf::RenderWindow*);
+    void apply_impulse(const float x, const float y);
 };
 
 #endif  
