@@ -98,7 +98,7 @@ void Game::render(sf::Time delta) {
 
     window->setTitle(to_string(1.0/delta.asSeconds()));
 
-    sf::Vector2f new_view_center = player.rect.getPosition();
+    sf::Vector2f new_view_center = sf::Vector2f(player.rect.getPosition().x + PLAYER_WIDTH/2, player.rect.getPosition().y + PLAYER_HEIGHT/2);
     if (new_view_center.x < view.getSize().x/2) new_view_center.x = view.getSize().x/2;
     if (new_view_center.y < view.getSize().y/2) new_view_center.y = view.getSize().y/2;
     if (new_view_center.x > (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2) new_view_center.x = (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2;
