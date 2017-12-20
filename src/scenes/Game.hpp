@@ -17,10 +17,13 @@ class Game : public Scene {
 private:
     sf::RenderWindow *window;
     sf::View view;
-    LevelData lvl_dat;
-    int *feedback;
-    Player player;
     sf::RectangleShape blocks[LEVEL_HEIGHT * LEVEL_WIDTH];
+    sf::Clock world_clock;
+
+    LevelData lvl_dat;
+    Player player;
+
+    int *feedback;
 public:
     Game(sf::RenderWindow*, int*);
 

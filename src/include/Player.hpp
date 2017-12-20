@@ -24,14 +24,14 @@ using std::max;
 
 enum PLAYER_ANIMATION_STATE {
     // normal
-    normal_idle_1, normal_idle_2, // idle
-    normal_wrt_1, normal_wrt_2, // walk right
-    normal_wlt_1, normal_wlt_2, // walk left
+    normal_idle, // idle
+    normal_wrt, // walk right
+    normal_wlt, // walk left
 
     // hit flashing
-    hit_idle_1, hit_idle_2,
-    hit_wrt_1, hit_wrt_2,
-    hit_wlt_1, hit_wlt_2,
+    hit_idle,
+    hit_wrt,
+    hit_wlt,
 };
 
 class Player { 

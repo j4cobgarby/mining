@@ -30,6 +30,37 @@ map<int, sf::Texture> tilemap_register = init_tilemap_register(ASSETS_ROOT + "im
     16, 16, // amount of tiles
     8, 8); // size of each tile (x, y)
 
+map<string, vector<Texture>> animation_register {
+    {"player_normal_idle", {
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(0, 16, 8, 16)),
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(8, 16, 8, 16)),
+    }},
+    {"player_normal_wrt", {
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(16, 16, 8, 16)),
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(24, 16, 8, 16)),
+    }},
+    {"player_normal_wlt", {
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(32, 16, 8, 16)),
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(40, 16, 8, 16)),
+    }},
+
+    /**
+     * Being hit, NOT hitting!
+     */
+    {"player_hit_idle", {
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(0, 24, 8, 16)),
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(8, 24, 8, 16)),
+    }},
+    {"player_hit_wrt", {
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(16, 24, 8, 16)),
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(24, 24, 8, 16)),
+    }},
+    {"player_hit_wlt", {
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(32, 24, 8, 16)),
+        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(40, 24, 8, 16)),
+    }},
+};
+
 /**
  * Load custom gui theme
  */

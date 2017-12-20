@@ -19,4 +19,4 @@ endif()
 target_link_libraries(miner stdc++fs)
 target_link_libraries(miner tgui)
 
-install(TARGETS miner DESTINATION /usr/bin)
+install(TARGETS miner DESTINATION /usr/local/bin)
