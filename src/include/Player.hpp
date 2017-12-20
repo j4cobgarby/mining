@@ -50,7 +50,7 @@ public:
 
     sf::RectangleShape rect;
 
-    bool debugflight = true;
+    bool debugflight = false;
 
     void click(sf::Event, sf::RenderWindow*, LevelData*, sf::RectangleShape*);
     void move(LevelData, sf::Time);
