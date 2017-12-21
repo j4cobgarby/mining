@@ -5,7 +5,8 @@ Player::Player() {
 }
 
 Player::Player(float x, float y) {
-    rect = sf::RectangleShape(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT));
+    rect = sf::Sprite(animation_register.at("player_normal_idle").at(0));
+    rect.scale(0.2, 0.2);
     rect.setPosition(sf::Vector2f(x, y));
 
     vx = 0; vy = 0;

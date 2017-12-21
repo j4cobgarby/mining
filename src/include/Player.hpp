@@ -12,8 +12,11 @@ using std::min;
 using std::max;
 
 /** Bounding box of player **/
-#define PLAYER_HEIGHT 3.3
+// the actual player texture is 8x16, so divide both by a suitible
+// divisor (5)
+#define PLAYER_HEIGHT 3.2
 #define PLAYER_WIDTH 1.6
+
 #define JUMP_COOLDOWN 0.4 // cooldown between hitting the floor an being able to jump
 
 #define MOVEMENT_SPEED 1.5e2
@@ -48,7 +51,7 @@ public:
     Player();
     Player(float, float);
 
-    sf::RectangleShape rect;
+    sf::Sprite rect;
 
     bool debugflight = false;
 
