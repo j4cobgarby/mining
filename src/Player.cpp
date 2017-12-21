@@ -5,10 +5,11 @@ Player::Player() {
 }
 
 Player::Player(float x, float y) {
-    rect = sf::Sprite(animation_register.at("player_normal_idle").at(0));
-    rect.scale(0.2, 0.2);
-    rect.setPosition(sf::Vector2f(x, y));
-
+    rect = sf::Sprite(texture_register.at("player"));
+    rect.setScale(0.2, 0.2); // divide by 5, because the texture size is divided by 5 to get the size of the sprite
+    rect.setPosition(x, y);
+    rect.setOrigin(2, 0); // set origin two texture pixels to the right
+    
     vx = 0; vy = 0;
 }
 
@@ -64,9 +65,9 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     }
     if (will_hit_x);
     else {
-        rect.setPosition(rect.getPosition().x + vx*delta.asSeconds(), rect.getPosition().y);
-        if (rect.getPosition().x <= 0) rect.setPosition(sf::Vector2f(0.001, rect.getPosition().y));
-        if (rect.getPosition().x >= LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH) rect.setPosition(sf::Vector2f(LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH-0.001, rect.getPosition().y));
+        rect.move(vxd, 0);
+        if (rect.getPosition().x <= 0) rect.setPosition(0.001, rect.getPosition().y);
+        if (rect.getPosition().x >= LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH) rect.setPosition(LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH-0.001, rect.getPosition().y);
     }
 
     if (will_hit_y) { // This does fire WHILE you're on the floor, not only as you hit it
@@ -77,7 +78,7 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     }
     else {
         grounded = false;
-        rect.setPosition(rect.getPosition().x, rect.getPosition().y + vy*delta.asSeconds());
+        rect.move(0, vyd);
     }
 }
 
@@ -151,7 +152,7 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded
                 && jumpclock.getElapsedTime().asSeconds() >= JUMP_COOLDOWN) {
             jumping = true;
-            vy -= JUMP_FORCE;
+            apply_impulse(0, -JUMP_FORCE);
             jumpclock.restart();
         }
         if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -165,7 +166,7 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
 
         if (!jumping) vy += GRAVITY * delta.asSeconds();
 
-        float scaled_damping = pow(0.998, delta.asSeconds() * 3500);
+        float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
         vx *= scaled_damping;
         vy *= scaled_damping;
 
@@ -173,13 +174,17 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
     } else {
         // this means flying using ijkl keys, through blocks
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
-            rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y-GODFLY_SPEED));
+            rect.move(0, -GODFLY_SPEED);
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
-            rect.setPosition(sf::Vector2f(rect.getPosition().x, rect.getPosition().y+GODFLY_SPEED));
+            rect.move(0, GODFLY_SPEED);
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-            rect.setPosition(sf::Vector2f(rect.getPosition().x-GODFLY_SPEED, rect.getPosition().y));
+            rect.move(-GODFLY_SPEED, 0);
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-            rect.setPosition(sf::Vector2f(rect.getPosition().x+GODFLY_SPEED, rect.getPosition().y));
+            rect.move(+GODFLY_SPEED, 0);
+
     }
 }
 

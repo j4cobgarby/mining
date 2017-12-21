@@ -7,15 +7,17 @@
 
 #include "LevelData.hpp"
 #include "assetregisters.hpp"
+#include "../thirdparty/AnimatedSprite.hpp"
 
 using std::min;
 using std::max;
 
 /** Bounding box of player **/
 // the actual player texture is 8x16, so divide both by a suitible
-// divisor (5)
+// divisor (5)a
+// 1 texture px = 0.2 game size
 #define PLAYER_HEIGHT 3.2
-#define PLAYER_WIDTH 1.6
+#define PLAYER_WIDTH 0.8
 
 #define JUMP_COOLDOWN 0.4 // cooldown between hitting the floor an being able to jump
 
@@ -52,6 +54,7 @@ public:
     Player(float, float);
 
     sf::Sprite rect;
+    AnimatedSprite anim;
 
     bool debugflight = false;
 

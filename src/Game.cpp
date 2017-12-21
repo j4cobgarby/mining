@@ -16,10 +16,10 @@ void Game::show() {
     std::cout << "Showing game\n";
     std::cout << "LEVEL:\t" << level_dirname << std::endl;
     // load the world from a file
-    std::cout << string(10, '=') << "LOADING LEVEL" << string(10, '=') << std::endl;
-    ifstream fin;
+    std::cout << std::string(10, '=') << "LOADING LEVEL" << std::string(10, '=') << std::endl;
+    std::ifstream fin;
 
-    fin.open("../worlds/" + level_dirname + "/data/seed", ios::in | ios::binary);
+    fin.open("../worlds/" + level_dirname + "/data/seed", std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
         std::cout << "Failed to open seed file to read\n";
         window->close();
@@ -28,7 +28,7 @@ void Game::show() {
     std::cout << "SEED\t" << lvl_dat.seed << std::endl;
     fin.close();
 
-    fin.open("../worlds/" + level_dirname + "/data/spawn_position", ios::in | ios::binary);
+    fin.open("../worlds/" + level_dirname + "/data/spawn_position", std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
         std::cout << "Failed to open spawn position file to read\n";
         window->close();
@@ -41,7 +41,7 @@ void Game::show() {
     player.rect.setPosition(sf::Vector2f(spawnpos_x, spawnpos_y));
     view.setCenter(sf::Vector2f(player.rect.getPosition().x, player.rect.getPosition().y + 40));
 
-    fin.open("../worlds/" + level_dirname + "/data/blocks.dat", ios::in | ios::binary);
+    fin.open("../worlds/" + level_dirname + "/data/blocks.dat", std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
         std::cout << "Failed to open block file to read\n";
         window->close();
@@ -59,14 +59,14 @@ void Game::show() {
         }
     }
     fin.close();
-    std::cout << string(10, '=') << "LOADING DONE" << string(10, '=') << std::endl;
+    std::cout << std::string(10, '=') << "LOADING DONE" << std::string(10, '=') << std::endl;
 }
 
 void Game::hide() {
     // Write the possibly modified level to file
-    ofstream fout;
+    std::ofstream fout;
 
-    fout.open("../worlds/" + level_dirname + "/data/blocks.dat", ios::in | ios::binary);
+    fout.open("../worlds/" + level_dirname + "/data/blocks.dat", std::ios::in | std::ios::binary);
     fout.clear();
     for (size_t y = 0; y < LEVEL_HEIGHT; y++) {
         for (size_t x = 0; x < LEVEL_WIDTH; x++) {
@@ -101,7 +101,7 @@ void Game::render(sf::Time delta) {
 
     player.move(lvl_dat, delta);
 
-    window->setTitle(to_string(1.0/delta.asSeconds()));
+    window->setTitle(std::to_string(1.0/delta.asSeconds()));
 
     sf::Vector2f new_view_center = sf::Vector2f(player.rect.getPosition().x + PLAYER_WIDTH/2, player.rect.getPosition().y + PLAYER_HEIGHT/2);
     if (new_view_center.x < view.getSize().x/2) new_view_center.x = view.getSize().x/2;

@@ -14,7 +14,7 @@
 using std::cout;
 using std::cin;
 
-map<std::string, sf::Font> font_register {
+std::map<std::string, sf::Font> font_register {
     {"regular", makeFont(ASSETS_ROOT + "gravity/Gravity-Regular.otf")},
     {"bold", makeFont(ASSETS_ROOT + "gravity/Gravity-Bold.otf")},
     {"book", makeFont(ASSETS_ROOT + "gravity/Gravity-Book.otf")},
@@ -22,43 +22,18 @@ map<std::string, sf::Font> font_register {
     {"ultralight", makeFont(ASSETS_ROOT + "gravity/Gravity-UltraLight.otf")},
 };
 
-map<std::string, sf::Texture> texture_register {
+std::map<std::string, sf::Texture> texture_register {
     {"titlebig", makeTexture(ASSETS_ROOT + "images/titlebig.png")},
+    {"spritesheet", makeTexture(ASSETS_ROOT + "images/sprites.png")},
+    {"player", makeTexture(ASSETS_ROOT + "images/sprites.png", sf::IntRect(0, 16, 8, 16))}
 };
 
-map<int, sf::Texture> tilemap_register = init_tilemap_register(ASSETS_ROOT + "images/tilemap8.png",
+std::map<int, sf::Texture> tilemap_register = init_tilemap_register(ASSETS_ROOT + "images/tilemap8.png",
     16, 16, // amount of tiles
     8, 8); // size of each tile (x, y)
 
-map<string, vector<Texture>> animation_register {
-    {"player_normal_idle", {
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(0, 16, 8, 16)),
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(8, 16, 8, 16)),
-    }},
-    {"player_normal_wrt", {
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(16, 16, 8, 16)),
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(24, 16, 8, 16)),
-    }},
-    {"player_normal_wlt", {
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(32, 16, 8, 16)),
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(40, 16, 8, 16)),
-    }},
-
-    /**
-     * Being hit, NOT hitting!
-     */
-    {"player_hit_idle", {
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(0, 24, 8, 16)),
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(8, 24, 8, 16)),
-    }},
-    {"player_hit_wrt", {
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(16, 24, 8, 16)),
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(24, 24, 8, 16)),
-    }},
-    {"player_hit_wlt", {
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(32, 24, 8, 16)),
-        makeTexture(ASSETS_ROOT+"images/sprites.png", sf::IntRect(40, 24, 8, 16)),
-    }},
+std::map<std::string, Animation> animation_register {
+    {"player_default_idle", makeAnimation(texture_register.at("spritesheet"))}
 };
 
 /**
@@ -102,7 +77,15 @@ void swapscene(size_t);
 int main() {
     window.setVerticalSyncEnabled(false);
 
-    /** Set starting scene to main menu */
+    /**
+     * Initialise animations
+     */
+    animation_register.at("player_default_idle").addFrame(sf::IntRect(0, 16, 8, 16));
+    animation_register.at("player_default_idle").addFrame(sf::IntRect(8, 16, 8, 16));
+
+    /** 
+     * Set starting scene to main menu 
+     */
     swapscene(0);
     sf::Clock deltaclock;
     while (window.isOpen()) {

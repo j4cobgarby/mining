@@ -1,6 +1,6 @@
 #include "scenes/LevelCreate.hpp"
 
-namespace fs = experimental::filesystem;
+namespace fs = std::experimental::filesystem;
 
 /////////////////////////////////////////
 // Level generation
@@ -49,8 +49,8 @@ void make_world(tgui::Gui *gui, int *feedback) {
     ///////////////////////////
     std::cout << std::string(10, '=') << " GENERATING LEVEL " << std::string(10, '=') << std::endl;
 
-    ofstream fout;
-    fout.open("../worlds/" + dirname + "/data/seed", ios::out); // the seed
+    std::ofstream fout;
+    fout.open("../worlds/" + dirname + "/data/seed", std::ios::out); // the seed
     if (!fout.is_open()) {
         std::cout << "Couldn't create seed file\n";
         fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
@@ -66,7 +66,7 @@ void make_world(tgui::Gui *gui, int *feedback) {
     }
     fout << LEVEL_HEIGHT << '\t' << LEVEL_WIDTH;
     fout.close();
-    fout.open("../worlds/" + dirname + "/data/blocks.dat", ios::binary | ios::out);
+    fout.open("../worlds/" + dirname + "/data/blocks.dat", std::ios::binary | std::ios::out);
     if (!fout.is_open()) {
         std::cout << "Couldn't open block data file\n";
         fs::remove_all("../worlds/" + dirname); // remove level folder which didn't work
