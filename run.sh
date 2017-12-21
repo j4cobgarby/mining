@@ -6,8 +6,9 @@ cd build
 
 make -j6
 
+echo "RESTART ============================" >> miner.log
 echo `date` >> miner.log
-./miner >> miner.log
+./miner | tee miner.log
 echo "Logged to build/miner.log"
 
 cd ..
