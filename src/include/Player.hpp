@@ -53,7 +53,6 @@ public:
     Player();
     Player(float, float);
 
-    sf::Sprite rect;
     AnimatedSprite anim;
 
     bool debugflight = false;

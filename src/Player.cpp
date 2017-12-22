@@ -5,12 +5,7 @@ Player::Player() {
 }
 
 Player::Player(float x, float y) {
-    rect = sf::Sprite(texture_register.at("player"));
-    rect.setScale(0.2, 0.2); // divide by 5, because the texture size is divided by 5 to get the size of the sprite
-    rect.setPosition(x, y);
-    rect.setOrigin(2, 0); // set origin two texture pixels to the right
-
-    anim.setFrameTime(sf::seconds(0.8));
+    anim.setFrameTime(sf::seconds(0.6));
 
     anim.setPosition(x, y);
     anim.setScale(0.2, 0.2);
@@ -22,9 +17,10 @@ Player::Player(float x, float y) {
 /**
  * Does the player collide with this block?
  */
-bool Player::overlaps(const unsigned int block_index_x, const unsigned int block_index_y, const float dvx, const float dvy) {
-    float newx = rect.getPosition().x + dvx;
-    float newy = rect.getPosition().y + dvy;
+bool Player::overlaps(const unsigned int block_index_x, const unsigned int block_index_y, 
+        const float dvx, const float dvy) {
+    float newx = anim.getPosition().x + dvx;
+    float newy = anim.getPosition().y + dvy;
     return !(newx + PLAYER_WIDTH < block_index_x*BLOCK_SIZE
         || newx > block_index_x*BLOCK_SIZE+BLOCK_SIZE
         || newy + PLAYER_HEIGHT < block_index_y*BLOCK_SIZE
@@ -42,13 +38,13 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     int tiles_x = 6;
     int tiles_y = 6;
 
-    int start_x = (rect.getPosition().x-3)/BLOCK_SIZE;
+    int start_x = (anim.getPosition().x-3)/BLOCK_SIZE;
     start_x = max(0, min(start_x, LEVEL_WIDTH-tiles_x));
 
-    int start_y = (rect.getPosition().y-3)/BLOCK_SIZE;
+    int start_y = (anim.getPosition().y-3)/BLOCK_SIZE;
     start_y = max(0, min(start_y, LEVEL_HEIGHT-tiles_y));
 
-    float pos_x = rect.getPosition().x, pos_y = rect.getPosition().y;
+    float pos_x = anim.getPosition().x, pos_y = anim.getPosition().y;
 
     float vxd = vx * delta.asSeconds();
     float vyd = vy * delta.asSeconds();
@@ -71,9 +67,9 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     }
     if (will_hit_x);
     else {
-        rect.move(vxd, 0);
-        if (rect.getPosition().x <= 0) rect.setPosition(0.001, rect.getPosition().y);
-        if (rect.getPosition().x >= LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH) rect.setPosition(LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH-0.001, rect.getPosition().y);
+        anim.move(vxd, 0);
+        if (anim.getPosition().x <= 0) anim.setPosition(0.001, anim.getPosition().y);
+        if (anim.getPosition().x >= LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH) anim.setPosition(LEVEL_WIDTH*BLOCK_SIZE-PLAYER_WIDTH-0.001, anim.getPosition().y);
     }
 
     if (will_hit_y) { // This does fire WHILE you're on the floor, not only as you hit it
@@ -84,7 +80,7 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     }
     else {
         grounded = false;
-        rect.move(0, vyd);
+        anim.move(0, vyd);
     }
 }
 
@@ -98,7 +94,7 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 
     const uint8_t clicked_id = lvl_dat->blocks[block_y][block_x]; 
 
-    const sf::Vector2f player_center = rect.getPosition();
+    const sf::Vector2f player_center = anim.getPosition();
     switch (ev.mouseButton.button) {
         case sf::Mouse::Left:
             if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
@@ -153,7 +149,7 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
     anim.update(delta);
-    anim.setPosition(rect.getPosition());
+    anim.setPosition(anim.getPosition());
 
     if (!debugflight) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_SPEED * delta.asSeconds();
@@ -183,16 +179,16 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
     } else {
         // this means flying using ijkl keys, through blocks
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
-            rect.move(0, -GODFLY_SPEED);
+            anim.move(0, -GODFLY_SPEED);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
-            rect.move(0, GODFLY_SPEED);
+            anim.move(0, GODFLY_SPEED);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-            rect.move(-GODFLY_SPEED, 0);
+            anim.move(-GODFLY_SPEED, 0);
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-            rect.move(+GODFLY_SPEED, 0);
+            anim.move(+GODFLY_SPEED, 0);
 
     }
 }

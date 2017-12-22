@@ -41,8 +41,8 @@ void Game::show() {
     std::cout << "SPAWNPOS\t" << spawnpos_x << '\t' << spawnpos_y << std::endl;
     fin.close();
 
-    player.rect.setPosition(sf::Vector2f(spawnpos_x, spawnpos_y));
-    view.setCenter(sf::Vector2f(player.rect.getPosition().x, player.rect.getPosition().y + 40));
+    player.anim.setPosition(sf::Vector2f(spawnpos_x, spawnpos_y));
+    view.setCenter(sf::Vector2f(player.anim.getPosition().x, player.anim.getPosition().y + 40));
 
     fin.open("../worlds/" + level_dirname + "/data/blocks.dat", std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
@@ -80,7 +80,7 @@ void Game::hide() {
     fout.close();
     fout.open("../worlds/" + level_dirname + "/data/spawn_position");
     fout.clear();
-    fout << player.rect.getPosition().x << '\t' << player.rect.getPosition().y;
+    fout << player.anim.getPosition().x << '\t' << player.anim.getPosition().y;
     fout.close();
     std::cout << "Bye bye!\n";
 }
@@ -106,7 +106,7 @@ void Game::render(sf::Time delta) {
 
     window->setTitle(std::to_string(1.0/delta.asSeconds()));
 
-    sf::Vector2f new_view_center = sf::Vector2f(player.rect.getPosition().x + PLAYER_WIDTH/2, player.rect.getPosition().y + PLAYER_HEIGHT/2);
+    sf::Vector2f new_view_center = sf::Vector2f(player.anim.getPosition().x + PLAYER_WIDTH/2, player.anim.getPosition().y + PLAYER_HEIGHT/2);
     if (new_view_center.x < view.getSize().x/2) new_view_center.x = view.getSize().x/2;
     if (new_view_center.y < view.getSize().y/2) new_view_center.y = view.getSize().y/2;
     if (new_view_center.x > (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2) new_view_center.x = (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2;
