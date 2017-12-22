@@ -9,6 +9,12 @@ Player::Player(float x, float y) {
     rect.setScale(0.2, 0.2); // divide by 5, because the texture size is divided by 5 to get the size of the sprite
     rect.setPosition(x, y);
     rect.setOrigin(2, 0); // set origin two texture pixels to the right
+
+    anim.setFrameTime(sf::seconds(0.8));
+
+    anim.setPosition(x, y);
+    anim.setScale(0.2, 0.2);
+    anim.setOrigin(2, 0);
     
     vx = 0; vy = 0;
 }
@@ -146,6 +152,9 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
+    anim.update(delta);
+    anim.setPosition(rect.getPosition());
+
     if (!debugflight) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_SPEED * delta.asSeconds();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_SPEED * delta.asSeconds();
@@ -189,7 +198,7 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
 }
 
 void Player::draw(sf::RenderWindow *window) {
-    window->draw(rect);
+    window->draw(anim);
 }
 
 void Player::apply_impulse(const float x, const float y) {

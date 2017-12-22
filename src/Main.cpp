@@ -80,8 +80,8 @@ int main() {
     /**
      * Initialise animations
      */
-    animation_register.at("player_default_idle").addFrame(sf::IntRect(0, 16, 8, 16));
-    animation_register.at("player_default_idle").addFrame(sf::IntRect(8, 16, 8, 16));
+    animation_register["player_default_idle"].addFrame(sf::IntRect(0, 16, 8, 16));
+    animation_register["player_default_idle"].addFrame(sf::IntRect(8, 16, 8, 16));
 
     /** 
      * Set starting scene to main menu 

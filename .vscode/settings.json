@@ -47,6 +47,10 @@
         "optional": "cpp",
         "ostream": "cpp",
         "sstream": "cpp",
-        "streambuf": "cpp"
+        "streambuf": "cpp",
+        "valarray": "cpp",
+        "strstream": "cpp",
+        "complex": "cpp",
+        "iomanip": "cpp"
     }
 }
