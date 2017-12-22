@@ -6,6 +6,6 @@ mkdir -p build
 cd build
 
 cmake ../src
-echo "Initialised. Build it with "
+echo "Initialised. Build it with ./run.sh"
 
 cd ..
