@@ -27,18 +27,6 @@ using std::max;
 
 #define GODFLY_SPEED 0.005
 
-enum PLAYER_ANIMATION_STATE {
-    // normal
-    normal_idle, // idle
-    normal_wrt, // walk right
-    normal_wlt, // walk left
-
-    // hit flashing
-    hit_idle,
-    hit_wrt,
-    hit_wlt,
-};
-
 class Player { 
 private:
     float vx, vy;
@@ -46,6 +34,7 @@ private:
         const float, const float);
     void trymove(LevelData, sf::Time);
 
+    bool facingright = true;
     bool jumping = false;
     bool grounded = false;
     sf::Clock jumpclock;

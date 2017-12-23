@@ -24,7 +24,7 @@ std::map<std::string, sf::Font> font_register {
 
 std::map<std::string, sf::Texture> texture_register {
     {"titlebig", makeTexture(ASSETS_ROOT + "images/titlebig.png")},
-    {"spritesheet", makeTexture(ASSETS_ROOT + "images/sprites.png")},
+    {"spritesheet", makeTexture(ASSETS_ROOT + "images/sprites2.png")},
     {"player", makeTexture(ASSETS_ROOT + "images/sprites.png", sf::IntRect(0, 16, 8, 16))}
 };
 
@@ -33,7 +33,10 @@ std::map<int, sf::Texture> tilemap_register = init_tilemap_register(ASSETS_ROOT 
     8, 8); // size of each tile (x, y)
 
 std::map<std::string, Animation> animation_register {
-    {"player_default_idle", makeAnimation(texture_register.at("spritesheet"))}
+    {"player_default_idle_rt", makeAnimation(texture_register.at("spritesheet"))},
+    {"player_default_idle_lt", makeAnimation(texture_register.at("spritesheet"))},
+    {"player_default_wrt",  makeAnimation(texture_register.at("spritesheet"))},
+    {"player_default_wlt",  makeAnimation(texture_register.at("spritesheet"))},
 };
 
 /**
@@ -80,8 +83,33 @@ int main() {
     /**
      * Initialise animations
      */
-    animation_register["player_default_idle"].addFrame(sf::IntRect(0, 16, 8, 16));
-    animation_register["player_default_idle"].addFrame(sf::IntRect(8, 16, 8, 16));
+    animation_register["player_default_idle_rt"].addFrame(sf::IntRect( 8, 80, 8, 16));
+    animation_register["player_default_idle_rt"].addFrame(sf::IntRect(16, 80, 8, 16));
+    
+    animation_register["player_default_idle_lt"].addFrame(sf::IntRect(24, 80, 8, 16));
+    animation_register["player_default_idle_lt"].addFrame(sf::IntRect(32, 80, 8, 16));
+
+    animation_register["player_default_wrt"].addFrame(sf::IntRect( 8, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(16, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(24, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(32, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(40, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(48, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(56, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(64, 48, 8, 16));
+    animation_register["player_default_wrt"].addFrame(sf::IntRect(72, 48, 8, 16));
+
+    animation_register["player_default_wlt"].addFrame(sf::IntRect( 8, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(16, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(24, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(32, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(40, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(48, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(56, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(64, 64, 8, 16));
+    animation_register["player_default_wlt"].addFrame(sf::IntRect(72, 64, 8, 16));
+    
+    
 
     /** 
      * Set starting scene to main menu 

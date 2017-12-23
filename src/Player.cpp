@@ -111,36 +111,36 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
             break;
         case sf::Mouse::Right:
             {
-            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
-                    block_x >= 0 && block_y >= 0 && 
-                    clicked_id == 0 && 
-                    !overlaps(block_x, block_y, 0, 0) &&
-                    (
-                        // If the sum of the adjacent blocks is greater than zero
-                        // then there is at least one adjacent block
-                        lvl_dat->blocks[block_y-1][block_x-1] + // top left
-                        lvl_dat->blocks[block_y-1][block_x] + // top mid
-                        lvl_dat->blocks[block_y-1][block_x+1] + // top right
-                        lvl_dat->blocks[block_y][block_x-1] + // mid left
-                        // we're not checking the middle block, which would be here
-                        lvl_dat->blocks[block_y][block_x+1] + // mid right
-                        lvl_dat->blocks[block_y+1][block_x-1] + // bottom left
-                        lvl_dat->blocks[block_y+1][block_x] + // bottom mid
-                        lvl_dat->blocks[block_y+1][block_x+1] // bottom right
-                        > 0
-                    ) &&
-                    (
-                        // Check if the block is close enough to the center of the player
-                        pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
-                        pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
-                        <= 49 * BLOCK_SIZE
-                    )) {
-                lvl_dat->blocks[block_y][block_x] = 2;
-                rects[block_y*LEVEL_WIDTH+block_x] = sf::RectangleShape(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
-                rects[block_y*LEVEL_WIDTH+block_x].setPosition(sf::Vector2f(block_x*BLOCK_SIZE, block_y*BLOCK_SIZE));
-                rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::White);
-                rects[block_y*LEVEL_WIDTH+block_x].setTexture(&tilemap_register.at(2));
-            }
+                if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
+                        block_x >= 0 && block_y >= 0 && 
+                        clicked_id == 0 && 
+                        !overlaps(block_x, block_y, 0, 0) &&
+                        (
+                            // If the sum of the adjacent blocks is greater than zero
+                            // then there is at least one adjacent block
+                            lvl_dat->blocks[block_y-1][block_x-1] + // top left
+                            lvl_dat->blocks[block_y-1][block_x] + // top mid
+                            lvl_dat->blocks[block_y-1][block_x+1] + // top right
+                            lvl_dat->blocks[block_y][block_x-1] + // mid left
+                            // we're not checking the middle block, which would be here
+                            lvl_dat->blocks[block_y][block_x+1] + // mid right
+                            lvl_dat->blocks[block_y+1][block_x-1] + // bottom left
+                            lvl_dat->blocks[block_y+1][block_x] + // bottom mid
+                            lvl_dat->blocks[block_y+1][block_x+1] // bottom right
+                            > 0
+                        ) &&
+                        (
+                            // Check if the block is close enough to the center of the player
+                            pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
+                            pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
+                            <= 49 * BLOCK_SIZE
+                        )) {
+                    lvl_dat->blocks[block_y][block_x] = 2;
+                    rects[block_y*LEVEL_WIDTH+block_x] = sf::RectangleShape(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
+                    rects[block_y*LEVEL_WIDTH+block_x].setPosition(sf::Vector2f(block_x*BLOCK_SIZE, block_y*BLOCK_SIZE));
+                    rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::White);
+                    rects[block_y*LEVEL_WIDTH+block_x].setTexture(&tilemap_register.at(2));
+                }
             }
             break;
         default: break;
@@ -148,12 +148,23 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
-    anim.update(delta);
-    anim.setPosition(anim.getPosition());
+    // left or right idle based on the velocity
+    Animation* current_animation = &animation_register.at(facingright ? "player_default_idle_rt" : "player_default_idle_lt");
+    sf::Time current_frametime = sf::seconds(0.6);
 
     if (!debugflight) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) vx -= MOVEMENT_SPEED * delta.asSeconds();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) vx += MOVEMENT_SPEED * delta.asSeconds();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            facingright = false;
+            vx -= MOVEMENT_SPEED * delta.asSeconds();
+            current_animation = &animation_register.at("player_default_wlt");
+            current_frametime = sf::seconds(0.05);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            facingright = true;
+            vx += MOVEMENT_SPEED * delta.asSeconds();
+            current_animation = &animation_register.at("player_default_wrt");
+            current_frametime = sf::seconds(0.05);
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !jumping && grounded
                 && jumpclock.getElapsedTime().asSeconds() >= JUMP_COOLDOWN) {
             jumping = true;
@@ -167,9 +178,9 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
             if (abs(vy) < 10) {
                 jumping = false;
             }
+        } else {
+            vy += GRAVITY * delta.asSeconds();
         }
-
-        if (!jumping) vy += GRAVITY * delta.asSeconds();
 
         float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
         vx *= scaled_damping;
@@ -189,8 +200,11 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
             anim.move(+GODFLY_SPEED, 0);
-
     }
+
+    anim.setFrameTime(current_frametime);
+    anim.play(*current_animation);
+    anim.update(delta);
 }
 
 void Player::draw(sf::RenderWindow *window) {

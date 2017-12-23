@@ -14,7 +14,7 @@ Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(f
 void Game::show() {
     srand(time(NULL));
 
-    player.anim.play(animation_register.at("player_default_idle"));
+    player.anim.play(animation_register.at("player_default_idle_rt"));
 
     std::cout << "Showing game\n";
     std::cout << "LEVEL:\t" << level_dirname << std::endl;
