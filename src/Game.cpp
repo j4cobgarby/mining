@@ -54,7 +54,6 @@ void Game::show() {
             uint8_t id = fin.get();
             if (id != 0) {
                 lvl_dat.blocks[r][c] = id;
-                blocks[i] = sf::RectangleShape(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
                 blocks[i].setPosition(sf::Vector2f(c * BLOCK_SIZE, r * BLOCK_SIZE));
                 blocks[i].setTexture(&tilemap_register.at(id));
                 if (id == 0) blocks[i].setFillColor(sf::Color::Transparent);

@@ -15,7 +15,7 @@ Player::Player(float x, float y) {
 }
 
 /**
- * Does the player collide with this block?
+ * Will the player collide with this block?
  */
 bool Player::overlaps(const unsigned int block_index_x, const unsigned int block_index_y, 
         const float dvx, const float dvy) {

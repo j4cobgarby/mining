@@ -11,13 +11,14 @@
 #include "../include/LevelData.hpp"
 #include "../include/SessionConfig.hpp"
 #include "../include/Player.hpp"
+#include "../include/Block.hpp"
 #include "../thirdparty/FastNoise.h"
 
 class Game : public Scene {
 private:
     sf::RenderWindow *window;
     sf::View view;
-    sf::RectangleShape blocks[LEVEL_HEIGHT * LEVEL_WIDTH];
+    Block blocks[LEVEL_HEIGHT * LEVEL_WIDTH];
     sf::Clock world_clock;
 
     LevelData lvl_dat;
