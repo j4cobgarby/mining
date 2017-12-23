@@ -84,7 +84,7 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     }
 }
 
-void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, sf::RectangleShape *rects) {
+void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, Block *rects) {
     int block_x = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x);
     int block_y = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y);
     if (block_x % 2 != 0) block_x -= 1;
@@ -136,7 +136,6 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, s
                             <= 49 * BLOCK_SIZE
                         )) {
                     lvl_dat->blocks[block_y][block_x] = 2;
-                    rects[block_y*LEVEL_WIDTH+block_x] = sf::RectangleShape(sf::Vector2f(BLOCK_SIZE, BLOCK_SIZE));
                     rects[block_y*LEVEL_WIDTH+block_x].setPosition(sf::Vector2f(block_x*BLOCK_SIZE, block_y*BLOCK_SIZE));
                     rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::White);
                     rects[block_y*LEVEL_WIDTH+block_x].setTexture(&tilemap_register.at(2));

@@ -8,6 +8,7 @@
 #include "LevelData.hpp"
 #include "assetregisters.hpp"
 #include "../thirdparty/AnimatedSprite.hpp"
+#include "Block.hpp"
 
 using std::min;
 using std::max;
@@ -46,7 +47,7 @@ public:
 
     bool debugflight = false;
 
-    void click(sf::Event, sf::RenderWindow*, LevelData*, sf::RectangleShape*);
+    void click(sf::Event, sf::RenderWindow*, LevelData*, Block*);
     void move(LevelData, sf::Time);
     void draw(sf::RenderWindow*);
     void apply_impulse(const float x, const float y);
