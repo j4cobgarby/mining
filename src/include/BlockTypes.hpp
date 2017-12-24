@@ -17,6 +17,8 @@ public:\
 // void interact() should be defined in <blockname.cpp>
 //////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////
+// Define blocks here
 DEF_BLOCK(Air_b,        0)
 
 DEF_BLOCK(Stone_b,      1)
@@ -24,7 +26,11 @@ DEF_BLOCK(Cobbles_b,    2)
 DEF_BLOCK(Dirt_b,       3)
 DEF_BLOCK(Grass_b,      4)
 DEF_BLOCK(Sand_b,       5)
+//
+//////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////
+// Add any new blocks here
 inline Block* blockptr_from_id(const uint8_t id) {
     switch (id) {
     case 1:
@@ -37,10 +43,15 @@ inline Block* blockptr_from_id(const uint8_t id) {
         return new Grass_b;
     case 5:
         return new Sand_b;
+
+    // ...
+
     case 0:
     default:
         return new Air_b;
     }
 }
+//
+//////////////////////////////////////////////////////////////////////////////
 
 #endif
