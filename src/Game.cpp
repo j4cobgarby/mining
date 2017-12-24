@@ -42,7 +42,7 @@ void Game::show() {
     fin.close();
 
     player.anim.setPosition(sf::Vector2f(spawnpos_x, spawnpos_y));
-    view.setCenter(player.anim.getPosition() + sf::Vector2f(PLAYER_WIDTH/2, PLAYER_HEIGHT/2));
+    view.setCenter(player.anim.getPosition() + sf::Vector2f(PLAYER_WIDTH_OVER_2, PLAYER_HEIGHT_OVER_2));
 
     fin.open("../worlds/" + level_dirname + "/data/blocks.dat", std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
@@ -108,15 +108,15 @@ void Game::render(sf::Time delta) {
 
     window->setTitle(std::to_string(1.0/delta.asSeconds()));
 
-    sf::Vector2f new_view_center = sf::Vector2f(player.anim.getPosition().x + PLAYER_WIDTH/2, player.anim.getPosition().y + PLAYER_HEIGHT/2);
-    if (new_view_center.x < view.getSize().x/2) new_view_center.x = view.getSize().x/2;
-    if (new_view_center.y < view.getSize().y/2) new_view_center.y = view.getSize().y/2;
-    if (new_view_center.x > (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2) new_view_center.x = (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2;
-    if (new_view_center.y > (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2) new_view_center.y = (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2;
+    sf::Vector2f new_view_center = sf::Vector2f(player.anim.getPosition().x + PLAYER_WIDTH_OVER_2, player.anim.getPosition().y + PLAYER_HEIGHT_OVER_2);
+    if (new_view_center.x*2 < view.getSize().x) new_view_center.x = view.getSize().x/2;
+    if (new_view_center.y*2 < view.getSize().y) new_view_center.y = view.getSize().y/2;
+    if (new_view_center.x*2 > (LEVEL_WIDTH*BLOCK_SIZE*2)-view.getSize().x) new_view_center.x = (LEVEL_WIDTH*BLOCK_SIZE)-view.getSize().x/2;
+    if (new_view_center.y*2 > (LEVEL_HEIGHT*BLOCK_SIZE*2)-view.getSize().y) new_view_center.y = (LEVEL_HEIGHT*BLOCK_SIZE)-view.getSize().y/2;
 
     view.setCenter(sf::Vector2f(
-        lerp(view.getCenter().x, new_view_center.x, 0.0007), 
-        lerp(view.getCenter().y, new_view_center.y, 0.0007)
+        lerp(view.getCenter().x, new_view_center.x, delta.asSeconds()*3), 
+        lerp(view.getCenter().y, new_view_center.y, delta.asSeconds()*3)
     ));
 
     view.setSize(sf::Vector2f(window->getSize().x*0.04, window->getSize().y*0.04));

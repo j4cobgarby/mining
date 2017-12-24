@@ -19,6 +19,8 @@ using std::max;
 // 1 texture px = 0.2 game size
 #define PLAYER_HEIGHT 3.2
 #define PLAYER_WIDTH 0.8
+#define PLAYER_HEIGHT_OVER_2 1.6
+#define PLAYER_WIDTH_OVER_2 0.4
 
 #define JUMP_COOLDOWN 0.4 // cooldown between hitting the floor an being able to jump
 
