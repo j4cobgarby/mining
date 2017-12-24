@@ -84,7 +84,7 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
     }
 }
 
-void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, Block *rects) {
+void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, Block **rects) {
     int block_x = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x);
     int block_y = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y);
     if (block_x % 2 != 0) block_x -= 1;
@@ -106,41 +106,11 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, B
                         <= 49 * BLOCK_SIZE
                     )) {
                 lvl_dat->blocks[block_y][block_x] = 0;
-                rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::Transparent);
+                rects[block_y*LEVEL_WIDTH+block_x]->setFillColor(sf::Color::Transparent);
             }
             break;
         case sf::Mouse::Right:
-            {
-                if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
-                        block_x >= 0 && block_y >= 0 && 
-                        clicked_id == 0 && 
-                        !overlaps(block_x, block_y, 0, 0) &&
-                        (
-                            // If the sum of the adjacent blocks is greater than zero
-                            // then there is at least one adjacent block
-                            lvl_dat->blocks[block_y-1][block_x-1] + // top left
-                            lvl_dat->blocks[block_y-1][block_x] + // top mid
-                            lvl_dat->blocks[block_y-1][block_x+1] + // top right
-                            lvl_dat->blocks[block_y][block_x-1] + // mid left
-                            // we're not checking the middle block, which would be here
-                            lvl_dat->blocks[block_y][block_x+1] + // mid right
-                            lvl_dat->blocks[block_y+1][block_x-1] + // bottom left
-                            lvl_dat->blocks[block_y+1][block_x] + // bottom mid
-                            lvl_dat->blocks[block_y+1][block_x+1] // bottom right
-                            > 0
-                        ) &&
-                        (
-                            // Check if the block is close enough to the center of the player
-                            pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
-                            pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
-                            <= 49 * BLOCK_SIZE
-                        )) {
-                    lvl_dat->blocks[block_y][block_x] = 2;
-                    rects[block_y*LEVEL_WIDTH+block_x].setPosition(sf::Vector2f(block_x*BLOCK_SIZE, block_y*BLOCK_SIZE));
-                    rects[block_y*LEVEL_WIDTH+block_x].setFillColor(sf::Color::White);
-                    rects[block_y*LEVEL_WIDTH+block_x].setTexture(&tilemap_register.at(2));
-                }
-            }
+            rects[block_y*LEVEL_WIDTH+block_x]->interact();
             break;
         default: break;
     }

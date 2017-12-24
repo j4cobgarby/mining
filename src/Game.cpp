@@ -42,7 +42,7 @@ void Game::show() {
     fin.close();
 
     player.anim.setPosition(sf::Vector2f(spawnpos_x, spawnpos_y));
-    view.setCenter(sf::Vector2f(player.anim.getPosition().x, player.anim.getPosition().y + 40));
+    view.setCenter(player.anim.getPosition() + sf::Vector2f(PLAYER_WIDTH/2, PLAYER_HEIGHT/2));
 
     fin.open("../worlds/" + level_dirname + "/data/blocks.dat", std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
@@ -52,12 +52,12 @@ void Game::show() {
     for (int i = 0, r = 0; r < LEVEL_HEIGHT; r++) {
         for (int c = 0; c < LEVEL_WIDTH; c++, i++) {
             uint8_t id = fin.get();
-            if (id != 0) {
                 lvl_dat.blocks[r][c] = id;
-                blocks[i].setPosition(sf::Vector2f(c * BLOCK_SIZE, r * BLOCK_SIZE));
-                blocks[i].setTexture(&tilemap_register.at(id));
-                if (id == 0) blocks[i].setFillColor(sf::Color::Transparent);
-            }
+                blocks[i] = new Stone_b;
+                blocks[i]->setPosition(sf::Vector2f(c * BLOCK_SIZE, r * BLOCK_SIZE));
+                if (id != 0) {
+                    blocks[i]->setTexture(&tilemap_register.at(id));
+                } else blocks[i]->setFillColor(sf::Color::Transparent);
         }
     }
     fin.close();
@@ -132,7 +132,7 @@ void Game::render(sf::Time delta) {
 
     for (int i = 0, r = start_y; r < start_y + tiles_y + 2; r++) {
         for (int c = start_x; c < start_x + tiles_x + 2; c++, i++) {
-            window->draw(blocks[r*LEVEL_WIDTH+c]);
+            window->draw(*blocks[r*LEVEL_WIDTH+c]);
         }
     }
 
