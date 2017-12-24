@@ -180,7 +180,7 @@ LevelCreate::LevelCreate(sf::RenderWindow *window, int *feedback) : window(windo
     seed_txtbox->setPosition("0.2 * &.w", bindBottom(seed_label) + 10);
     seed_txtbox->setSize("0.6 * &.w", 30);
     seed_txtbox->setFont(font_register.at("regular"));
-    seed_txtbox->setText(std::to_string((rand()%4294967296)-2147483648));
+    seed_txtbox->setText(std::to_string((rand()%RAND_MAX)-(RAND_MAX/2)));
     seed_txtbox->setDefaultText("Any valid 32-bit signed integer");
 
     tgui::Button::Ptr backbtn = tgui_theme->load("Button");
