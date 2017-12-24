@@ -47,6 +47,7 @@ inline std::map<int, sf::Texture> init_tilemap_register(const std::string filena
         const unsigned int tiles_x, const unsigned int tiles_y, // Amount of tiles on each axis
         const unsigned int tile_width, const unsigned int tile_height) { // Width in px of each tile texture
     std::map<int, sf::Texture> reg;
+    reg[0] = makeTexture(filename, sf::IntRect((tiles_x-1)*tile_width, (tiles_y-1)*tile_height, tile_width, tile_width));
     unsigned short int index = 1;
     for (unsigned int y = 0; y < tiles_y; y++) {
         for (unsigned int x = 0; x < tiles_x; x++) {

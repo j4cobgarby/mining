@@ -53,11 +53,29 @@ void Game::show() {
         for (int c = 0; c < LEVEL_WIDTH; c++, i++) {
             uint8_t id = fin.get();
                 lvl_dat.blocks[r][c] = id;
-                blocks[i] = new Stone_b;
+                switch (id) {
+                case 1:
+                    blocks[i] = new Stone_b;
+                    break;
+                case 2:
+                    blocks[i] = new Cobbles_b;
+                    break;
+                case 3:
+                    blocks[i] = new Dirt_b;
+                    break;
+                case 4:
+                    blocks[i] = new Grass_b;
+                    break;
+                case 5:
+                    blocks[i] = new Sand_b;
+                    break;
+                case 0:
+                default:
+                    blocks[i] = new Air_b;
+                    break;
+                }
                 blocks[i]->setPosition(sf::Vector2f(c * BLOCK_SIZE, r * BLOCK_SIZE));
-                if (id != 0) {
-                    blocks[i]->setTexture(&tilemap_register.at(id));
-                } else blocks[i]->setFillColor(sf::Color::Transparent);
+                if (id == 0) blocks[i]->setFillColor(sf::Color::Transparent);
         }
     }
     fin.close();
@@ -82,6 +100,10 @@ void Game::hide() {
     fout << player.anim.getPosition().x << '\t' << player.anim.getPosition().y;
     fout.close();
     std::cout << "Bye bye!\n";
+
+    for (int i = 0; i < LEVEL_WIDTH * LEVEL_HEIGHT; i++) {
+        delete blocks[i];
+    }
 }
 
 void Game::render(sf::Time delta) {
