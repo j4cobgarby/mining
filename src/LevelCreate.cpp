@@ -102,7 +102,7 @@ void make_world(tgui::Gui *gui, int *feedback) {
             if (noise_tmp + ((float)LEVEL_HEIGHT * 0.6) >= LEVEL_HEIGHT - r) {
                 world[i] = 3;
                 if (c == spawn_x_block && spawn_y_block == 0) {
-                    spawn_y_block = r - 5;
+                    spawn_y_block = r - PLAYER_HEIGHT;
                 }
             }
             if (noise_tmp + ((float)LEVEL_HEIGHT * 0.55) >= LEVEL_HEIGHT - r) {
