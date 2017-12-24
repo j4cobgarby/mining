@@ -51,31 +51,12 @@ void Game::show() {
     }
     for (int i = 0, r = 0; r < LEVEL_HEIGHT; r++) {
         for (int c = 0; c < LEVEL_WIDTH; c++, i++) {
-            uint8_t id = fin.get();
-                lvl_dat.blocks[r][c] = id;
-                switch (id) {
-                case 1:
-                    blocks[i] = new Stone_b;
-                    break;
-                case 2:
-                    blocks[i] = new Cobbles_b;
-                    break;
-                case 3:
-                    blocks[i] = new Dirt_b;
-                    break;
-                case 4:
-                    blocks[i] = new Grass_b;
-                    break;
-                case 5:
-                    blocks[i] = new Sand_b;
-                    break;
-                case 0:
-                default:
-                    blocks[i] = new Air_b;
-                    break;
-                }
-                blocks[i]->setPosition(sf::Vector2f(c * BLOCK_SIZE, r * BLOCK_SIZE));
-                if (id == 0) blocks[i]->setFillColor(sf::Color::Transparent);
+            const uint8_t id = fin.get();
+            lvl_dat.blocks[r][c] = id;
+            Block* thisblockptr = blockptr_from_id(id);
+            blocks[i] = thisblockptr;
+            blocks[i]->setPosition(sf::Vector2f(c * BLOCK_SIZE, r * BLOCK_SIZE));
+            if (id == 0) blocks[i]->setFillColor(sf::Color::Transparent);
         }
     }
     fin.close();
