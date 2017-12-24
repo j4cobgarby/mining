@@ -87,8 +87,6 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
 void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, Block **rects) {
     int block_x = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x);
     int block_y = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y);
-    if (block_x % 2 != 0) block_x -= 1;
-    if (block_y % 2 != 0) block_y -= 1;
     block_x /= 2;
     block_y /= 2;
 
@@ -110,7 +108,16 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, B
             }
             break;
         case sf::Mouse::Right:
-            rects[block_y*LEVEL_WIDTH+block_x]->interact();
+            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
+                    block_x >= 0 && block_y >= 0 && 
+                    clicked_id != 0 &&
+                    (
+                        pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
+                        pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
+                        <= 49 * BLOCK_SIZE
+                    )) {
+                rects[block_y*LEVEL_WIDTH+block_x]->interact();
+            }
             break;
         default: break;
     }
