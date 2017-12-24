@@ -2,7 +2,7 @@
 
 ## A bit like Terraria
 
-![mockup](https://github.com/j4cobgarby/mining/blob/menustuff/.for_github/demo1.gif)
+![mockup](https://github.com/j4cobgarby/mining/blob/menustuff/.for_github/screenshot.png)
 
 ### Worlds and stuff file architecture
 ```
