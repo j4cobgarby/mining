@@ -11,7 +11,7 @@ void Inventory::init(sf::RenderWindow& window) {
     }
 
     border.setOutlineColor(sf::Color::Black);
-    border.setOutlineThickness(2);
+    border.setOutlineThickness(1);
     border.setFillColor(sf::Color::Transparent);
 
     on_resize(window);

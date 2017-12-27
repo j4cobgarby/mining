@@ -15,11 +15,11 @@ using std::cout;
 using std::cin;
 
 std::map<std::string, sf::Font> font_register {
-    {"regular", makeFont(ASSETS_ROOT + "gravity/Gravity-Regular.otf")},
-    {"bold", makeFont(ASSETS_ROOT + "gravity/Gravity-Bold.otf")},
-    {"book", makeFont(ASSETS_ROOT + "gravity/Gravity-Book.otf")},
-    {"light", makeFont(ASSETS_ROOT + "gravity/Gravity-Light.otf")},
-    {"ultralight", makeFont(ASSETS_ROOT + "gravity/Gravity-UltraLight.otf")},
+    {"regular", makeFont(ASSETS_ROOT + "fonts/Gravity-Regular.otf")},
+    {"bold", makeFont(ASSETS_ROOT + "fonts/Gravity-Bold.otf")},
+    {"book", makeFont(ASSETS_ROOT + "fonts/Gravity-Book.otf")},
+    {"light", makeFont(ASSETS_ROOT + "fonts/Gravity-Light.otf")},
+    {"ultralight", makeFont(ASSETS_ROOT + "fonts/Gravity-UltraLight.otf")},
 };
 
 std::map<std::string, sf::Texture> texture_register {

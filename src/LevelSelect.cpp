@@ -21,6 +21,8 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
     levellist->setPosition(0.2 * bindWidth(gui), 30);
     levellist->setSize(bindWidth(gui) * 0.6, "max(parent.height - 130, 40)");
     levellist->setFont(font_register.at("regular"));
+    levellist->setTextSize(25);
+    levellist->setItemHeight(40);
 
     /**
      * This button loads the currently selected level
