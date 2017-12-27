@@ -124,6 +124,13 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, B
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
+    // is inventory open or not?
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+        inventory.setOpen(true);
+    } else {
+        inventory.setOpen(false);
+    }
+
     // left or right idle based on the velocity
     Animation* current_animation = &animation_register.at(facingright ? "player_default_idle_rt" : "player_default_idle_lt");
     sf::Time current_frametime = sf::seconds(0.6);
@@ -185,6 +192,7 @@ void Player::move(LevelData lvl_dat, sf::Time delta) {
 
 void Player::draw(sf::RenderWindow *window) {
     window->draw(anim);
+    inventory.draw(*window);
 }
 
 void Player::apply_impulse(const float x, const float y) {

@@ -58,10 +58,11 @@ inline std::map<int, sf::Texture> init_tilemap_register(const std::string filena
     return reg;
 }
 
-extern std::map<int, sf::Texture>        tilemap_register;
-extern std::map<std::string, sf::Texture>     texture_register;
-extern std::map<std::string, sf::Font>        font_register;
-extern std::map<std::string, Animation>   animation_register;
-extern tgui::Theme::Ptr         tgui_theme;
+extern std::map<int, sf::Texture> tilemap_register;
+extern std::map<int, sf::Texture> itemmap_register;
+extern std::map<std::string, sf::Texture> texture_register;
+extern std::map<std::string, sf::Font> font_register;
+extern std::map<std::string, Animation> animation_register;
+extern tgui::Theme::Ptr tgui_theme;
 
 #endif

@@ -9,6 +9,7 @@
 #include "assetregisters.hpp"
 #include "../thirdparty/AnimatedSprite.hpp"
 #include "Block.hpp"
+#include "Inventory.hpp"
 
 using std::min;
 using std::max;
@@ -41,6 +42,8 @@ private:
     bool jumping = false;
     bool grounded = false;
     sf::Clock jumpclock;
+
+    Inventory inventory;
 public:
     Player();
     Player(float, float);

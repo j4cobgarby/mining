@@ -25,12 +25,15 @@ std::map<std::string, sf::Font> font_register {
 std::map<std::string, sf::Texture> texture_register {
     {"titlebig", makeTexture(ASSETS_ROOT + "images/titlebig.png")},
     {"spritesheet", makeTexture(ASSETS_ROOT + "images/sprites2.png")},
-    {"player", makeTexture(ASSETS_ROOT + "images/sprites.png", sf::IntRect(0, 16, 8, 16))}
 };
 
 std::map<int, sf::Texture> tilemap_register = init_tilemap_register(ASSETS_ROOT + "images/tilemap8.png",
     16, 16, // amount of tiles
     8, 8); // size of each tile (x, y)
+
+std::map<int, sf::Texture> itemmap_register = init_tilemap_register(ASSETS_ROOT + "images/items8.png",
+    16, 16, 8, 8
+);
 
 std::map<std::string, Animation> animation_register {
     {"player_default_idle_rt", makeAnimation(texture_register.at("spritesheet"))},
