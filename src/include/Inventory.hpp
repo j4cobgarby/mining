@@ -25,14 +25,19 @@ class Inventory {
 private:
     bool open = false; // is the player looking in their inventory?
 
+    sf::RectangleShape border;
     InventorySlot slots[INVENTORY_ITEMS_Y][INVENTORY_ITEMS_X];
 public:
     Inventory();
 
+    void init(sf::RenderWindow& window);
+    void on_resize(sf::RenderWindow& window);
+
     void handle_input();
     void draw(sf::RenderWindow& window);
-    void setOpen(const bool open) {this->open = open;}
-    bool isOpen() const {return open;}
+
+    void set_open(const bool open) {this->open = open;}
+    bool is_open() const {return open;}
 };
 
 #endif

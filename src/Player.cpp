@@ -125,10 +125,10 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, B
 
 void Player::move(LevelData lvl_dat, sf::Time delta) {
     // is inventory open or not?
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-        inventory.setOpen(true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
+        inventory.set_open(true);
     } else {
-        inventory.setOpen(false);
+        inventory.set_open(false);
     }
 
     // left or right idle based on the velocity

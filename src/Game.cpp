@@ -14,6 +14,7 @@ Game::Game(sf::RenderWindow* window, int *feedback) : window(window), feedback(f
 void Game::show() {
     srand(time(NULL));
 
+    player.inventory.init(*window);
     player.anim.play(animation_register.at("player_default_idle_rt"));
 
     std::cout << "Showing game\n";
@@ -101,6 +102,9 @@ void Game::render(sf::Time delta) {
             if (ev.key.code == sf::Keyboard::P && ev.key.control) {
                 player.debugflight = !player.debugflight;
             }
+        }
+        if (ev.type == sf::Event::Resized) {
+            player.inventory.on_resize(*window);
         }
     }
 

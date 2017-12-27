@@ -42,13 +42,12 @@ private:
     bool jumping = false;
     bool grounded = false;
     sf::Clock jumpclock;
-
-    Inventory inventory;
 public:
     Player();
     Player(float, float);
 
     AnimatedSprite anim;
+    Inventory inventory;
 
     bool debugflight = false;
 
