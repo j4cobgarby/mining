@@ -26,9 +26,11 @@ private:
     bool open = false; // is the player looking in their inventory?
 
     sf::RectangleShape border;
-    InventorySlot slots[INVENTORY_ITEMS_Y][INVENTORY_ITEMS_X];
 public:
     Inventory();
+
+    InventorySlot slots[INVENTORY_ITEMS_Y][INVENTORY_ITEMS_X];
+    InventorySlot* selected_slot; // a pointer to a location in slots
 
     void init(sf::RenderWindow& window);
     void on_resize(sf::RenderWindow& window);

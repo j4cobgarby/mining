@@ -6,6 +6,13 @@ mkdir -p build
 cd build
 
 cmake ../src
-echo "Initialised. Build it with ./run.sh"
+echo "Initialised. Do you want to BUILD IT?"
+read -p "(y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echo `pwd`
+    /bin/bash ../run.sh
+fi
 
 cd ..

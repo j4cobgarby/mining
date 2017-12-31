@@ -12,6 +12,13 @@ Player::Player(float x, float y) {
     anim.setOrigin(2, 0);
     
     vx = 0; vy = 0;
+
+    for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+        for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+            inventory.slots[y][x].setId(0); // null item
+            inventory.slots[y][x].setAmount(0);
+        }
+    }
 }
 
 /**

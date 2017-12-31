@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 
 project(mining)
 
-file(GLOB all_src "*.hpp" "*.cpp" "thirdparty/*.cpp" "thirdparty/*.h" "Blocks/*.cpp")
+file(GLOB all_src "*.hpp" "*.cpp" "thirdparty/*.cpp" "thirdparty/*.h" "Blocks/*.cpp" "Items/*.cpp")
 add_executable(miner ${all_src})
 
 set(BOOST_ROOT "/usr/local/boost_1_65_0")

@@ -4,24 +4,26 @@
 #include <SFML/Graphics.hpp>
 
 #include "assetregisters.hpp"
+#include "ItemTypes.hpp"
 
 class InventorySlot {
 private:
-    unsigned short int item_id;
+    uint8_t item_id;
     unsigned short int amount;
 public:
     /**
      * An id of 0 means no item 
      */
     InventorySlot();
-    InventorySlot(const unsigned short int item_id, const unsigned short int amount);
+    InventorySlot(const uint8_t, const unsigned short int amount);
 
     sf::RectangleShape rect;
+    Item* item_in_slot;
 
-    void setId(const unsigned short int item_id) {this->item_id = item_id;}
-    unsigned short int getId() const {return item_id;}
+    void setId(const uint8_t item_id);
+    uint8_t getId() const {return item_id;}
 
-    void setAmount(const unsigned short int amount) {this->amount = amount;}
+    void setAmount(const unsigned short int amount);
     unsigned short int getAmount() const {return amount;}
 };
 

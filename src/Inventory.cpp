@@ -6,7 +6,7 @@ Inventory::Inventory() {
 void Inventory::init(sf::RenderWindow& window) {
     for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
         for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-            slots[y][x] = InventorySlot(0, 0);
+            slots[y][x] = InventorySlot(1, 0);
         }
     }
 
