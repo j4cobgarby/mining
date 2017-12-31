@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <iostream>
 
 #include "assetregisters.hpp"
 #include "Item.hpp"
@@ -11,9 +12,10 @@
 // macro for easy decleration of new blocks!
 // itemname: the class name
 // itemid: the id of the item/block
-#define DEF_ITEM(itemname, item_id) class itemname : public Item {\
+#define DEF_ITEM(ITEMNAME, ITEM_ID)\
+class ITEMNAME : public Item {\
 public:\
-    itemname () {setTexture(itemmap_register.at(item_id));}\
+    ITEMNAME () {sprite.setTexture(itemmap_register.at( ITEM_ID ));}\
     void leftclick();\
     void rightclick();\
     inline bool canBreakBlock(size_t block_id);\
@@ -51,35 +53,36 @@ DEF_ITEM(Wheat_i,          23)
 
 inline Item* itemptr_from_id(const uint8_t id) {
     switch (id) {
-    case 1: return new IronPickaxe_i;
-    case 2: return new IronShovel_i;
-    case 3: return new IronAxe_i;
-    case 4: return new IronSword_i;
-    case 5: return new IronHammer_i;
-    case 6: return new IronSickle_i;
-    case 7: return new GreenBow_i;
-    case 8: return new GreenArrow_i;
-    case 9: return new MagiciansWand_i;
-    case 10: return new BranchWand_i;
-    case 11: return new BoneWand_i;
-    case 12: return new PolishedWand_i;
-    case 13: return new RedApple_i;
-    case 14: return new GreenApple_i;
-    case 15: return new Bread_i;
-    case 16: return new CheeseTomatoLettuceSandwich_i;
-    case 17: return new CheeseWheel_i;
-    case 18: return new Tomato_i;
-    case 19: return new Lettuce_i;
-    case 20: return new EmptyBucket_i;
-    case 21: return new MilkBucket_i;
-    case 22: return new WaterBucket_i;
-    case 23: return new Wheat_i;
+    case 1: return new IronPickaxe_i; break;
+    case 2: return new IronShovel_i; break;
+    case 3: return new IronAxe_i; break;
+    case 4: return new IronSword_i; break;
+    case 5: return new IronHammer_i; break;
+    case 6: return new IronSickle_i; break;
+    case 7: return new GreenBow_i; break;
+    case 8: return new GreenArrow_i; break;
+    case 9: return new MagiciansWand_i; break;
+    case 10: return new BranchWand_i; break;
+    case 11: return new BoneWand_i; break;
+    case 12: return new PolishedWand_i; break;
+    case 13: return new RedApple_i; break;
+    case 14: return new GreenApple_i; break;
+    case 15: return new Bread_i; break;
+    case 16: return new CheeseTomatoLettuceSandwich_i; break;
+    case 17: return new CheeseWheel_i; break;
+    case 18: return new Tomato_i; break;
+    case 19: return new Lettuce_i; break;
+    case 20: return new EmptyBucket_i; break;
+    case 21: return new MilkBucket_i; break;
+    case 22: return new WaterBucket_i; break;
+    case 23: return new Wheat_i; break;
 
     // ... add more here
 
     case 0:
     default:
         return new Null_i;
+        break;
     }
 }
 

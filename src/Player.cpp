@@ -15,7 +15,9 @@ Player::Player(float x, float y) {
 
     for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
         for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-            inventory.slots[y][x].setId(0); // null item
+            std::cout << (int)inventory.slots[y][x].getId();
+            //inventory.slots[y][x].setId(0); // null item
+            std::cout << '\t' << (int)inventory.slots[y][x].getId() << std::endl;
             inventory.slots[y][x].setAmount(0);
         }
     }

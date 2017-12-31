@@ -20,12 +20,10 @@ class Item {
 private:
     const ItemRarity rarity = COMMON;
     const unsigned short int max_stack_size = DEFAULT_MAX_STACK_SIZE;
-
-    sf::Sprite sprite;
 public:
     Item();
 
-    void setTexture(sf::Texture texture) {sprite.setTexture(texture);}
+    sf::Sprite sprite;
 
     ItemRarity getRarity() const {return rarity;}
     unsigned short int getMaxStackSize() const {return max_stack_size;}
