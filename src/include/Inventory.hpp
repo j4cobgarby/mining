@@ -35,7 +35,7 @@ public:
     short int selected_x = -1, selected_y = -1;
 
     void init(sf::RenderWindow& window);
-    void on_resize(sf::RenderWindow& window);
+    void update(sf::RenderWindow& window);
 
     void handle_click(sf::Event& ev, sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);

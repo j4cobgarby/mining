@@ -9,21 +9,17 @@ void Inventory::init(sf::RenderWindow& window) {
             slots[y][x] = InventorySlot(0, 0);
         }
     }
-    //slots[0][0] = InventorySlot(1, 0);
-    //slots[3][6] = InventorySlot(13, 0);
-    //slots[3][6].setId(10);
-    slots[0][2].setId(11);
-    slots[3][3].setId(12);
-    //slots[6][3].setId(11);
+    slots[0][2].setId(13);
+    slots[3][3].setId(14);
 
     border.setOutlineColor(sf::Color::Black);
     border.setOutlineThickness(1);
     border.setFillColor(sf::Color::Transparent);
 
-    on_resize(window);
+    update(window);
 }
 
-void Inventory::on_resize(sf::RenderWindow& window) {
+void Inventory::update(sf::RenderWindow& window) {
     sf::Vector2f topleft(INVENTORY_WINDOW_PADDING_W, INVENTORY_WINDOW_PADDING_N);
     sf::Vector2f totalsize = (sf::Vector2f)window.getSize() - sf::Vector2f(
         INVENTORY_WINDOW_PADDING_E + INVENTORY_WINDOW_PADDING_W, 
@@ -55,7 +51,7 @@ void Inventory::draw(sf::RenderWindow& window) {
             for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
                 slots[y][x].highlight_if_mouseover(window);
                 if (selected_x > -1) { // something's selected
-                    slots[selected_y][selected_x].rect.setOutlineThickness(SLOT_BORDER_SELECTED);
+                    slots[selected_y][selected_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
                 }
                 window.draw(slots[y][x].rect); // slot background
                 window.draw(slots[y][x].item_in_slot->sprite);
@@ -83,12 +79,14 @@ void Inventory::handle_click(sf::Event& ev, sf::RenderWindow& window) {
                         slots[y][x].setId(a_id);
                         selected_x = -1;
                         selected_y = -1;
-                        on_resize(window);
+                        update(window);
                     } else {
                         // nothing was selected
                         // just select
-                        selected_x = x;
-                        selected_y = y;
+                        if (slots[y][x].getId() != 0) { // can't select what isn't there!
+                            selected_x = x;
+                            selected_y = y;
+                        }
                     }
                 }
             }

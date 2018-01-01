@@ -105,7 +105,7 @@ void Game::render(sf::Time delta) {
             }
         }
         if (ev.type == sf::Event::Resized) {
-            player.inventory.on_resize(*window);
+            player.inventory.update(*window);
         }
     }
 

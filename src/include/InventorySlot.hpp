@@ -8,7 +8,7 @@
 
 #define SLOT_BORDER_DEFAULT 1
 #define SLOT_BORDER_HOVERED 5
-#define SLOT_BORDER_SELECTED 4
+#define SLOT_BORDER_SELECTED 3
 
 class InventorySlot {
 private:
