@@ -16,7 +16,7 @@ using std::max;
 
 /** Bounding box of player **/
 // the actual player texture is 8x16, so divide both by a suitible
-// divisor (5)a
+// divisor (5)
 // 1 texture px = 0.2 game size
 #define PLAYER_HEIGHT 3.2
 #define PLAYER_WIDTH 0.8
@@ -55,6 +55,9 @@ public:
     void move(LevelData, sf::Time);
     void draw(sf::RenderWindow*);
     void apply_impulse(const float x, const float y);
+
+    float getVx() const {return vx;}
+    float getVy() const {return vy;}
 };
 
 #endif  

@@ -97,6 +97,7 @@ void Game::render(sf::Time delta) {
         }
         if (ev.type == sf::Event::MouseButtonPressed) {
             player.click(ev, window, &lvl_dat, blocks);
+            player.inventory.handle_click(ev, *window);
         }
         if (ev.type == sf::Event::KeyPressed) {
             if (ev.key.code == sf::Keyboard::P && ev.key.control) {

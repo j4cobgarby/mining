@@ -12,15 +12,6 @@ Player::Player(float x, float y) {
     anim.setOrigin(2, 0);
     
     vx = 0; vy = 0;
-
-    for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
-        for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-            std::cout << (int)inventory.slots[y][x].getId();
-            //inventory.slots[y][x].setId(0); // null item
-            std::cout << '\t' << (int)inventory.slots[y][x].getId() << std::endl;
-            inventory.slots[y][x].setAmount(0);
-        }
-    }
 }
 
 /**
@@ -94,41 +85,43 @@ void Player::trymove(LevelData lvl_dat, sf::Time delta) {
 }
 
 void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, Block **rects) {
-    int block_x = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x);
-    int block_y = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y);
-    block_x /= 2;
-    block_y /= 2;
+    if (!inventory.is_open()) {
+        int block_x = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x);
+        int block_y = floor(window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y);
+        block_x /= BLOCK_SIZE;
+        block_y /= BLOCK_SIZE;
 
-    const uint8_t clicked_id = lvl_dat->blocks[block_y][block_x]; 
+        const uint8_t clicked_id = lvl_dat->blocks[block_y][block_x]; 
 
-    const sf::Vector2f player_center = anim.getPosition();
-    switch (ev.mouseButton.button) {
-        case sf::Mouse::Left:
-            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
-                    block_x >= 0 && block_y >= 0 && 
-                    clicked_id != 0 &&
-                    (
-                        pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
-                        pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
-                        <= 49 * BLOCK_SIZE
-                    )) {
-                lvl_dat->blocks[block_y][block_x] = 0;
-                rects[block_y*LEVEL_WIDTH+block_x]->setFillColor(sf::Color::Transparent);
-            }
-            break;
-        case sf::Mouse::Right:
-            if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
-                    block_x >= 0 && block_y >= 0 && 
-                    clicked_id != 0 &&
-                    (
-                        pow(max((float)block_x*2,player_center.x) - min((float)block_x*2,player_center.x), 2) +
-                        pow(max((float)block_y*2,player_center.y) - min((float)block_y*2,player_center.y), 2)
-                        <= 49 * BLOCK_SIZE
-                    )) {
-                rects[block_y*LEVEL_WIDTH+block_x]->interact();
-            }
-            break;
-        default: break;
+        const sf::Vector2f player_center = anim.getPosition();
+        switch (ev.mouseButton.button) {
+            case sf::Mouse::Left:
+                if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
+                        block_x >= 0 && block_y >= 0 && 
+                        clicked_id != 0 &&
+                        (
+                            pow(max((float)block_x*BLOCK_SIZE,player_center.x) - min((float)block_x*BLOCK_SIZE,player_center.x), 2) +
+                            pow(max((float)block_y*BLOCK_SIZE,player_center.y) - min((float)block_y*BLOCK_SIZE,player_center.y), 2)
+                            <= 49 * BLOCK_SIZE
+                        )) {
+                    lvl_dat->blocks[block_y][block_x] = 0;
+                    rects[block_y*LEVEL_WIDTH+block_x]->setFillColor(sf::Color::Transparent);
+                }
+                break;
+            case sf::Mouse::Right:
+                if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
+                        block_x >= 0 && block_y >= 0 && 
+                        clicked_id != 0 &&
+                        (
+                            pow(max((float)block_x*BLOCK_SIZE,player_center.x) - min((float)block_x*BLOCK_SIZE,player_center.x), 2) +
+                            pow(max((float)block_y*BLOCK_SIZE,player_center.y) - min((float)block_y*BLOCK_SIZE,player_center.y), 2)
+                            <= 49 * BLOCK_SIZE
+                        )) {
+                    rects[block_y*LEVEL_WIDTH+block_x]->interact();
+                }
+                break;
+            default: break;
+        }
     }
 }
 

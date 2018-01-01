@@ -8,7 +8,7 @@ item_id(item_id), amount(amount)
     rect = sf::RectangleShape(sf::Vector2f(1, 1)); // will be resized when drawn
     rect.setFillColor(sf::Color(0xffffff80));
     rect.setOutlineColor(sf::Color(0x00000050));
-    rect.setOutlineThickness(1);
+    rect.setOutlineThickness(-SLOT_BORDER_DEFAULT);
 
     item_in_slot = itemptr_from_id(item_id);
 }

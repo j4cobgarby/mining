@@ -6,14 +6,15 @@
 #include "assetregisters.hpp"
 #include "ItemTypes.hpp"
 
+#define SLOT_BORDER_DEFAULT 1
+#define SLOT_BORDER_HOVERED 5
+#define SLOT_BORDER_SELECTED 4
+
 class InventorySlot {
 private:
     uint8_t item_id;
     unsigned short int amount;
 public:
-    /**
-     * An id of 0 means no item 
-     */
     InventorySlot();
     InventorySlot(const uint8_t, const unsigned short int amount);
 
@@ -25,6 +26,15 @@ public:
 
     void setAmount(const unsigned short int amount);
     unsigned short int getAmount() const {return amount;}
+
+    inline void highlight_if_mouseover(sf::RenderWindow& window) {
+        sf::Vector2i mpos = sf::Mouse::getPosition(window);
+        if (rect.getGlobalBounds().contains(mpos.x, mpos.y)) {
+            rect.setOutlineThickness(-SLOT_BORDER_HOVERED);
+        } else {
+            rect.setOutlineThickness(-SLOT_BORDER_DEFAULT);
+        }
+    }
 };
 
 #endif
