@@ -96,7 +96,7 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, B
         const sf::Vector2f player_center = anim.getPosition();
         switch (ev.mouseButton.button) {
             case sf::Mouse::Left:
-                
+
                 if (block_x < LEVEL_WIDTH && block_y < LEVEL_HEIGHT && 
                         block_x >= 0 && block_y >= 0 && 
                         clicked_id != 0 &&
@@ -126,12 +126,14 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, B
     }
 }
 
-void Player::move(LevelData lvl_dat, sf::Time delta) {
+void Player::move(LevelData lvl_dat, sf::Time delta, sf::RenderWindow& window) {
     // is inventory open or not?
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
         inventory.set_open(true);
+        inventory.update(window);
     } else {
         inventory.set_open(false);
+        inventory.update(window);
     }
 
     // left or right idle based on the velocity

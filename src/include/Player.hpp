@@ -52,7 +52,7 @@ public:
     bool debugflight = false;
 
     void click(sf::Event, sf::RenderWindow*, LevelData*, Block**);
-    void move(LevelData, sf::Time);
+    void move(LevelData, sf::Time, sf::RenderWindow&);
     void draw(sf::RenderWindow*);
     void apply_impulse(const float x, const float y);
 

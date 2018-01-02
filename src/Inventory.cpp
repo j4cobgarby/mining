@@ -24,11 +24,15 @@ void Inventory::init(sf::RenderWindow& window) {
 }
 
 void Inventory::update(sf::RenderWindow& window) {
-    sf::Vector2f topleft(INVENTORY_WINDOW_PADDING_W, INVENTORY_WINDOW_PADDING_N);
     sf::Vector2f totalsize = (sf::Vector2f)window.getSize() - sf::Vector2f(
         INVENTORY_WINDOW_PADDING_E + INVENTORY_WINDOW_PADDING_W, 
         INVENTORY_WINDOW_PADDING_S + INVENTORY_WINDOW_PADDING_N);
     float slotsize = min(MAX_SLOTSIZE, min(totalsize.x / INVENTORY_ITEMS_X, totalsize.y / INVENTORY_ITEMS_Y));
+
+    sf::Vector2f topleft;
+    if (open) topleft = sf::Vector2f(INVENTORY_WINDOW_PADDING_W, INVENTORY_WINDOW_PADDING_N);
+    else topleft = sf::Vector2f(INVENTORY_WINDOW_PADDING_W, INVENTORY_WINDOW_PADDING_N - slotsize * (INVENTORY_ITEMS_Y-1));
+
     border.setSize(sf::Vector2f(slotsize * INVENTORY_ITEMS_X, slotsize * INVENTORY_ITEMS_Y));
     border.setPosition(topleft);
 
@@ -37,7 +41,7 @@ void Inventory::update(sf::RenderWindow& window) {
 
     for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
         for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-            slots[y][x].rect.setPosition(sf::Vector2f(x*slotsize + INVENTORY_WINDOW_PADDING_W, y*slotsize + INVENTORY_WINDOW_PADDING_N));
+            slots[y][x].rect.setPosition(sf::Vector2f(x*slotsize + topleft.x, y*slotsize + topleft.y));
             slots[y][x].rect.setSize(sf::Vector2f(slotsize, slotsize));
             slots[y][x].item_in_slot->sprite.setPosition(
                 topleft.x+x*slotsize + slotsize/10, 
@@ -48,28 +52,26 @@ void Inventory::update(sf::RenderWindow& window) {
 }
 
 void Inventory::draw(sf::RenderWindow& window) {
-    if (open) {
-        sf::View game_view = window.getView();
-        sf::View ui_view(sf::Vector2f(window.getSize().x*0.5, window.getSize().y*0.5), (sf::Vector2f)window.getSize());
-        window.setView(ui_view);
+    sf::View game_view = window.getView();
+    sf::View ui_view(sf::Vector2f(window.getSize().x*0.5, window.getSize().y*0.5), (sf::Vector2f)window.getSize());
+    window.setView(ui_view);
 
-        sf::Vector2i mpos = sf::Mouse::getPosition(window);
-        
-        for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
-            for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-                slots[y][x].highlight_if_mouseover(window, mpos);
-                if (tomove_x > -1) { // something's selected
-                    slots[tomove_y][tomove_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
-                }
-                window.draw(slots[y][x].rect); // slot background
-                window.draw(slots[y][x].item_in_slot->sprite);
+    sf::Vector2i mpos = sf::Mouse::getPosition(window);
+    
+    for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+        for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+            slots[y][x].highlight_if_mouseover(window, mpos);
+            if (tomove_x > -1) { // something's selected
+                slots[tomove_y][tomove_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
             }
+            window.draw(slots[y][x].rect); // slot background
+            window.draw(slots[y][x].item_in_slot->sprite);
         }
-        window.draw(border);
-        window.draw(pocket_border);
-        
-        window.setView(game_view);
     }
+    window.draw(border);
+    window.draw(pocket_border);
+    
+    window.setView(game_view);
 }
 
 void Inventory::handle_click(sf::Event& ev, sf::RenderWindow& window) {

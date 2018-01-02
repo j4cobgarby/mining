@@ -109,7 +109,7 @@ void Game::render(sf::Time delta) {
         }
     }
 
-    player.move(lvl_dat, delta);
+    player.move(lvl_dat, delta, *window);
 
     window->setTitle(std::to_string(1.0/delta.asSeconds()));
 
