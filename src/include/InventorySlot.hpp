@@ -6,9 +6,9 @@
 #include "assetregisters.hpp"
 #include "ItemTypes.hpp"
 
-#define SLOT_BORDER_DEFAULT 1
-#define SLOT_BORDER_HOVERED 5
-#define SLOT_BORDER_SELECTED 3
+#define SLOT_BORDER_DEFAULT 0.5
+#define SLOT_BORDER_HOVERED 2.5
+#define SLOT_BORDER_SELECTED 2
 
 class InventorySlot {
 private:
@@ -27,8 +27,7 @@ public:
     void setAmount(const unsigned short int amount);
     unsigned short int getAmount() const {return amount;}
 
-    inline void highlight_if_mouseover(sf::RenderWindow& window) {
-        sf::Vector2i mpos = sf::Mouse::getPosition(window);
+    inline void highlight_if_mouseover(sf::RenderWindow& window, sf::Vector2i& mpos) {
         if (rect.getGlobalBounds().contains(mpos.x, mpos.y)) {
             rect.setOutlineThickness(-SLOT_BORDER_HOVERED);
         } else {

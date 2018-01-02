@@ -7,9 +7,10 @@
 
 #include "assetregisters.hpp"
 #include "Item.hpp"
+#include "Block.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
-// macro for easy decleration of new blocks!
+// macro for easy decleration of new items!
 // itemname: the class name
 // itemid: the id of the item/block
 #define DEF_ITEM(ITEMNAME, ITEM_ID)\
@@ -20,6 +21,17 @@ public:\
     void rightclick();\
     inline bool canBreakBlock(size_t block_id);\
     inline bool canHarvestBlock(size_t block_id);\
+};
+#define DEF_ITEMBLOCK(BLOCKNAME, BLOCK_ID)\
+class BLOCKNAME : public Item {\
+public:\
+    BLOCKNAME () {\
+        sprite.setTexture(tilemap_register.at( BLOCK_ID ));\
+    }\
+    void leftclick();\
+    void rightclick();\
+    inline bool canBreakBlock(size_t block_id) {return false;}\
+    inline bool canHarvestBlock(size_t block_id) {return false;}\
 };
 ////////////////////////////////////////////////////////////////////////////////
 

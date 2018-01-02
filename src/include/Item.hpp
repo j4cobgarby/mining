@@ -20,6 +20,7 @@ class Item {
 private:
     const ItemRarity rarity = COMMON;
     const unsigned short int max_stack_size = DEFAULT_MAX_STACK_SIZE;
+    bool is_block = false;
 public:
     Item();
 

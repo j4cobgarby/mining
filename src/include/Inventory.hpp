@@ -9,10 +9,11 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // display stuff
-#define INVENTORY_WINDOW_PADDING_N 15
-#define INVENTORY_WINDOW_PADDING_S 15
-#define INVENTORY_WINDOW_PADDING_E 15
-#define INVENTORY_WINDOW_PADDING_W 15
+#define INVENTORY_WINDOW_PADDING_N  15
+#define INVENTORY_WINDOW_PADDING_S  15
+#define INVENTORY_WINDOW_PADDING_E  15
+#define INVENTORY_WINDOW_PADDING_W  15
+#define MAX_SLOTSIZE                65.f
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "InventorySlot.hpp"
@@ -27,12 +28,12 @@ private:
     bool open = false; // is the player looking in their inventory?
 
     sf::RectangleShape border;
+    sf::RectangleShape pocket_border;
 public:
     Inventory();
 
-    InventorySlot slots[INVENTORY_ITEMS_Y][INVENTORY_ITEMS_X];
-    // x and y of selected item, -1 if no item selected
-    short int selected_x = -1, selected_y = -1;
+    InventorySlot slots[INVENTORY_ITEMS_Y][INVENTORY_ITEMS_X]; // the last row is the 'pocket' - quick access items
+    short int tomove_x = -1, tomove_y = -1; // for moving items
 
     void init(sf::RenderWindow& window);
     void update(sf::RenderWindow& window);

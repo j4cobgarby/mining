@@ -16,6 +16,10 @@ void Inventory::init(sf::RenderWindow& window) {
     border.setOutlineThickness(1);
     border.setFillColor(sf::Color::Transparent);
 
+    pocket_border.setOutlineColor(sf::Color::Black);
+    pocket_border.setOutlineThickness(4);
+    pocket_border.setFillColor(sf::Color::Transparent);
+
     update(window);
 }
 
@@ -24,10 +28,12 @@ void Inventory::update(sf::RenderWindow& window) {
     sf::Vector2f totalsize = (sf::Vector2f)window.getSize() - sf::Vector2f(
         INVENTORY_WINDOW_PADDING_E + INVENTORY_WINDOW_PADDING_W, 
         INVENTORY_WINDOW_PADDING_S + INVENTORY_WINDOW_PADDING_N);
-    float slotsize = min(totalsize.x / INVENTORY_ITEMS_X, totalsize.y / INVENTORY_ITEMS_Y);
-
+    float slotsize = min(MAX_SLOTSIZE, min(totalsize.x / INVENTORY_ITEMS_X, totalsize.y / INVENTORY_ITEMS_Y));
     border.setSize(sf::Vector2f(slotsize * INVENTORY_ITEMS_X, slotsize * INVENTORY_ITEMS_Y));
     border.setPosition(topleft);
+
+    pocket_border.setSize(sf::Vector2f(slotsize*INVENTORY_ITEMS_X, slotsize));
+    pocket_border.setPosition(topleft + sf::Vector2f(0, slotsize*(INVENTORY_ITEMS_Y-1)));
 
     for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
         for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
@@ -47,17 +53,21 @@ void Inventory::draw(sf::RenderWindow& window) {
         sf::View ui_view(sf::Vector2f(window.getSize().x*0.5, window.getSize().y*0.5), (sf::Vector2f)window.getSize());
         window.setView(ui_view);
 
+        sf::Vector2i mpos = sf::Mouse::getPosition(window);
+        
         for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
             for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-                slots[y][x].highlight_if_mouseover(window);
-                if (selected_x > -1) { // something's selected
-                    slots[selected_y][selected_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
+                slots[y][x].highlight_if_mouseover(window, mpos);
+                if (tomove_x > -1) { // something's selected
+                    slots[tomove_y][tomove_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
                 }
                 window.draw(slots[y][x].rect); // slot background
                 window.draw(slots[y][x].item_in_slot->sprite);
             }
         }
         window.draw(border);
+        window.draw(pocket_border);
+        
         window.setView(game_view);
     }
 }
@@ -68,24 +78,24 @@ void Inventory::handle_click(sf::Event& ev, sf::RenderWindow& window) {
             for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
                 if (slots[y][x].rect.getGlobalBounds().contains(ev.mouseButton.x, ev.mouseButton.y)) {
                     // click was on THIS slot!
-                    if (selected_x > -1) {
+                    if (tomove_x > -1) {
                         // something was already selected
                         // swap, then reset selection
                         int a_id, b_id;
-                        a_id = slots[selected_y][selected_x].getId();
+                        a_id = slots[tomove_y][tomove_x].getId();
                         b_id = slots[y][x].getId();
                         std::cout << a_id << " --> " << b_id << std::endl;
-                        slots[selected_y][selected_x].setId(b_id);
+                        slots[tomove_y][tomove_x].setId(b_id);
                         slots[y][x].setId(a_id);
-                        selected_x = -1;
-                        selected_y = -1;
+                        tomove_x = -1;
+                        tomove_y = -1;
                         update(window);
                     } else {
                         // nothing was selected
                         // just select
                         if (slots[y][x].getId() != 0) { // can't select what isn't there!
-                            selected_x = x;
-                            selected_y = y;
+                            tomove_x = x;
+                            tomove_y = y;
                         }
                     }
                 }
