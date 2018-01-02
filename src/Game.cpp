@@ -103,6 +103,16 @@ void Game::render(sf::Time delta) {
             if (ev.key.code == sf::Keyboard::P && ev.key.control) {
                 player.debugflight = !player.debugflight;
             }
+            if (ev.key.code == sf::Keyboard::Tab) {
+                player.inventory.set_open(true);
+                player.inventory.update(*window);
+            }
+        }
+        if (ev.type == sf::Event::KeyReleased) {
+            if (ev.key.code == sf::Keyboard::Tab) {
+                player.inventory.set_open(false);
+                player.inventory.update(*window);
+            }
         }
         if (ev.type == sf::Event::Resized) {
             player.inventory.update(*window);

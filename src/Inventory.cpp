@@ -58,17 +58,28 @@ void Inventory::draw(sf::RenderWindow& window) {
 
     sf::Vector2i mpos = sf::Mouse::getPosition(window);
     
-    for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+    if (open) {
+        for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+            for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+                slots[y][x].highlight_if_mouseover(window, mpos);
+                if (tomove_x > -1) { // something's selected
+                    slots[tomove_y][tomove_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
+                }
+                window.draw(slots[y][x].rect); // slot background
+                window.draw(slots[y][x].item_in_slot->sprite);
+            }
+        }
+        window.draw(border);
+    } else {
         for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-            slots[y][x].highlight_if_mouseover(window, mpos);
+            slots[INVENTORY_ITEMS_Y-1][x].highlight_if_mouseover(window, mpos);
             if (tomove_x > -1) { // something's selected
                 slots[tomove_y][tomove_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
             }
-            window.draw(slots[y][x].rect); // slot background
-            window.draw(slots[y][x].item_in_slot->sprite);
+            window.draw(slots[INVENTORY_ITEMS_Y-1][x].rect); // slot background
+            window.draw(slots[INVENTORY_ITEMS_Y-1][x].item_in_slot->sprite);
         }
     }
-    window.draw(border);
     window.draw(pocket_border);
     
     window.setView(game_view);
@@ -76,31 +87,42 @@ void Inventory::draw(sf::RenderWindow& window) {
 
 void Inventory::handle_click(sf::Event& ev, sf::RenderWindow& window) {
     if (ev.type == sf::Event::MouseButtonPressed) {
-        for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
-            for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
-                if (slots[y][x].rect.getGlobalBounds().contains(ev.mouseButton.x, ev.mouseButton.y)) {
-                    // click was on THIS slot!
-                    if (tomove_x > -1) {
-                        // something was already selected
-                        // swap, then reset selection
-                        int a_id, b_id;
-                        a_id = slots[tomove_y][tomove_x].getId();
-                        b_id = slots[y][x].getId();
-                        std::cout << a_id << " --> " << b_id << std::endl;
-                        slots[tomove_y][tomove_x].setId(b_id);
-                        slots[y][x].setId(a_id);
-                        tomove_x = -1;
-                        tomove_y = -1;
-                        update(window);
-                    } else {
-                        // nothing was selected
-                        // just select
-                        if (slots[y][x].getId() != 0) { // can't select what isn't there!
-                            tomove_x = x;
-                            tomove_y = y;
+        if (ev.mouseButton.button == sf::Mouse::Button::Left) {
+            if (open) {
+                /**
+                 * Handle movement of items, if the inv. is open
+                 */
+                for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+                    for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+                        if (slots[y][x].rect.getGlobalBounds().contains(ev.mouseButton.x, ev.mouseButton.y)) {
+                            // click was on THIS slot!
+                            if (tomove_x > -1) {
+                                // something was already selected
+                                // swap, then reset selection
+                                int a_id, b_id;
+                                a_id = slots[tomove_y][tomove_x].getId();
+                                b_id = slots[y][x].getId();
+                                std::cout << a_id << " --> " << b_id << std::endl;
+                                slots[tomove_y][tomove_x].setId(b_id);
+                                slots[y][x].setId(a_id);
+                                tomove_x = -1;
+                                tomove_y = -1;
+                                update(window);
+                            } else {
+                                // nothing was selected
+                                // just select
+                                if (slots[y][x].getId() != 0) { // can't select what isn't there!
+                                    tomove_x = x;
+                                    tomove_y = y;
+                                }
+                            }
                         }
                     }
                 }
+            } else {
+                /**
+                 * only hotbar is visible, so select that item
+                 */
             }
         }
     }

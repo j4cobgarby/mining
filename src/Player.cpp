@@ -127,15 +127,6 @@ void Player::click(sf::Event ev, sf::RenderWindow *window, LevelData *lvl_dat, B
 }
 
 void Player::move(LevelData lvl_dat, sf::Time delta, sf::RenderWindow& window) {
-    // is inventory open or not?
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)) {
-        inventory.set_open(true);
-        inventory.update(window);
-    } else {
-        inventory.set_open(false);
-        inventory.update(window);
-    }
-
     // left or right idle based on the velocity
     Animation* current_animation = &animation_register.at(facingright ? "player_default_idle_rt" : "player_default_idle_lt");
     sf::Time current_frametime = sf::seconds(0.6);
