@@ -4,8 +4,8 @@ Inventory::Inventory() {
 }
 
 void Inventory::init(sf::RenderWindow& window) {
-    for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
-        for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+    for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+        for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
             slots[y][x] = InventorySlot(0, 0);
         }
     }
@@ -39,8 +39,8 @@ void Inventory::update(sf::RenderWindow& window) {
     pocket_border.setSize(sf::Vector2f(slotsize*INVENTORY_ITEMS_X, slotsize));
     pocket_border.setPosition(topleft + sf::Vector2f(0, slotsize*(INVENTORY_ITEMS_Y-1)));
 
-    for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
-        for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+    for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+        for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
             slots[y][x].rect.setPosition(sf::Vector2f(x*slotsize + topleft.x, y*slotsize + topleft.y));
             slots[y][x].rect.setSize(sf::Vector2f(slotsize, slotsize));
             slots[y][x].item_in_slot->sprite.setPosition(
@@ -59,8 +59,8 @@ void Inventory::draw(sf::RenderWindow& window) {
     sf::Vector2i mpos = sf::Mouse::getPosition(window);
     
     if (open) {
-        for (std::size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
-            for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+        for (size_t y = 0; y < INVENTORY_ITEMS_Y; y++) {
+            for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
                 slots[y][x].highlight_if_mouseover(window, mpos);
                 if (tomove_x > -1) { // something's selected
                     slots[tomove_y][tomove_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
@@ -71,7 +71,7 @@ void Inventory::draw(sf::RenderWindow& window) {
         }
         window.draw(border);
     } else {
-        for (std::size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+        for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
             slots[INVENTORY_ITEMS_Y-1][x].highlight_if_mouseover(window, mpos);
             if (tomove_x > -1) { // something's selected
                 slots[tomove_y][tomove_x].rect.setOutlineThickness(-SLOT_BORDER_SELECTED);
@@ -121,8 +121,14 @@ void Inventory::handle_click(sf::Event& ev, sf::RenderWindow& window) {
                 }
             } else {
                 /**
-                 * only hotbar is visible, so select that item
-                 */
+                 * only pocket is visible, so select that item
+                 */ 
+                for (size_t x = 0; x < INVENTORY_ITEMS_X; x++) {
+                    if (slots[INVENTORY_ITEMS_Y-1][x].rect.getGlobalBounds().contains(ev.mouseButton.x, ev.mouseButton.y)) {
+                        selected_index = x;
+                        std::cout << selected_index << std::endl;
+                    }
+                }
             }
         }
     }

@@ -13,8 +13,8 @@ public:
     void setSize(const sf::Vector2f& size);
     const sf::Vector2f& getSize() const;
 
-    std::size_t getPointCount() const;
-    sf::Vector2f getPoint(std::size_t index) const;
+    size_t getPointCount() const;
+    sf::Vector2f getPoint(size_t index) const;
 
     virtual void interact() = 0;
 private:

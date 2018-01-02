@@ -13,11 +13,11 @@ const sf::Vector2f& Block::getSize() const {
     return m_size;
 }
 
-std::size_t Block::getPointCount() const {
+size_t Block::getPointCount() const {
     return 4;
 }
 
-sf::Vector2f Block::getPoint(std::size_t index) const {
+sf::Vector2f Block::getPoint(size_t index) const {
     switch (index)
     {
         default:

@@ -34,6 +34,7 @@ public:
 
     InventorySlot slots[INVENTORY_ITEMS_Y][INVENTORY_ITEMS_X]; // the last row is the 'pocket' - quick access items
     short int tomove_x = -1, tomove_y = -1; // for moving items
+    size_t selected_index = 0; // selected index along the pocket
 
     void init(sf::RenderWindow& window);
     void update(sf::RenderWindow& window);
