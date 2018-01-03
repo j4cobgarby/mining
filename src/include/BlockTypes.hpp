@@ -33,22 +33,17 @@ DEF_BLOCK(Sand_b,       5)
 // Add any new blocks here. The case should match their id
 inline Block* blockptr_from_id(const uint8_t id) {
     switch (id) {
-    case 1:
-        return new Stone_b;
-    case 2:
-        return new Cobbles_b;
-    case 3:
-        return new Dirt_b;
-    case 4:
-        return new Grass_b;
-    case 5:
-        return new Sand_b;
+    case 1:return new Stone_b; break;
+    case 2:return new Cobbles_b; break;
+    case 3:return new Dirt_b; break;
+    case 4:return new Grass_b; break;
+    case 5:return new Sand_b; break;
 
     // ...
 
     case 0:
     default:
-        return new Air_b;
+        return new Air_b; break;
     }
 }
 //

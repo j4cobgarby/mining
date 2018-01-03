@@ -7,8 +7,8 @@ add_executable(miner ${all_src})
 
 set(BOOST_ROOT "/usr/local/boost_1_65_0")
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wno-unused -g")
-set(CMAKE_EXE_LINKER_FLAGS "-g")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wno-unused -std=c++17 -g")
+set(CMAKE_EXE_LINKER_FLAGS "-std=c++17 -g")
 
 find_package(SFML 2 REQUIRED graphics window system)
 if (SFML_FOUND)

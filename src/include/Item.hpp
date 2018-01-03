@@ -22,7 +22,7 @@ private:
     const unsigned short int max_stack_size = DEFAULT_MAX_STACK_SIZE;
     bool is_block = false;
 public:
-    Item();
+    Item() {}
 
     sf::Sprite sprite;
 
@@ -33,6 +33,18 @@ public:
     virtual void rightclick() = 0;
     virtual inline bool canBreakBlock(size_t block_id) = 0;
     virtual inline bool canHarvestBlock(size_t block_id) = 0;
+};
+
+class ItemBlock : public Item {
+private:
+    bool is_block = true;
+public:
+    ItemBlock() {}
+
+    void leftclick() {std::cout << "block l" << std::endl;}
+    void rightclick() {std::cout << "block r" << std::endl;}
+    inline bool canBreakBlock(size_t block_id) {return true;}
+    inline bool canHarvestBlock(size_t block_id) {return false;}
 };
 
 #endif

@@ -10,12 +10,12 @@ item_id(item_id), amount(amount)
     rect.setOutlineColor(sf::Color(0x00000050));
     rect.setOutlineThickness(-SLOT_BORDER_DEFAULT);
 
-    item_in_slot = itemptr_from_id(item_id);
+    item_in_slot = itemptr_from_id(item_id, false);
 }
 
 void InventorySlot::setId(const uint8_t item_id) {
     this->item_id = item_id;
-    item_in_slot = itemptr_from_id(item_id);
+    item_in_slot = itemptr_from_id(item_id, false);
 }
 
 void InventorySlot::setAmount(const unsigned short int amount) {

@@ -161,7 +161,7 @@ void Player::move(LevelData lvl_dat, sf::Time delta, sf::RenderWindow& window) {
             vy += GRAVITY * delta.asSeconds();
         }
 
-        float scaled_damping = pow(0.997, delta.asSeconds() * 3500);
+        float scaled_damping = pow(0.997, delta.asSeconds() * 2500);
         vx *= scaled_damping;
         vy *= scaled_damping;
 

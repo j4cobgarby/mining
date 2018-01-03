@@ -1,8 +1,16 @@
 # A cool mining game
 
-## A bit like Terraria
+## A bit like Terraria, but at some point there'll be computers
 
 ![mockup](https://github.com/j4cobgarby/mining/blob/menustuff/.for_github/screenshot.png)
+
+### Roadmap
+
+ - Finish the inventory - items can interact with the environment, etc.
+ - Better world generation (more blocks, trees, lakes, etc.)
+ - Other entities besides the player (monsters, animals, npcs?)
+ - Programmable robots and computers! Python? C? Assembly? Lua?
+ - Maybe multiplayer, if the code isn't too long and hard to make work for multiplayer
 
 ### Worlds and stuff file architecture
 ```
