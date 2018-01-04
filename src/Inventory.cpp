@@ -23,10 +23,6 @@ void Inventory::init(sf::RenderWindow& window) {
     pocket_border.setFillColor(sf::Color::Transparent);
 
     update(window);
-
-    Item* _i = itemptr_from_id(2, true);
-    std::cout << "is it a block??? > " << _i->isBlock() << std::endl;
-    delete _i;
 }
 
 void Inventory::update(sf::RenderWindow& window) {
