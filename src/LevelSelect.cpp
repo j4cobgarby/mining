@@ -77,6 +77,7 @@ LevelSelect::LevelSelect(sf::RenderWindow *window, int *feedback) : window(windo
 
     fs::path worlds_path("../worlds");
     bool default_set = false;
+    fs::create_directory(worlds_path); // create if not already there
     for (fs::directory_entry d : fs::directory_iterator(worlds_path))
         levellist->addItem(d.path().filename().string(), d.path().string());
     
