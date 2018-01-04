@@ -18,6 +18,10 @@ void InventorySlot::setId(const uint8_t item_id) {
     item_in_slot = itemptr_from_id(item_id, false);
 }
 
+void InventorySlot::setBlock(const bool is_a_block) {
+    this->item_in_slot = itemptr_from_id(item_id, is_a_block);
+}
+
 void InventorySlot::setAmount(const unsigned short int amount) {
     this->amount = amount;
 }

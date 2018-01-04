@@ -21,15 +21,15 @@ public:\
     void rightclick();\
     inline bool canBreakBlock(size_t block_id);\
     inline bool canHarvestBlock(size_t block_id);\
+    bool isBlock() {return false;}\
 };
 #define DEF_ITEMBLOCK(BLOCKNAME, BLOCK_ID)\
 class BLOCKNAME : public ItemBlock {\
-private:\
-    bool is_block = true;\
 public:\
     BLOCKNAME () {\
         sprite.setTexture(tilemap_register.at( BLOCK_ID ));\
     }\
+    bool isBlock() {return true;}\
 };
 ////////////////////////////////////////////////////////////////////////////////
 

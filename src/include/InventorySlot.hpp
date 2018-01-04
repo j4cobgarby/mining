@@ -24,6 +24,9 @@ public:
     void setId(const uint8_t item_id);
     uint8_t getId() const {return item_id;}
 
+    void setBlock(const bool is_a_block);
+    bool isBlock() {return item_in_slot->isBlock();}
+
     void setAmount(const unsigned short int amount);
     unsigned short int getAmount() const {return amount;}
 

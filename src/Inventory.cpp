@@ -11,6 +11,8 @@ void Inventory::init(sf::RenderWindow& window) {
     }
     slots[0][2].setId(13);
     slots[3][3].setId(14);
+    slots[4][4].setId(2);
+    slots[4][4].setBlock(true);
 
     border.setOutlineColor(sf::Color::Black);
     border.setOutlineThickness(1);
@@ -21,6 +23,10 @@ void Inventory::init(sf::RenderWindow& window) {
     pocket_border.setFillColor(sf::Color::Transparent);
 
     update(window);
+
+    Item* _i = itemptr_from_id(2, true);
+    std::cout << "is it a block??? > " << _i->isBlock() << std::endl;
+    delete _i;
 }
 
 void Inventory::update(sf::RenderWindow& window) {
@@ -100,11 +106,16 @@ void Inventory::handle_click(sf::Event& ev, sf::RenderWindow& window) {
                                 // something was already selected
                                 // swap, then reset selection
                                 int a_id, b_id;
+                                bool a_isblock, b_isblock;
                                 a_id = slots[tomove_y][tomove_x].getId();
                                 b_id = slots[y][x].getId();
-                                std::cout << a_id << " --> " << b_id << std::endl;
+                                a_isblock = slots[tomove_y][tomove_x].isBlock();
+                                b_isblock = slots[y][x].isBlock();
+                                std::cout << a_id << ' ' << a_isblock << " --> " << b_id << ' ' << b_isblock << std::endl;
                                 slots[tomove_y][tomove_x].setId(b_id);
                                 slots[y][x].setId(a_id);
+                                slots[tomove_y][tomove_x].setBlock(b_isblock);
+                                slots[y][x].setBlock(a_isblock);
                                 tomove_x = -1;
                                 tomove_y = -1;
                                 update(window);

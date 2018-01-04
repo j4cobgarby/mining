@@ -20,7 +20,6 @@ class Item {
 private:
     const ItemRarity rarity = COMMON;
     const unsigned short int max_stack_size = DEFAULT_MAX_STACK_SIZE;
-    bool is_block = false;
 public:
     Item() {}
 
@@ -29,6 +28,8 @@ public:
     ItemRarity getRarity() const {return rarity;}
     unsigned short int getMaxStackSize() const {return max_stack_size;}
 
+    virtual bool isBlock() = 0;
+
     virtual void leftclick() = 0;
     virtual void rightclick() = 0;
     virtual inline bool canBreakBlock(size_t block_id) = 0;
@@ -36,8 +37,6 @@ public:
 };
 
 class ItemBlock : public Item {
-private:
-    bool is_block = true;
 public:
     ItemBlock() {}
 
